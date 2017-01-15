@@ -12,7 +12,7 @@
     <name>Graphic Engine</name>
 
     <modules>
-        <module>graphicengine-launcher</module>
+        <module>gamelauncher</module>
     </modules>
 
     <properties>

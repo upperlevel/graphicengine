@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>xyz.upperlevel.game.launcher</groupId>
-    <artifactId>game-launcher</artifactId>
+    <artifactId>gamelauncher</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>

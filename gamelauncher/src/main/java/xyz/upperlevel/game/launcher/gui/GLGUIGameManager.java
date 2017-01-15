@@ -5,7 +5,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.web.WebView;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import xyz.upperlevel.game.launcher.api.GELControlPanel;
+import xyz.upperlevel.game.launcher.api.LauncherControlPanel;
 import xyz.upperlevel.game.launcher.api.Game;
 
 import java.io.File;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class GELGUIGameManager {
+public class GLGUIGameManager {
 
     @Getter public final TabPane pane;
     private final Map<Tab, Game> games = new HashMap<>();
@@ -25,7 +25,7 @@ public class GELGUIGameManager {
         tab.setText(game.getIdentity().getId());
         {
             WebView view = new WebView();
-            view.getEngine().load(game.getClassLoader().getResource("presentation/main-presentation.html").toExternalForm());
+            view.getEngine().load(game.getClassLoader().getResource("presentation/index.html").toExternalForm());
             tab.setContent(view);
         }
         pane.getTabs().add(tab);
@@ -33,11 +33,11 @@ public class GELGUIGameManager {
     }
 
     public void setup() {
-        GELControlPanel.g().getGames().forEach(this::setup);
+        LauncherControlPanel.g().getGames().forEach(this::setup);
     }
 
     public void load(File file) throws Exception {
-        GELControlPanel.g().load(file);
+        LauncherControlPanel.g().load(file);
         setup();
     }
 

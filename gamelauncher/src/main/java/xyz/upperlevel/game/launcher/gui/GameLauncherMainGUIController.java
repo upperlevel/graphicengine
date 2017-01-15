@@ -11,7 +11,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import xyz.upperlevel.game.launcher.api.GELControlPanel;
+import xyz.upperlevel.game.launcher.api.LauncherControlPanel;
 import xyz.upperlevel.game.launcher.api.Game;
 
 import java.io.File;
@@ -20,10 +20,10 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
-public class GELGUIController implements Initializable {
+public class GameLauncherMainGUIController implements Initializable {
 
     @Getter
-    public final GELGUILauncher launcher;
+    public final GameLauncherMainGUI launcher;
 
     @FXML
     private TabPane tabPane;
@@ -63,25 +63,25 @@ public class GELGUIController implements Initializable {
         Optional<Game> game = gameManager.getGame(getCurrentTab().getValue());
         if (game.isPresent()) {
             launcher.getStage().close();
-            GELControlPanel.g().detachLooper(game.get()).start();
+            LauncherControlPanel.g().detachLooper(game.get()).start();
         }
     }
 
     @Getter
-    private GELGUIGameManager gameManager;
+    private GLGUIGameManager gameManager;
 
     private ReadOnlyObjectProperty<Tab> getCurrentTab() {
         return tabPane.getSelectionModel().selectedItemProperty();
     }
 
     private void updateStartButton(Tab currentTab) {
-        startButton.setDisable(presentationTab == currentTab);
+        //startButton.setDisable(presentationTab == currentTab);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        gameManager = new GELGUIGameManager(tabPane);
-        webView.getEngine().load("file:///" + GELGUIResource.PRESENTATION_HTML.getFilePath());
+        gameManager = new GLGUIGameManager(tabPane);
+        webView.getEngine().load("file:///" + GameLauncherExtractor.$().getMainPresentationIndexFile().getPath());
         getCurrentTab().addListener((observable, oldValue, newValue) -> updateStartButton(newValue));
         updateStartButton(getCurrentTab().getValue());
     }

@@ -3,6 +3,7 @@ package xyz.upperlevel.game.launcher.api;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -18,9 +19,11 @@ import java.util.stream.Collectors;
  * Useful for API usage.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class GELControlPanel {
+public class LauncherControlPanel {
 
-    private static final GELControlPanel $ = new GELControlPanel().createResources();
+    public static final File GAMES_FOLDER = new File(FileUtils.getUserDirectory(), ".upperlevel/games");
+
+    private static final LauncherControlPanel $ = new LauncherControlPanel().createResources();
 
     @Getter
     public final List<Game> games = new ArrayList<>();
@@ -114,7 +117,7 @@ public class GELControlPanel {
     }
 
     public void load() throws Exception {
-        load(GELResource.GAMES_FOLDER.getFile());
+        load(GAMES_FOLDER);
     }
 
     /**
@@ -136,12 +139,12 @@ public class GELControlPanel {
     /**
      * Creates graphic engine launcher directory if doesn't exist.
      */
-    public GELControlPanel createResources() {
-        GELResource.GAMES_FOLDER.getFile().mkdirs();
+    public LauncherControlPanel createResources() {
+        GAMES_FOLDER.mkdirs();
         return this;
     }
 
-    public static GELControlPanel g() {
+    public static LauncherControlPanel g() {
         return $;
     }
 }

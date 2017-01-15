@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="600.0" prefWidth="600.0" stylesheets="@main-gui.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="600.0" prefWidth="600.0" stylesheets="@resources/gui/launcher_gui.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar id="menuBar" fx:id="menuBar">
         <menus>
@@ -47,7 +47,7 @@
          </tabs>
       </TabPane>
       <Separator prefWidth="200.0" />
-      <GridPane alignment="CENTER" prefWidth="600.0">
+      <GridPane id="lowBox" fx:id="lowBox" alignment="CENTER" prefWidth="600.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
