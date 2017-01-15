@@ -27,7 +27,7 @@ import java.nio.FloatBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
-public class SignorMuci {
+public class GraphicEngineTest1 {
 
     private static final String VERTEX_SRC =
             "#version 330 core\n" +

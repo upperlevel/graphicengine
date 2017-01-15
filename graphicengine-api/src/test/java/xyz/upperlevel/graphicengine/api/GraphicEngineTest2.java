@@ -16,7 +16,7 @@ import xyz.upperlevel.graphicengine.api.window.event.key.GLFWKey;
 
 import java.io.File;
 
-public class SignorMucino {
+public class GraphicEngineTest2 {
 
     private static Window w;
     private static Camera camera = new Camera();
