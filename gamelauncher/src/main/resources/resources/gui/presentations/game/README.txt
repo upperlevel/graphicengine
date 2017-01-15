@@ -1,1 +1,0 @@
-This presentation is used when there's no override presentation for this game.
