@@ -83,15 +83,6 @@ public class Vec3 extends DoubleVec<Vec3> {
     }
 
     @Override
-    public Vec3 normalize(Vec3 dest) {
-        double invLen = 1. / length();
-        dest.x = x * invLen;
-        dest.y = y * invLen;
-        dest.z = z * invLen;
-        return dest;
-    }
-
-    @Override
     public double lengthSquared() {
         return x * x + y * y + z * z;
     }

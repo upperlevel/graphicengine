@@ -75,14 +75,6 @@ public class Rot implements Operable<Rot> {
     }
 
     @Override
-    public Rot normalize(Rot dest) {
-        dest.yaw = normalizeRadAngle(yaw);
-        dest.pitch = normalizeRadAngle(pitch);
-        dest.scroll = normalizeRadAngle(scroll);
-        return dest;
-    }
-
-    @Override
     public Rot copy() {
         return new Rot(yaw, pitch, scroll);
     }

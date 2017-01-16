@@ -74,13 +74,6 @@ public class Vec2 extends DoubleVec<Vec2> {
         return this;
     }
 
-    @Override
-    public Vec2 normalize(Vec2 dest) {
-        double invLen = 1. / length();
-        dest.x = x * invLen;
-        dest.y = y * invLen;
-        return dest;
-    }
 
     @Override
     public double lengthSquared() {

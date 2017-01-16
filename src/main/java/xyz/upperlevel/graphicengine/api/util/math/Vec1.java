@@ -66,12 +66,6 @@ public class Vec1 extends DoubleVec<Vec1> {
     }
 
     @Override
-    public Vec1 normalize(Vec1 dest) {
-        dest.x = x * (1. / length());
-        return dest;
-    }
-
-    @Override
     public double lengthSquared() {
         return x * x;
     }

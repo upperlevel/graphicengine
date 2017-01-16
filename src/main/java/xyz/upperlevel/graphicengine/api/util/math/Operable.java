@@ -16,7 +16,5 @@ public interface Operable<T> {
 
     T normalize();
 
-    T normalize(T dest);
-
     T copy();
 }

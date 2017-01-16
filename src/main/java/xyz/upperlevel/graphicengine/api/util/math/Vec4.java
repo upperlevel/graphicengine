@@ -93,16 +93,6 @@ public class Vec4 extends DoubleVec<Vec4> {
     }
 
     @Override
-    public Vec4 normalize(Vec4 dest) {
-        double invLen = 1. / length();
-        dest.x = x * invLen;
-        dest.y = y * invLen;
-        dest.z = z * invLen;
-        dest.w = w * invLen;
-        return dest;
-    }
-
-    @Override
     public double lengthSquared() {
         return x * x + y * y + z * z + w * w;
     }
