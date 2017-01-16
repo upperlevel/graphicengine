@@ -2,7 +2,10 @@ package xyz.upperlevel.graphicengine.api.opengl.shader;
 
 import lombok.Getter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 import static org.lwjgl.opengl.GL20.*;
 
@@ -17,15 +20,17 @@ public class Program {
         id = glCreateProgram();
     }
 
-    public void attach(Shader shader) {
+    public Program attach(Shader shader) {
         Objects.requireNonNull(shader, "Shader cannot be null.");
         glAttachShader(id, shader.getId());
         shaders.add(shader);
+        return this;
     }
 
-    private void strictDetach(Shader shader) {
+    private Program strictDetach(Shader shader) {
         Objects.requireNonNull(shader, "Shader cannot be null.");
         glDetachShader(id, shader.getId());
+        return this;
     }
 
     public boolean detach(Shader shader) {
@@ -38,8 +43,9 @@ public class Program {
         return false;
     }
 
-    public void link() {
+    public Program link() {
         glLinkProgram(id);
+        return this;
     }
 
     public Uniformer bind() {
@@ -47,11 +53,12 @@ public class Program {
         return UNIFORMER;
     }
 
-    public void unbind() {
+    public Program unbind() {
         glUseProgram(0);
+        return this;
     }
 
-    public void destroy() {
+    public Program destroy() {
         for (Iterator<Shader> iterator = shaders.iterator(); iterator.hasNext();) {
             Shader shader = iterator.next();
             strictDetach(shader);
@@ -59,5 +66,6 @@ public class Program {
             shader.destroy();
         }
         glDeleteProgram(id);
+        return this;
     }
 }

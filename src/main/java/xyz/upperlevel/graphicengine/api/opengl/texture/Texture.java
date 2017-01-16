@@ -3,12 +3,24 @@ package xyz.upperlevel.graphicengine.api.opengl.texture;
 import lombok.Getter;
 import xyz.upperlevel.graphicengine.api.opengl.texture.loader.TextureContent;
 
+import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.Optional;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class Texture {
+    public static Texture NULL;
+
+    static {
+        NULL = new Texture();
+        NULL.setContent(new TextureContent(1, 1, ByteBuffer.wrap(new byte[] {
+                        (byte) 255,
+                        (byte) 255,
+                        (byte) 255,
+                        (byte) 255}
+                )));
+    }
 
     @Getter public final int id;
 

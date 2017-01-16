@@ -12,4 +12,8 @@ public class CompileStatus {
             ERROR = new CompileStatus("ERROR");
 
     @Getter @NonNull public final String log;
+
+    public boolean isOk() {
+        return this == OK;
+    }
 }
