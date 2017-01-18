@@ -3,12 +3,14 @@ package xyz.upperlevel.graphicengine.api.opengl.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.lwjgl.BufferUtils;
+import xyz.upperlevel.graphicengine.api.opengl.NumberType;
 import xyz.upperlevel.graphicengine.api.util.math.DoubleVec;
 import xyz.upperlevel.graphicengine.api.util.math.Vec;
-import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 import static xyz.upperlevel.graphicengine.api.util.math.DoubleVec.SINGLE_DATA_SIZE;
 
@@ -68,5 +70,9 @@ public class Vertices implements Vec {
 
     public VertexDefiner.Builder definer() {
         return new VertexDefiner.Builder();
+    }
+
+    public VertexDefiner.Builder definer(NumberType def) {
+        return new VertexDefiner.Builder(def);
     }
 }

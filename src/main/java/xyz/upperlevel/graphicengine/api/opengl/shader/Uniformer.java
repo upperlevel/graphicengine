@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import xyz.upperlevel.graphicengine.api.simple.SimpleColor;
 
 import java.nio.FloatBuffer;
 
@@ -72,5 +73,13 @@ public class Uniformer {
 
     public boolean setUniformMatrix(String uniform, FloatBuffer buffer) {
         return testUniform(uniform, () -> glUniformMatrix4fv(getUniLocation(uniform), false, buffer));
+    }
+
+    public boolean setUniformMatrix(String uniform, float[] buffer) {
+        return testUniform(uniform, () -> glUniformMatrix4fv(getUniLocation(uniform), false, buffer));
+    }
+
+    public boolean setUniform(String uniform, SimpleColor color) {
+        return setUniform(uniform, color.r/255f, color.g/255f, color.b/255f, color.a/255f);
     }
 }

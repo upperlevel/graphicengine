@@ -10,7 +10,6 @@ import xyz.upperlevel.graphicengine.api.opengl.model.Model;
 import xyz.upperlevel.graphicengine.api.opengl.model.VertexDefiner;
 import xyz.upperlevel.graphicengine.api.opengl.model.Vertices;
 import xyz.upperlevel.graphicengine.api.opengl.shader.*;
-import xyz.upperlevel.graphicengine.api.opengl.shader.loader.SimpleShaderSourceLoader;
 import xyz.upperlevel.graphicengine.api.opengl.texture.Texture;
 import xyz.upperlevel.graphicengine.api.opengl.texture.loader.TextureContent;
 import xyz.upperlevel.graphicengine.api.opengl.texture.loader.TextureLoaderManager;
@@ -26,6 +25,7 @@ import java.nio.FloatBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static xyz.upperlevel.graphicengine.api.opengl.NumberType.DOUBLE;
 
 public class GraphicEngineTest1 {
 
@@ -160,20 +160,17 @@ public class GraphicEngineTest1 {
         glEnable(GL_ALPHA);
         // defines shader(s)
 
-        String v_src = new SimpleShaderSourceLoader().load(new File("C:/Users/Lorenzo/Desktop/SIGNOR MUCI DON'T TOUCH!/textureBasicVertexShader.glsl"));
-        String f_src = new SimpleShaderSourceLoader().load(new File("C:/Users/Lorenzo/Desktop/SIGNOR MUCI DON'T TOUCH!/textureBasicFragmentShader.glsl"));
-
         CompileStatus cs;
 
         System.out.println("VERTEX");
         Shader vtx = new Shader(ShaderType.VERTEX);
-        vtx.linkSource(v_src);
+        vtx.linkSource(new File("C:/Users/Lorenzo/Desktop/SIGNOR MUCI DON'T TOUCH!/textureBasicVertexShader.glsl"));
         cs = vtx.compileSource();
         System.out.println(cs.log);
 
         System.out.println("FRAGMENT");
         Shader frag = new Shader(ShaderType.FRAGMENT);
-        frag.linkSource(f_src);
+        frag.linkSource(new File("C:/Users/Lorenzo/Desktop/SIGNOR MUCI DON'T TOUCH!/textureBasicFragmentShader.glsl"));
         cs = frag.compileSource();
         System.out.println(cs.log);
 
@@ -318,10 +315,10 @@ public class GraphicEngineTest1 {
                         .add(0f, 0f, 0f, 0f, -1f, 0f)
                         .add(1f, 0f, 0f, 0f, -1f, 0f);*/
 
-        VertexDefiner definer = vert.definer()
-                .attrib(uniformer.getAttribLocation("position"), 3, 0)
-                .attrib(uniformer.getAttribLocation("normal"), 3, 3)
-                .attrib(uniformer.getAttribLocation("texCoords"), 2, 6)
+        VertexDefiner definer = vert.definer(DOUBLE)
+                .attrib(uniformer.getAttribLocation("position"), 3)
+                .attrib(uniformer.getAttribLocation("normal"), 3)
+                .attrib(uniformer.getAttribLocation("texCoords"), 2)
                 .build();
         TextureLoaderManager tlm = TextureLoaderManager.DEFAULT;
         TextureContent diffTexContent, specTexContent;

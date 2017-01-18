@@ -3,40 +3,42 @@ package xyz.upperlevel.graphicengine.api.simple;
 import static java.lang.Integer.max;
 import static java.lang.Integer.min;
 
-public class Color {
-    public static Color WHITE = new Color(255, 255, 255);
-    public static Color BLACK = new Color(0, 0, 0);
-
+public class SimpleColor {
+    public static SimpleColor WHITE     = rgb(255, 255, 255);
+    public static SimpleColor BLACK     = rgb(0  , 0  , 0  );
+    public static SimpleColor RED       = rgb(255, 0  , 0  );
+    public static SimpleColor GREEN     = rgb(0  , 255, 0  );
+    public static SimpleColor BLUE      = rgb(0  , 0  , 255);
 
 
     public final int r, g, b, a;
 
     private byte[] data;
 
-    public Color(int r, int g, int b, int a) {
+    public SimpleColor(int r, int g, int b, int a) {
         this.r = r;
         this.g = g;
         this.b = b;
         this.a = a;
     }
 
-    public Color(int r, int g, int b) {
+    public SimpleColor(int r, int g, int b) {
         this(r, g, b, 255);
     }
 
-    public Color(float r, float g, float b, float a) {
+    public SimpleColor(float r, float g, float b, float a) {
         this((int)r*255, (int)g*255, (int)b*255, (int)a*255);
     }
 
-    public Color(float r, float g, float b) {
+    public SimpleColor(float r, float g, float b) {
         this(r, g, b, 1.0f);
     }
 
-    public Color(double r, double g, double b, double a) {
+    public SimpleColor(double r, double g, double b, double a) {
         this((float)r, (float)g, (float)b, (float)a);
     }
 
-    public Color(double r, double g, double b) {
+    public SimpleColor(double r, double g, double b) {
         this((float)r, (float)g, (float)b);
     }
 
@@ -72,8 +74,8 @@ public class Color {
         return a >= 255;
     }
 
-    public Color add(Color other) {
-        return new Color(
+    public SimpleColor add(SimpleColor other) {
+        return new SimpleColor(
                 min(255, this.r - other.r),
                 min(255, this.g - other.g),
                 min(255, this.b - other.b),
@@ -81,8 +83,8 @@ public class Color {
         );
     }
 
-    public Color sub(Color other) {
-        return new Color(
+    public SimpleColor sub(SimpleColor other) {
+        return new SimpleColor(
                 max(0, this.r - other.r),
                 max(0, this.g - other.g),
                 max(0, this.b - other.b),
@@ -90,8 +92,8 @@ public class Color {
         );
     }
 
-    public Color mul(Color other) {
-        return new Color(
+    public SimpleColor mul(SimpleColor other) {
+        return new SimpleColor(
                 this.r * other.r,
                 this.g * other.g,
                 this.b * other.b,
@@ -99,12 +101,20 @@ public class Color {
         );
     }
 
-    public Color div(Color other) {
-        return new Color(
+    public SimpleColor div(SimpleColor other) {
+        return new SimpleColor(
                 min(255, this.r / other.r),
                 min(255, this.g / other.g),
                 min(255, this.b / other.b),
                 min(255, this.a / other.a)
         );
+    }
+
+    public static SimpleColor rgb(int r, int g, int b) {
+        return new SimpleColor(r, g, b);
+    }
+
+    public static SimpleColor rgba(int r, int g, int b, int a) {
+        return new SimpleColor(r, g, b, a);
     }
 }

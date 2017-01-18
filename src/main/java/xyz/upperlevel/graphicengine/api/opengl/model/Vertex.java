@@ -2,10 +2,10 @@ package xyz.upperlevel.graphicengine.api.opengl.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.lwjgl.BufferUtils;
 import xyz.upperlevel.graphicengine.api.util.math.DoubleVec;
 import xyz.upperlevel.graphicengine.api.util.math.Vec;
 import xyz.upperlevel.graphicengine.api.util.math.Vec1;
-import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
@@ -18,7 +18,7 @@ public class Vertex implements Vec {
 
     @Getter public final List<DoubleVec> vecs = new LinkedList<>();
 
-    public Vertex add(float attribute) {
+    public Vertex add(double attribute) {
         vecs.add(new Vec1(attribute));
         return this;
     }
