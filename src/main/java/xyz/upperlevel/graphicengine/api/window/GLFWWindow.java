@@ -2,12 +2,14 @@ package xyz.upperlevel.graphicengine.api.window;
 
 import lombok.Getter;
 import lombok.NonNull;
-import xyz.upperlevel.graphicengine.api.window.event.action.Action;
-import xyz.upperlevel.graphicengine.api.window.event.key.Key;
-import xyz.upperlevel.graphicengine.api.util.math.Vec2;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFWVidMode;
+import xyz.upperlevel.graphicengine.api.util.math.Vec2;
+import xyz.upperlevel.graphicengine.api.window.event.action.GLFWAction;
+import xyz.upperlevel.graphicengine.api.window.event.key.Key;
 
-import java.nio.*;
+import java.nio.DoubleBuffer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
@@ -17,13 +19,20 @@ public class GLFWWindow extends GLWindow {
     @Getter public final long id;
     @Getter @NonNull private String title;
 
-    public GLFWWindow(int width, int height, String title) {
+    public GLFWWindow(int width, int height, String title, boolean fullscreen) {
         if (width < 0 || height < 0)
             throw new IllegalArgumentException("Window's dimensions cannot be negative.");
         if (title == null)
             throw new IllegalArgumentException("Title cannot be null.");
         this.title = title;
-        id = glfwCreateWindow(width, height, title, NULL, NULL);
+
+        if(fullscreen){
+            GLFWVidMode mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+            width = mode.width();
+            height = mode.height();
+        }
+
+        id = glfwCreateWindow(width, height, title, fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
     }
 
     @Override
@@ -87,8 +96,8 @@ public class GLFWWindow extends GLWindow {
     }
 
     @Override
-    public Action getKeyState(Key key) {
-        return new Action(glfwGetKey(id, key.id));
+    public boolean getKey(Key key) {
+        return glfwGetKey(id, key.id) != GLFWAction.RELEASE.id;
     }
 
     @Override

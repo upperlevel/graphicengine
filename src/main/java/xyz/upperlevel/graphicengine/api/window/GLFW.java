@@ -2,12 +2,8 @@ package xyz.upperlevel.graphicengine.api.window;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import xyz.upperlevel.graphicengine.api.window.event.GLFWCursorMoveEventHandler;
-import xyz.upperlevel.graphicengine.api.window.event.GLFWMouseButtonChangeEventHandler;
-import xyz.upperlevel.graphicengine.api.window.event.GLFWMouseScrollEventHandler;
-import xyz.upperlevel.graphicengine.api.window.event.WindowEventHandler;
-import xyz.upperlevel.graphicengine.api.window.event.GLFWKeyChangeEventHandler;
 import org.lwjgl.glfw.GLFWVidMode;
+import xyz.upperlevel.graphicengine.api.window.event.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -67,8 +63,8 @@ public final class GLFW {
         return Event.INSTANCE;
     }
 
-    public static GLFWWindow createWindow(int width, int height, String title) {
-        return new GLFWWindow(width, height, title);
+    public static GLFWWindow createWindow(int width, int height, String title, boolean fullscreen) {
+        return new GLFWWindow(width, height, title, fullscreen);
     }
 
     public static GLFWWindowSettings createWindowSettings() {

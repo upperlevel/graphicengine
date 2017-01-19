@@ -1,6 +1,7 @@
 package xyz.upperlevel.graphicengine.api.opengl.texture;
 
 import lombok.Getter;
+import org.lwjgl.BufferUtils;
 import xyz.upperlevel.graphicengine.api.opengl.texture.loader.TextureContent;
 
 import java.nio.ByteBuffer;
@@ -14,12 +15,16 @@ public class Texture {
 
     static {
         NULL = new Texture();
-        NULL.setContent(new TextureContent(1, 1, ByteBuffer.wrap(new byte[] {
+        NULL.setContent(new TextureContent(
+                1,
+                1,
+                (ByteBuffer) BufferUtils.createByteBuffer(4)
+                .put(new byte[] {
                         (byte) 255,
                         (byte) 255,
                         (byte) 255,
-                        (byte) 255}
-                )));
+                        (byte) 255
+                }).flip()));
     }
 
     @Getter public final int id;
@@ -34,29 +39,33 @@ public class Texture {
         return Optional.ofNullable(content);
     }
 
-    public void setContent(TextureContent content) {
+    public Texture setContent(TextureContent content) {
         setContent(content, TextureParameters.DEFAULTS);
+        return this;
     }
 
-    public void setContent(TextureContent content, TextureParameters parameters) {
+    public Texture setContent(TextureContent content, TextureParameters parameters) {
         Objects.requireNonNull(content, "Content cannot be null.");
         Objects.requireNonNull(content, "Parameters cannot be null.");
         bind();
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, content.getWidth(), content.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, content.getData());
         parameters.setup();
-        unbind();
         this.content = content;
+        return this;
     }
 
-    public void bind() {
+    public Texture bind() {
         glBindTexture(GL_TEXTURE_2D, id);
+        return this;
     }
 
-    public void unbind() {
+    public Texture unbind() {
         glBindTexture(GL_TEXTURE_2D, 0);
+        return this;
     }
 
-    public void destroy() {
+    public Texture destroy() {
         glDeleteTextures(id);
+        return this;
     }
 }

@@ -47,7 +47,7 @@ public class GLFWWindowSettings {
         return this;
     }
 
-    public GLFWWindow createWindow(int width, int height, String title) {
-        return new GLFWWindow(width, height, title);
+    public GLFWWindow createWindow(int width, int height, String title, boolean fullscreen) {
+        return new GLFWWindow(width, height, title, fullscreen);
     }
 }

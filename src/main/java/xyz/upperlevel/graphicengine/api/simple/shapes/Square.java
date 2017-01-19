@@ -1,4 +1,4 @@
-package xyz.upperlevel.graphicengine.api.simple;
+package xyz.upperlevel.graphicengine.api.simple.shapes;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -6,10 +6,10 @@ import xyz.upperlevel.graphicengine.api.opengl.buffer.*;
 import xyz.upperlevel.graphicengine.api.opengl.model.VertexDefiner;
 import xyz.upperlevel.graphicengine.api.opengl.shader.Uniformer;
 import xyz.upperlevel.graphicengine.api.opengl.texture.Texture;
+import xyz.upperlevel.graphicengine.api.simple.SimpleColor;
+import xyz.upperlevel.graphicengine.api.simple.SimpleRenderable;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static xyz.upperlevel.graphicengine.api.opengl.NumberType.FLOAT;
 
 public class Square extends SimpleRenderable {
@@ -18,10 +18,10 @@ public class Square extends SimpleRenderable {
 
     public static final float vertices[] = {
             //Coords (x, y, z)     //TexCoords
-            -0.5f, -1.0f,  0.0f,   -1.0f, -1.0f,
-            -0.5f,  1.0f,  0.0f,   -1.0f,  1.0f,
-             1.0f, -1.0f,  0.0f,    1.0f, -1.0f,
-             1.0f,  1.0f,  0.0f,    1.0f,  1.0f,
+             0.0f,  0.0f,   0.0f, 1.0f,
+             0.0f,  1.0f,   0.0f, 0.0f,
+             1.0f,  0.0f,   1.0f, 1.0f,
+             1.0f,  1.0f,   1.0f, 0.0f,
     };
 
     public static final int indices[] = {
@@ -41,7 +41,7 @@ public class Square extends SimpleRenderable {
             vbo.bind();
             vbo.loadData(vertices, VBOUsage.STATIC_DRAW);
             VertexDefiner.builder(FLOAT)
-                    .attrib(0, 3)
+                    .attrib(0, 2)
                     .attrib(1, 2)
 
                     .build().setup();
@@ -68,10 +68,11 @@ public class Square extends SimpleRenderable {
     }
 
     public Matrix4f getTransform() {
-        Matrix4f matrix = new Matrix4f()
-                    .scale(size.x, size.y, 1)
-                    .translate(pos.x, pos.y, 0);
-        if(rotation != 0)
+        Matrix4f matrix = new Matrix4f();
+        matrix.translate(pos.x, pos.y, 0);
+        matrix.scale(size.x, size.y, 1);
+
+        if (rotation != 0)
             matrix.rotate(rotation, 0f, 0f, 1f);
         return matrix;
     }
@@ -79,11 +80,7 @@ public class Square extends SimpleRenderable {
 
     @Override
     public void draw(Uniformer uniformer) {
-        glActiveTexture(GL_TEXTURE0);
-        tex.bind();
-
-        if(!uniformer.setUniform("col", color))
-            throw new IllegalStateException();
+        super.draw(uniformer);
 
         if(!uniformer.setUniformMatrix("transform", getTransform().get(BufferUtil.createBuffer(new float[4*4]))))
             throw new IllegalStateException();

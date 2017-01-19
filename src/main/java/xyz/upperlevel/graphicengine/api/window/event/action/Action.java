@@ -9,6 +9,6 @@ public class Action {
     @Getter public final int id;
 
     public boolean equals(Object object) {
-        return object instanceof Action ? ((Action) object).id == id : super.equals(object);
+        return object instanceof Action && ((Action) object).id == id;
     }
 }

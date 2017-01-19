@@ -116,7 +116,7 @@ public class GraphicEngineTest1 {
 
         //--------------------------------
         // defines window
-        Window win = GLFW.createWindow(WIDTH, HEIGHT, "ciao");
+        Window win = GLFW.createWindow(WIDTH, HEIGHT, "ciao", false);
         // scroll
         WindowEventHandler<MouseScrollEvent> scroll = GLFW.events().MOUSE_SCROLL.inst();
         scroll.register((window, x, y) -> {

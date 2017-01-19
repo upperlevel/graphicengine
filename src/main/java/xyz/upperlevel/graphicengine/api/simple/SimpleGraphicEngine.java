@@ -1,5 +1,7 @@
 package xyz.upperlevel.graphicengine.api.simple;
 
+import lombok.Getter;
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import xyz.upperlevel.graphicengine.api.opengl.shader.*;
 
@@ -11,8 +13,18 @@ import java.util.Set;
 public class SimpleGraphicEngine {
     private final Program program = createProgram();
 
-
     private Set<Renderable> objects = new HashSet<>();
+
+    @Getter
+    private float width, height;
+
+    private Matrix4f projection = null;
+    private float[] buffer = new float[4*4];
+
+    public SimpleGraphicEngine(float width, float height) {
+        this.width = width;
+        this.height = height;
+    }
 
     protected Program createProgram() {
         return new Program()
@@ -30,7 +42,7 @@ public class SimpleGraphicEngine {
     }
 
     protected Shader createVertexShader() {
-        Shader shader =  new Shader(ShaderType.FRAGMENT).linkResource("simple/VertexShader.glsl");
+        Shader shader =  new Shader(ShaderType.VERTEX).linkResource("simple/VertexShader.glsl");
         CompileStatus status = shader.compileSource();
         if(!status.isOk())
             throw new IllegalStateException("Cannot compile default vertex shader:\n" + status.getLog());
@@ -57,11 +69,35 @@ public class SimpleGraphicEngine {
         objects.removeAll(renderables);
     }
 
+    public void setHeight(float height) {
+        this.height = height;
+        this.projection = null;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+        this.projection = null;
+    }
+
+    public void setSize(float height, float width) {
+        this.height = height;
+        this.width = width;
+        this.projection = null;
+    }
+
     public void draw() {
         GL11.glClearColor(0f, 0f, 0f, 0f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
         final Uniformer uniformer = program.bind();
+
+        if(projection == null) {
+            projection = new Matrix4f().ortho2D(0, width, 0, height);
+            projection.get(buffer);
+        }
+
+        uniformer.setUniformMatrix("projection", buffer);
+
         objects.forEach(r -> r.draw(uniformer));
     }
 }

@@ -1,9 +1,8 @@
 package xyz.upperlevel.graphicengine.api.window;
 
-import xyz.upperlevel.graphicengine.api.window.event.WindowEventHandler;
-import xyz.upperlevel.graphicengine.api.window.event.action.Action;
-import xyz.upperlevel.graphicengine.api.window.event.key.Key;
 import xyz.upperlevel.graphicengine.api.util.math.Vec2;
+import xyz.upperlevel.graphicengine.api.window.event.WindowEventHandler;
+import xyz.upperlevel.graphicengine.api.window.event.key.Key;
 
 public interface Window {
 
@@ -29,7 +28,7 @@ public interface Window {
 
     void setPosition(int x, int y);
 
-    Action getKeyState(Key key);
+    boolean getKey(Key key);
 
     Vec2 getCursorPosition();
 

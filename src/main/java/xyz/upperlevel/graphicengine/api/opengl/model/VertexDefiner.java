@@ -52,6 +52,11 @@ public class VertexDefiner {
     private static class Attrib {
         public final int index, count;
         public final int type, bytes;
+
+        @Override
+        public String toString() {
+            return "{i:" + index + ", c:" + count + ", b:" + bytes + "}";
+        }
     }
 
     public static class Builder {
@@ -75,7 +80,9 @@ public class VertexDefiner {
          * @param openglTypeId the type id as OpenGL constant (like org.lwjgl.opengl.GL11.GL_FLOAT)
          **/
         public Builder attrib(int index, int count, int openglTypeId, int bytes) {
-            vertex.add(new Attrib(index, count, openglTypeId, bytes));
+            Attrib attrib = new Attrib(index, count, openglTypeId, bytes);
+            System.out.println(attrib);
+            vertex.add(attrib);
             return this;
         }
 

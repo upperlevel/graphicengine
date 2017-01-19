@@ -1,5 +1,6 @@
 package xyz.upperlevel.graphicengine.api.simple;
 
+import xyz.upperlevel.graphicengine.api.opengl.shader.Uniformer;
 import xyz.upperlevel.graphicengine.api.opengl.texture.Texture;
 
 public abstract class SimpleRenderable implements Renderable {
@@ -14,5 +15,13 @@ public abstract class SimpleRenderable implements Renderable {
     protected SimpleRenderable(Texture tex) {
         this.tex = tex;
         this.color = SimpleColor.WHITE;
+    }
+
+    @Override
+    public void draw(Uniformer uniformer) {
+        tex.bind();
+
+        if(!uniformer.setUniform("col", color))
+            throw new IllegalStateException("Cannot set color");
     }
 }

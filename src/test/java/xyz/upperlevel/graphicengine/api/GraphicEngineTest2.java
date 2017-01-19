@@ -10,7 +10,6 @@ import xyz.upperlevel.graphicengine.api.opengl.shader.ShaderType;
 import xyz.upperlevel.graphicengine.api.util.math.Camera;
 import xyz.upperlevel.graphicengine.api.window.GLFW;
 import xyz.upperlevel.graphicengine.api.window.Window;
-import xyz.upperlevel.graphicengine.api.window.event.action.GLFWAction;
 import xyz.upperlevel.graphicengine.api.window.event.key.GLFWKey;
 
 import java.io.File;
@@ -21,7 +20,7 @@ public class GraphicEngineTest2 {
     private static Camera camera = new Camera();
 
     public static void main(String[] args) {
-        w = GLFW.createWindow(500, 500, "Ciao");
+        w = GLFW.createWindow(500, 500, "Ciao", false);
         w.contextualize();
         w.show();
 
@@ -80,8 +79,8 @@ public class GraphicEngineTest2 {
     }
 
     private static void processInputs() {
-        if (w.getKeyState(GLFWKey.W).equals(GLFWAction.PRESS) || w.getKeyState(GLFWKey.W).equals(GLFWAction.REPEAT)) {
-            System.out.println("W pressed/repeated!");
+        if (w.getKey(GLFWKey.W)) {
+            System.out.println("W pressed!");
             camera.setPosition(camera.getPosition().add(camera.getForward()));
         }
     }
