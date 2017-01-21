@@ -87,8 +87,8 @@ public class SimpleGETest {
     public static final float VEL = 1f;
 
     public static void update(long delta) {
-        if(w.getKey(GLFWKey.ESCAPE))
-            w.close();
+        /*if(w.getKey(GLFWKey.ESCAPE))
+            w.close();*/
         if(w.getKey(GLFWKey.RIGHT))
             obj.pos.add(VEL * delta, 0f);
         if(w.getKey(GLFWKey.LEFT))

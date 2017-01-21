@@ -25,15 +25,16 @@ public final class GLFW {
 
         public static final Event INSTANCE = new Event();
 
-        public static class Initializer {
+        public static class Initializer<T extends WindowEventHandler> {
 
-            private final Class<? extends WindowEventHandler> evHndClass;
+            private final Class<T> evHndClass;
 
-            private Initializer(Class<? extends WindowEventHandler> evHndClass) {
+            private Initializer(Class<T> evHndClass) {
                 this.evHndClass = evHndClass;
             }
 
-            public WindowEventHandler inst() {
+            @SuppressWarnings("unchecked")
+            public T inst() {
                 Constructor<? extends WindowEventHandler> ctr;
                 try {
                     ctr = evHndClass.getDeclaredConstructor();
@@ -41,7 +42,7 @@ public final class GLFW {
                     throw new IllegalStateException("Window event handler constructor cannot have arguments.");
                 }
                 try {
-                    return ctr.newInstance();
+                    return (T) ctr.newInstance();
                 } catch (InstantiationException e) {
                     throw new IllegalStateException("Cannot initializing " + evHndClass.getName() + " class.");
                 } catch (IllegalAccessException e) {
@@ -52,11 +53,10 @@ public final class GLFW {
             }
         }
 
-        public final Initializer
-                CURSOR_MOVE = new Initializer(GLFWCursorMoveEventHandler.class),
-                KEY_CHANGE = new Initializer(GLFWKeyChangeEventHandler.class),
-                MOUSE_BUTTON_CHANGE = new Initializer(GLFWMouseButtonChangeEventHandler.class),
-                MOUSE_SCROLL = new Initializer(GLFWMouseScrollEventHandler.class);
+        public final Initializer<GLFWCursorMoveEventHandler>        CURSOR_MOVE         = new Initializer<>(GLFWCursorMoveEventHandler.class);
+        public final Initializer<GLFWKeyChangeEventHandler>         KEY_CHANGE          = new Initializer<>(GLFWKeyChangeEventHandler.class);
+        public final Initializer<GLFWMouseButtonChangeEventHandler> MOUSE_BUTTON_CHANGE = new Initializer<>(GLFWMouseButtonChangeEventHandler.class);
+        public final Initializer<GLFWMouseScrollEventHandler>       MOUSE_SCROLL        = new Initializer<>(GLFWMouseScrollEventHandler.class);
     }
 
     public static Event events() {
