@@ -6,8 +6,8 @@ import xyz.upperlevel.graphicengine.api.opengl.buffer.*;
 import xyz.upperlevel.graphicengine.api.opengl.model.VertexDefiner;
 import xyz.upperlevel.graphicengine.api.opengl.shader.Uniformer;
 import xyz.upperlevel.graphicengine.api.opengl.texture.Texture;
-import xyz.upperlevel.graphicengine.api.simple.SimpleColor;
 import xyz.upperlevel.graphicengine.api.simple.SimpleRenderable;
+import xyz.upperlevel.graphicengine.api.util.Color;
 
 import static org.lwjgl.opengl.GL11.*;
 import static xyz.upperlevel.graphicengine.api.opengl.NumberType.FLOAT;
@@ -55,7 +55,7 @@ public class Square extends SimpleRenderable {
 
     public float rotation = 0f;
 
-    public Square(Vector2f pos, Vector2f size, SimpleColor color) {
+    public Square(Vector2f pos, Vector2f size, Color color) {
         super(color);
         this.pos = pos;
         this.size = size;

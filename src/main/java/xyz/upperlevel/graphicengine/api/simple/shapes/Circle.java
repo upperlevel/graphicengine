@@ -9,8 +9,8 @@ import xyz.upperlevel.graphicengine.api.opengl.buffer.VBOUsage;
 import xyz.upperlevel.graphicengine.api.opengl.model.VertexDefiner;
 import xyz.upperlevel.graphicengine.api.opengl.shader.Uniformer;
 import xyz.upperlevel.graphicengine.api.opengl.texture.Texture;
-import xyz.upperlevel.graphicengine.api.simple.SimpleColor;
 import xyz.upperlevel.graphicengine.api.simple.SimpleRenderable;
+import xyz.upperlevel.graphicengine.api.util.Color;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
@@ -25,7 +25,7 @@ public class Circle extends SimpleRenderable{
 
     public final int segments;
 
-    public Circle(Vector2f pos, Vector2f size, SimpleColor color, int segments) {
+    public Circle(Vector2f pos, Vector2f size, Color color, int segments) {
         super(color);
         this.segments = segments;
         initVerts(segments);

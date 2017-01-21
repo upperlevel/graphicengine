@@ -1,9 +1,9 @@
 package xyz.upperlevel.graphicengine.api;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.graphicengine.api.simple.SimpleColor;
 import xyz.upperlevel.graphicengine.api.simple.SimpleGame;
 import xyz.upperlevel.graphicengine.api.simple.shapes.Circle;
+import xyz.upperlevel.graphicengine.api.util.Colors;
 import xyz.upperlevel.graphicengine.api.window.event.key.GLFWKey;
 
 public class SimpleGameTest extends SimpleGame {
@@ -17,7 +17,7 @@ public class SimpleGameTest extends SimpleGame {
         circle = new Circle(
                 new Vector2f(10f, 10f),
                 new Vector2f(20f, 20f),
-                SimpleColor.BLUE,
+                Colors.BLUE,
                 20
         );
         register(circle);
