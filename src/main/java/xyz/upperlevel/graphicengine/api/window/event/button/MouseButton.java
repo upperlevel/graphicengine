@@ -1,14 +1,29 @@
 package xyz.upperlevel.graphicengine.api.window.event.button;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+public enum MouseButton {
+    UNKNOWN,
+    BUTTON_1,
+    BUTTON_2,
+    BUTTON_3,
+    BUTTON_4,
+    BUTTON_5,
+    BUTTON_6,
+    BUTTON_7,
+    BUTTON_8,
+    LAST,
+    LEFT,
+    RIGHT,
+    MIDDLE;
 
-@RequiredArgsConstructor
-public class MouseButton {
+    private static final MouseButton[] array = MouseButton.values();
 
-    @Getter public final int id;
+    public final int id = ordinal();
 
-    public boolean equals(Object object) {
-        return object instanceof MouseButton ? ((MouseButton) object).id == id : super.equals(object);
+    public static MouseButton fromId(int keyId) {
+        return array[keyId];
+    }
+
+    public static int length() {
+        return array.length;
     }
 }

@@ -11,7 +11,7 @@ import static xyz.upperlevel.graphicengine.api.window.event.key.Key.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GLFWKey {
-    public static Map<Integer, Key> toStandardMapping = new HashMap<>(512);
+    public static Map<Integer, Key> toStandardMapping = new HashMap<>(Key.length());
     public static int[] toGlfwMapping = new int[Key.length()];
 
     static {
