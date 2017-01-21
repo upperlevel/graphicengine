@@ -7,7 +7,7 @@ import xyz.upperlevel.graphicengine.api.simple.SimpleGraphicEngine;
 import xyz.upperlevel.graphicengine.api.simple.shapes.Circle;
 import xyz.upperlevel.graphicengine.api.window.GLFW;
 import xyz.upperlevel.graphicengine.api.window.Window;
-import xyz.upperlevel.graphicengine.api.window.event.key.GLFWKey;
+import xyz.upperlevel.graphicengine.api.window.event.key.Key;
 
 import java.io.File;
 
@@ -89,9 +89,9 @@ public class SimpleGETest {
     public static void update(long delta) {
         /*if(w.getKey(GLFWKey.ESCAPE))
             w.close();*/
-        if(w.getKey(GLFWKey.RIGHT))
+        if(w.getKey(Key.RIGHT))
             obj.pos.add(VEL * delta, 0f);
-        if(w.getKey(GLFWKey.LEFT))
+        if(w.getKey(Key.LEFT))
             obj.pos.sub(VEL * delta, 0f);
     }
 }

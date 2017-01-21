@@ -10,7 +10,7 @@ import xyz.upperlevel.graphicengine.api.opengl.shader.ShaderType;
 import xyz.upperlevel.graphicengine.api.util.math.Camera;
 import xyz.upperlevel.graphicengine.api.window.GLFW;
 import xyz.upperlevel.graphicengine.api.window.Window;
-import xyz.upperlevel.graphicengine.api.window.event.key.GLFWKey;
+import xyz.upperlevel.graphicengine.api.window.event.key.Key;
 
 import java.io.File;
 
@@ -79,7 +79,7 @@ public class GraphicEngineTest2 {
     }
 
     private static void processInputs() {
-        if (w.getKey(GLFWKey.W)) {
+        if (w.getKey(Key.W)) {
             System.out.println("W pressed!");
             camera.setPosition(camera.getPosition().add(camera.getForward()));
         }

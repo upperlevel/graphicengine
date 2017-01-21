@@ -4,7 +4,7 @@ import org.joml.Vector2f;
 import xyz.upperlevel.graphicengine.api.simple.SimpleGame;
 import xyz.upperlevel.graphicengine.api.simple.shapes.Circle;
 import xyz.upperlevel.graphicengine.api.util.Colors;
-import xyz.upperlevel.graphicengine.api.window.event.key.GLFWKey;
+import xyz.upperlevel.graphicengine.api.window.event.key.Key;
 
 public class SimpleGameTest extends SimpleGame {
     public static final double VEL = 100;
@@ -25,14 +25,14 @@ public class SimpleGameTest extends SimpleGame {
 
     @Override
     public void update(double delta) {
-        if(key(GLFWKey.W))
+        if(key(Key.W))
             circle.pos.add(0.0f, (float) (VEL * delta));
-        if(key(GLFWKey.S))
+        if(key(Key.S))
             circle.pos.sub(0.0f, (float) (VEL * delta));
 
-        if(key(GLFWKey.A))
+        if(key(Key.A))
             circle.pos.sub((float) (VEL * delta), 0.0f);
-        if(key(GLFWKey.D))
+        if(key(Key.D))
             circle.pos.add((float) (VEL * delta), 0.0f);
     }
 

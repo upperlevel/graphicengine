@@ -5,7 +5,6 @@ import xyz.upperlevel.graphicengine.api.window.Window;
 import xyz.upperlevel.graphicengine.api.window.event.KeyChangeEvent;
 import xyz.upperlevel.graphicengine.api.window.event.WindowEventHandler;
 import xyz.upperlevel.graphicengine.api.window.event.action.Action;
-import xyz.upperlevel.graphicengine.api.window.event.key.GLFWKey;
 import xyz.upperlevel.graphicengine.api.window.event.key.Key;
 
 import java.util.Arrays;
@@ -182,7 +181,7 @@ public class SimpleGame {
     public void update(double delta){}
 
     public void keyChange(Key key, Action action) {
-        if(key.id == GLFWKey.ESCAPE.id)
+        if(key == Key.ESCAPE)
             window.close();
     }
 

@@ -5,7 +5,7 @@ import lombok.NonNull;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWVidMode;
 import xyz.upperlevel.graphicengine.api.util.math.Vec2;
-import xyz.upperlevel.graphicengine.api.window.event.action.GLFWAction;
+import xyz.upperlevel.graphicengine.api.window.event.key.GLFWKey;
 import xyz.upperlevel.graphicengine.api.window.event.key.Key;
 
 import java.nio.DoubleBuffer;
@@ -97,7 +97,7 @@ public class GLFWWindow extends GLWindow {
 
     @Override
     public boolean getKey(Key key) {
-        return glfwGetKey(id, key.id) != GLFWAction.RELEASE.id;
+        return glfwGetKey(id, GLFWKey.toGlfw(key)) != GLFW_RELEASE;
     }
 
     @Override

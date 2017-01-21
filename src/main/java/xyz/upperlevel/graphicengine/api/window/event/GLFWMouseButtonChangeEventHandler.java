@@ -1,10 +1,10 @@
 package xyz.upperlevel.graphicengine.api.window.event;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import xyz.upperlevel.graphicengine.api.window.Window;
 import xyz.upperlevel.graphicengine.api.window.event.action.Action;
 import xyz.upperlevel.graphicengine.api.window.event.button.MouseButton;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
 public class GLFWMouseButtonChangeEventHandler extends AbstractGLFWEventHandler<MouseButtonChangeEvent> {
 
@@ -13,7 +13,10 @@ public class GLFWMouseButtonChangeEventHandler extends AbstractGLFWEventHandler<
         GLFW.glfwSetMouseButtonCallback(window.getId(), new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long id, int button, int action, int mode) {
-                events.forEach(event -> event.onCall(window, new MouseButton(button), new Action(action)));
+                final Action stAction = action != GLFW.GLFW_RELEASE ? Action.PRESS : Action.RELEASE;
+                //TODO: redo mouseButton too?
+                final MouseButton stButton = new MouseButton(button);
+                events.forEach(event -> event.onCall(window, stButton, stAction));
             }
         });
     }
