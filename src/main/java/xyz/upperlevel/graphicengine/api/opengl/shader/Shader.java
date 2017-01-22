@@ -1,7 +1,6 @@
 package xyz.upperlevel.graphicengine.api.opengl.shader;
 
 import lombok.Getter;
-import xyz.upperlevel.graphicengine.api.opengl.shader.loader.SimpleShaderSourceLoader;
 
 import java.io.File;
 import java.io.InputStream;
