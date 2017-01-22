@@ -3,6 +3,7 @@ package xyz.upperlevel.graphicengine.api.opengl.shader;
 import lombok.Getter;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -37,8 +38,13 @@ public class Shader {
         return this;
     }
 
-    public Shader linkSource(File file) {
-        linkSource(new SimpleShaderSourceLoader().load(file));
+    public Shader linkSource(InputStream stream) throws IOException {
+        linkSource(SimpleShaderSourceLoader.$().load(stream));
+        return this;
+    }
+
+    public Shader linkSource(File file) throws IOException {
+        linkSource(SimpleShaderSourceLoader.$().load(file));
         return this;
     }
 
