@@ -155,7 +155,7 @@ public class GraphicEngineTest1 {
         win.show();
 
         win.setVSync(false);
-        // startss
+        // starts
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_ALPHA);
         // defines shader(s)
@@ -164,13 +164,21 @@ public class GraphicEngineTest1 {
 
         System.out.println("VERTEX");
         Shader vtx = new Shader(ShaderType.VERTEX);
-        vtx.linkSource(new File("C:/Users/Lorenzo/Desktop/SIGNOR MUCI DON'T TOUCH!/textureBasicVertexShader.glsl"));
+        try {
+            vtx.linkSource(new File("C:/Users/Lorenzo/Desktop/SIGNOR MUCI DON'T TOUCH!/textureBasicVertexShader.glsl"));
+        } catch (IOException e) {
+            throw new IllegalStateException("failed to load vertex shader", e);
+        }
         cs = vtx.compileSource();
         System.out.println(cs.log);
 
         System.out.println("FRAGMENT");
         Shader frag = new Shader(ShaderType.FRAGMENT);
-        frag.linkSource(new File("C:/Users/Lorenzo/Desktop/SIGNOR MUCI DON'T TOUCH!/textureBasicFragmentShader.glsl"));
+        try {
+            frag.linkSource(new File("C:/Users/Lorenzo/Desktop/SIGNOR MUCI DON'T TOUCH!/textureBasicFragmentShader.glsl"));
+        } catch (IOException e) {
+            throw new IllegalStateException("failed to load fragment shader", e);
+        }
         cs = frag.compileSource();
         System.out.println(cs.log);
 

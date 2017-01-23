@@ -13,6 +13,7 @@ import xyz.upperlevel.graphicengine.api.window.Window;
 import xyz.upperlevel.graphicengine.api.window.event.key.Key;
 
 import java.io.File;
+import java.io.IOException;
 
 public class GraphicEngineTest2 {
 
@@ -28,11 +29,20 @@ public class GraphicEngineTest2 {
         CompileStatus err;
 
         Shader vs = new Shader(ShaderType.VERTEX);
-        vs.linkSource(new File("C:/users/lorenzo/desktop/SIGNOR MUCI DON'T TOUCH!/sgnMucino_vrt.glsl"));
+        try {
+            vs.linkSource(new File("C:/users/lorenzo/desktop/SIGNOR MUCI DON'T TOUCH!/sgnMucino_vrt.glsl"));
+        } catch (IOException e) {
+            throw new IllegalStateException("failed to load vertex shader", e);
+        }
         err = vs.compileSource();
         System.out.println("Vertex compiled: " + err.log);
 
-        Shader fs = new Shader(ShaderType.FRAGMENT).linkSource(new File("C:/users/lorenzo/desktop/SIGNOR MUCI DON'T TOUCH!/sgnMucino_frg.glsl"));
+        Shader fs = new Shader(ShaderType.FRAGMENT);
+        try {
+            fs.linkSource(new File("C:/users/lorenzo/desktop/SIGNOR MUCI DON'T TOUCH!/sgnMucino_frg.glsl"));
+        } catch (IOException e) {
+            throw new IllegalStateException("failed to load fragment shader", e);
+        }
         err = fs.compileSource();
         System.out.println("Fragment compiled: " + err.log);
 
