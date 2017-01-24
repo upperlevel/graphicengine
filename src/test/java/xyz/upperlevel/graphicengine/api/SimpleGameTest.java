@@ -1,10 +1,10 @@
 package xyz.upperlevel.graphicengine.api;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.graphicengine.api.simple.SimpleGame;
-import xyz.upperlevel.graphicengine.api.simple.shapes.Circle;
-import xyz.upperlevel.graphicengine.api.util.Colors;
-import xyz.upperlevel.graphicengine.api.window.event.key.Key;
+import xyz.upperlevel.ulge.simple.SimpleGame;
+import xyz.upperlevel.ulge.simple.shapes.Circle;
+import xyz.upperlevel.ulge.util.Colors;
+import xyz.upperlevel.ulge.window.event.key.Key;
 
 public class SimpleGameTest extends SimpleGame {
     public static final double VEL = 100;

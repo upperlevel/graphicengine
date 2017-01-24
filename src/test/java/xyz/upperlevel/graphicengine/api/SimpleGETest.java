@@ -1,13 +1,13 @@
 package xyz.upperlevel.graphicengine.api;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.graphicengine.api.opengl.texture.Texture;
-import xyz.upperlevel.graphicengine.api.opengl.texture.loader.UniversalTextureLoader;
-import xyz.upperlevel.graphicengine.api.simple.SimpleGraphicEngine;
-import xyz.upperlevel.graphicengine.api.simple.shapes.Circle;
-import xyz.upperlevel.graphicengine.api.window.GLFW;
-import xyz.upperlevel.graphicengine.api.window.Window;
-import xyz.upperlevel.graphicengine.api.window.event.key.Key;
+import xyz.upperlevel.ulge.opengl.texture.Texture;
+import xyz.upperlevel.ulge.opengl.texture.loader.UniversalTextureLoader;
+import xyz.upperlevel.ulge.simple.SimpleGraphicEngine;
+import xyz.upperlevel.ulge.simple.shapes.Circle;
+import xyz.upperlevel.ulge.window.GLFW;
+import xyz.upperlevel.ulge.window.Window;
+import xyz.upperlevel.ulge.window.event.key.Key;
 
 import java.io.File;
 

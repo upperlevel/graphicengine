@@ -6,26 +6,27 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import xyz.upperlevel.graphicengine.api.opengl.model.Model;
-import xyz.upperlevel.graphicengine.api.opengl.model.VertexDefiner;
-import xyz.upperlevel.graphicengine.api.opengl.model.Vertices;
+import xyz.upperlevel.ulge.opengl.model.Model;
+import xyz.upperlevel.ulge.opengl.model.VertexDefiner;
+import xyz.upperlevel.ulge.opengl.model.Vertices;
 import xyz.upperlevel.graphicengine.api.opengl.shader.*;
-import xyz.upperlevel.graphicengine.api.opengl.texture.Texture;
-import xyz.upperlevel.graphicengine.api.opengl.texture.loader.TextureContent;
-import xyz.upperlevel.graphicengine.api.opengl.texture.loader.TextureLoaderManager;
-import xyz.upperlevel.graphicengine.api.util.math.Camera;
-import xyz.upperlevel.graphicengine.api.window.GLFW;
-import xyz.upperlevel.graphicengine.api.window.Window;
-import xyz.upperlevel.graphicengine.api.window.event.CursorMoveEvent;
-import xyz.upperlevel.graphicengine.api.window.event.MouseScrollEvent;
-import xyz.upperlevel.graphicengine.api.window.event.WindowEventHandler;
+import xyz.upperlevel.ulge.opengl.shader.*;
+import xyz.upperlevel.ulge.opengl.texture.Texture;
+import xyz.upperlevel.ulge.opengl.texture.loader.TextureContent;
+import xyz.upperlevel.ulge.opengl.texture.loader.TextureLoaderManager;
+import xyz.upperlevel.ulge.util.math.Camera;
+import xyz.upperlevel.ulge.window.GLFW;
+import xyz.upperlevel.ulge.window.Window;
+import xyz.upperlevel.ulge.window.event.CursorMoveEvent;
+import xyz.upperlevel.ulge.window.event.MouseScrollEvent;
+import xyz.upperlevel.ulge.window.event.WindowEventHandler;
 
 import java.io.*;
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static xyz.upperlevel.graphicengine.api.opengl.NumberType.DOUBLE;
+import static xyz.upperlevel.ulge.opengl.NumberType.DOUBLE;
 
 public class GraphicEngineTest1 {
 

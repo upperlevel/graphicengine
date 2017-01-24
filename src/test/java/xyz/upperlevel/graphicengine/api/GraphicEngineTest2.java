@@ -1,16 +1,16 @@
 package xyz.upperlevel.graphicengine.api;
 
 import org.lwjgl.opengl.GL11;
-import xyz.upperlevel.graphicengine.api.opengl.model.Model;
-import xyz.upperlevel.graphicengine.api.opengl.model.Vertices;
-import xyz.upperlevel.graphicengine.api.opengl.shader.CompileStatus;
-import xyz.upperlevel.graphicengine.api.opengl.shader.Program;
-import xyz.upperlevel.graphicengine.api.opengl.shader.Shader;
-import xyz.upperlevel.graphicengine.api.opengl.shader.ShaderType;
-import xyz.upperlevel.graphicengine.api.util.math.Camera;
-import xyz.upperlevel.graphicengine.api.window.GLFW;
-import xyz.upperlevel.graphicengine.api.window.Window;
-import xyz.upperlevel.graphicengine.api.window.event.key.Key;
+import xyz.upperlevel.ulge.opengl.model.Model;
+import xyz.upperlevel.ulge.opengl.model.Vertices;
+import xyz.upperlevel.ulge.opengl.shader.CompileStatus;
+import xyz.upperlevel.ulge.opengl.shader.Program;
+import xyz.upperlevel.ulge.opengl.shader.Shader;
+import xyz.upperlevel.ulge.opengl.shader.ShaderType;
+import xyz.upperlevel.ulge.util.math.Camera;
+import xyz.upperlevel.ulge.window.GLFW;
+import xyz.upperlevel.ulge.window.Window;
+import xyz.upperlevel.ulge.window.event.key.Key;
 
 import java.io.File;
 import java.io.IOException;
