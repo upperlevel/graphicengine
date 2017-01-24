@@ -80,6 +80,6 @@ public class Uniformer {
     }
 
     public boolean setUniform(String uniform, Color color) {
-        return setUniform(uniform, color.r/255f, color.g/255f, color.b/255f, color.a/255f);
+        return setUniform(uniform, color.r, color.g, color.b, color.a);
     }
 }
