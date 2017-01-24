@@ -1,10 +1,11 @@
 package xyz.upperlevel.ulge.opengl;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.lwjgl.opengl.GL11;
 
 @RequiredArgsConstructor
-public enum NumberType {
+public enum DataType {
 
     BYTE(GL11.GL_BYTE, Byte.BYTES),
     UNSIGNED_BYTE(GL11.GL_UNSIGNED_BYTE, Byte.BYTES),
@@ -18,7 +19,9 @@ public enum NumberType {
     FLOAT(GL11.GL_FLOAT, Float.BYTES),
     DOUBLE(GL11.GL_DOUBLE, Double.BYTES);
 
+    @Getter
     public final int id;
 
+    @Getter
     public final int bytes;
 }

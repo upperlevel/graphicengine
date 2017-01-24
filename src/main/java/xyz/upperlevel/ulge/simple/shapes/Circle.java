@@ -2,6 +2,7 @@ package xyz.upperlevel.ulge.simple.shapes;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
+import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.BufferUtil;
 import xyz.upperlevel.ulge.opengl.buffer.VAO;
 import xyz.upperlevel.ulge.opengl.buffer.VBO;
@@ -11,7 +12,6 @@ import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.opengl.texture.Texture;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
 import xyz.upperlevel.ulge.util.Color;
-import xyz.upperlevel.ulge.opengl.NumberType;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
@@ -48,7 +48,7 @@ public class Circle extends SimpleRenderable{
             VBO vbo = new VBO();
             vbo.bind();
             vbo.loadData(genVertices(segments), VBOUsage.STATIC_DRAW);
-            VertexDefiner.builder(NumberType.FLOAT)
+            VertexDefiner.builder(DataType.FLOAT)
                     .attrib(0, 2)
                     .attrib(1, 2)
 

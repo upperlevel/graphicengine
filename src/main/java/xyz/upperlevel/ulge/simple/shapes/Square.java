@@ -3,13 +3,13 @@ package xyz.upperlevel.ulge.simple.shapes;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import xyz.upperlevel.graphicengine.api.opengl.buffer.*;
+import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.model.VertexDefiner;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.opengl.texture.Texture;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
 import xyz.upperlevel.ulge.util.Color;
-import xyz.upperlevel.ulge.opengl.NumberType;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -41,7 +41,7 @@ public class Square extends SimpleRenderable {
             VBO vbo = new VBO();
             vbo.bind();
             vbo.loadData(vertices, VBOUsage.STATIC_DRAW);
-            VertexDefiner.builder(NumberType.FLOAT)
+            VertexDefiner.builder(DataType.FLOAT)
                     .attrib(0, 2)
                     .attrib(1, 2)
 

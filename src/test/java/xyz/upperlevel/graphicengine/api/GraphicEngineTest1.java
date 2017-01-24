@@ -26,7 +26,7 @@ import java.nio.FloatBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static xyz.upperlevel.ulge.opengl.NumberType.DOUBLE;
+import static xyz.upperlevel.ulge.opengl.DataType.DOUBLE;
 
 public class GraphicEngineTest1 {
 

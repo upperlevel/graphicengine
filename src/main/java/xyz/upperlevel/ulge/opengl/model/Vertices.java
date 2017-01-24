@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.lwjgl.BufferUtils;
-import xyz.upperlevel.ulge.opengl.NumberType;
+import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.util.math.DoubleVec;
 import xyz.upperlevel.ulge.util.math.Vec;
 
@@ -70,7 +70,7 @@ public class Vertices implements Vec {
         return new VertexDefiner.Builder();
     }
 
-    public VertexDefiner.Builder definer(NumberType def) {
+    public VertexDefiner.Builder definer(DataType def) {
         return new VertexDefiner.Builder(def);
     }
 }

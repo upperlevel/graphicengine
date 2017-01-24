@@ -2,7 +2,7 @@ package xyz.upperlevel.ulge.opengl.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import xyz.upperlevel.ulge.opengl.NumberType;
+import xyz.upperlevel.ulge.opengl.DataType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -60,13 +60,13 @@ public class VertexDefiner {
     }
 
     public static class Builder {
-        public static final NumberType DEF_TYPE = NumberType.DOUBLE;
+        public static final DataType DEF_TYPE = DataType.DOUBLE;
 
-        @Getter private final NumberType defType;
+        @Getter private final DataType defType;
 
         @Getter public final List<Attrib> vertex = new LinkedList<>();
 
-        public Builder(NumberType type) {
+        public Builder(DataType type) {
             defType = type;
         }
 
@@ -100,7 +100,7 @@ public class VertexDefiner {
          * @param count  defines how many data for this attrib.
          * @param type defines what is the type of the attribute
          **/
-        public Builder attrib(int index, int count, NumberType type) {
+        public Builder attrib(int index, int count, DataType type) {
             attrib(index, count, type.id, count*type.bytes);
             return this;
         }
@@ -115,11 +115,11 @@ public class VertexDefiner {
     }
 
     /**
-     * Create a new builder that has the NumberType passed as argument as the default one
-     * @param type the NumberType used as default
+     * Create a new builder that has the DataType passed as argument as the default one
+     * @param type the DataType used as default
      * @return a new builder with type as the default type
      */
-    public static Builder builder(NumberType type) {
+    public static Builder builder(DataType type) {
         return new Builder(type);
     }
 }
