@@ -1,7 +1,6 @@
 package xyz.upperlevel.ulge.opengl.buffer;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import xyz.upperlevel.ulge.opengl.DataType;
 
 import java.util.LinkedList;
@@ -12,45 +11,10 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 public class VertexLinker {
 
-    private final Attrib[] vertex;
-    private final int size;
-
-    public VertexLinker(Builder builder) {
-        vertex = builder.vertex.toArray(new Attrib[builder.vertex.size()]);
-        {//Size
-            int sz = 0;
-            for (Attrib attrib : vertex)
-                sz += attrib.bytes;
-            size = sz;
-        }
-    }
-
-    /**
-     * @return The data size expressed in bytes.
-     */
-    public int dataSize() {
-        return size;
-    }
-
-    public void setup() {
-        int pointer = 0;
-        for (Attrib attrib : vertex) {
-            glEnableVertexAttribArray(attrib.index);
-            glVertexAttribPointer(
-                    attrib.index,
-                    attrib.count,
-                    attrib.type,
-                    false,
-                    size,
-                    pointer);
-            pointer += attrib.bytes;
-        }
-    }
-
-    @AllArgsConstructor
+    @RequiredArgsConstructor
     private static class Attrib {
-        public final int index, count;
-        public final int type, bytes;
+
+        public final int index, count, type, bytes;
 
         @Override
         public String toString() {
@@ -58,70 +22,52 @@ public class VertexLinker {
         }
     }
 
-    public static class Builder {
-        public static final DataType DEF_TYPE = DataType.DOUBLE;
+    private final List<Attrib> vertex = new LinkedList<>();
+    private DataType defDataType = DataType.FLOAT;
 
-        @Getter
-        private final DataType defType;
+    public VertexLinker() {
+    }
 
-        @Getter
-        public final List<Attrib> vertex = new LinkedList<>();
+    public VertexLinker(DataType dataType) {
+        defDataType = dataType;
+    }
 
-        public Builder(DataType type) {
-            defType = type;
-        }
+    public int getByteSize() {
+        int sz = 0;
+        for (Attrib attr : vertex)
+            sz += attr.bytes;
+        return sz;
+    }
 
-        public Builder() {
-            this(DEF_TYPE);
-        }
-
-        /**
-         * @param index        defines glsl attribute index.
-         * @param count        defines how many data for this attrib.
-         * @param openglTypeId the type id as OpenGL constant (like org.lwjgl.opengl.GL11.GL_FLOAT)
-         **/
-        public Builder attrib(int index, int count, int openglTypeId, int bytes) {
-            Attrib attrib = new Attrib(index, count, openglTypeId, bytes);
-            System.out.println(attrib);
-            vertex.add(attrib);
-            return this;
-        }
-
-        /**
-         * @param index defines glsl attribute index.
-         * @param count defines how many data for this attrib.
-         **/
-        public Builder attrib(int index, int count) {
-            attrib(index, count, defType.id, count * defType.bytes);
-            return this;
-        }
-
-        /**
-         * @param index defines glsl attribute index.
-         * @param count defines how many data for this attrib.
-         * @param type  defines what is the type of the attribute
-         **/
-        public Builder attrib(int index, int count, DataType type) {
-            attrib(index, count, type.id, count * type.bytes);
-            return this;
-        }
-
-        public VertexLinker build() {
-            return new VertexLinker(this);
+    public void setup() {
+        int ptr = 0;
+        for (Attrib attr : vertex) {
+            glEnableVertexAttribArray(attr.index);
+            glVertexAttribPointer(
+                    attr.index,
+                    attr.count,
+                    attr.type,
+                    false,
+                    getByteSize(),
+                    ptr);
+            ptr += attr.bytes;
         }
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public VertexLinker attrib(int index, int count, int dataTypeId, int bytes) {
+        Attrib attr = new Attrib(index, count, dataTypeId, bytes);
+        //System.out.println(attr);
+        vertex.add(attr);
+        return this;
     }
 
-    /**
-     * Create a new builder that has the DataType passed as argument as the default one
-     *
-     * @param type the DataType used as default
-     * @return a new builder with type as the default type
-     */
-    public static Builder builder(DataType type) {
-        return new Builder(type);
+    public VertexLinker attrib(int index, int count, DataType type) {
+        attrib(index, count, type.id, count * type.bytes);
+        return this;
+    }
+
+    public VertexLinker attrib(int index, int count) {
+        attrib(index, count, defDataType.id, defDataType.bytes);
+        return this;
     }
 }

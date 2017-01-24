@@ -4,7 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
-import xyz.upperlevel.ulge.opengl.buffer.VertexLinker;
+import xyz.upperlevel.ulge.opengl.buffer._VertexLinker;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.opengl.texture.Texture;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
@@ -40,7 +40,7 @@ public class Square extends SimpleRenderable {
             VBO vbo = new VBO();
             vbo.bind();
             vbo.loadData(vertices, VBOUsage.STATIC_DRAW);
-            VertexLinker.builder(DataType.FLOAT)
+            _VertexLinker.builder(DataType.FLOAT)
                     .attrib(0, 2)
                     .attrib(1, 2)
 

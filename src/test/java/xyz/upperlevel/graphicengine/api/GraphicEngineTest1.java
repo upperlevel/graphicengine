@@ -6,11 +6,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import xyz.upperlevel.ulge.opengl.buffer.DrawMode;
-import xyz.upperlevel.ulge.opengl.buffer.Drawer;
-import xyz.upperlevel.ulge.opengl.buffer.VBO;
-import xyz.upperlevel.ulge.opengl.buffer.VBOUsage;
-import xyz.upperlevel.ulge.opengl.buffer.VertexLinker;
+import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture;
 import xyz.upperlevel.ulge.opengl.texture.loader.TextureContent;
@@ -340,11 +336,10 @@ public class GraphicEngineTest1 {
         VBO vbo = new VBO();
         vbo.loadData(vert, VBOUsage.STATIC_DRAW);
         vbo.bind();
-        VertexLinker.builder(FLOAT)
+        new VertexLinker(FLOAT)
                 .attrib(uniformer.getAttribLocation("position"), 3)
                 .attrib(uniformer.getAttribLocation("normal"), 3)
                 .attrib(uniformer.getAttribLocation("texCoords"), 2)
-                .build()
                 .setup();
 
         uniformer.setUniform("pointLightsCount", 1);
