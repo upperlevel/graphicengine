@@ -10,7 +10,7 @@ import xyz.upperlevel.ulge.opengl.buffer.DrawMode;
 import xyz.upperlevel.ulge.opengl.buffer.Drawer;
 import xyz.upperlevel.ulge.opengl.buffer.VBO;
 import xyz.upperlevel.ulge.opengl.buffer.VBOUsage;
-import xyz.upperlevel.ulge.opengl.model.VertexLinker;
+import xyz.upperlevel.ulge.opengl.buffer.VertexLinker;
 import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture;
 import xyz.upperlevel.ulge.opengl.texture.loader.TextureContent;
