@@ -3,7 +3,6 @@ package xyz.upperlevel.ulge.simple;
 import lombok.Getter;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
-import xyz.upperlevel.graphicengine.api.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
 
 import java.util.Arrays;

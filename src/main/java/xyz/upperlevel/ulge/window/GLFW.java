@@ -3,7 +3,6 @@ package xyz.upperlevel.ulge.window;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.lwjgl.glfw.GLFWVidMode;
-import xyz.upperlevel.graphicengine.api.window.event.*;
 import xyz.upperlevel.ulge.window.event.*;
 
 import java.lang.reflect.Constructor;
