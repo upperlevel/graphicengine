@@ -1,5 +1,7 @@
 package xyz.upperlevel.ulge.opengl.shader;
 
+import xyz.upperlevel.ulge.opengl.shader.loader.SimpleShaderSourceLoader;
+
 import java.io.*;
 
 public final class ShaderUtil {

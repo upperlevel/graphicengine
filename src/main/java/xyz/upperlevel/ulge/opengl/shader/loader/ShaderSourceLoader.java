@@ -1,4 +1,4 @@
-package xyz.upperlevel.ulge.opengl.shader;
+package xyz.upperlevel.ulge.opengl.shader.loader;
 
 import java.io.*;
 

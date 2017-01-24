@@ -1,6 +1,7 @@
 package xyz.upperlevel.ulge.opengl.shader;
 
 import lombok.Getter;
+import xyz.upperlevel.ulge.opengl.shader.loader.SimpleShaderSourceLoader;
 
 import java.io.File;
 import java.io.IOException;
