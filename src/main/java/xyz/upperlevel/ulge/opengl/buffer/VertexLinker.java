@@ -67,7 +67,7 @@ public class VertexLinker {
     }
 
     public VertexLinker attrib(int index, int count) {
-        attrib(index, count, defDataType.id, defDataType.bytes);
+        attrib(index, count, defDataType.id, count * defDataType.bytes);
         return this;
     }
 }
