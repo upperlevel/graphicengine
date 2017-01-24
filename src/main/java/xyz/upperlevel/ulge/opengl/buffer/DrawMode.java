@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.lwjgl.opengl.GL11;
 
 @RequiredArgsConstructor
-public enum DrawerMode {
+public enum DrawMode {
 
     POINTS(GL11.GL_POINTS),
 
