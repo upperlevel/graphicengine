@@ -13,7 +13,7 @@ import xyz.upperlevel.ulge.text.SuperText;
 import xyz.upperlevel.ulge.text.TextPiece;
 import xyz.upperlevel.ulge.text.TextRenderer;
 
-public class BitmapTextRenderer implements TextRenderer {
+public class BitmapTextRenderer extends TextRenderer {
 
     private static final float[] VERTICES = {
             0.0f, 0.0f,
@@ -124,36 +124,56 @@ public class BitmapTextRenderer implements TextRenderer {
     }
 
     @Override
-    public Vector2f getSize(char[] str) {
+    public Vector2f getSize(CharSequence str, float scale) {
         Vector2f size = new Vector2f(0.0f, 0.0f);
         float lineWidth = 0.0f;
-        float lineHeight = 0.0f;
-        for(char c : str) {
+        final int length = str.length();
+        for(int i = 0; i < length; i++) {
+            char c = str.charAt(i);
             if(c == '\n') {
                 if(size.x < lineWidth)
                     size.x = lineWidth;
 
-                size.y += lineHeight;
-                lineHeight = 0;
+                size.y += scale;
                 lineWidth = 0;
             } else {
                 CharData ch = chars.get(c);
                 if(ch == null)
                     continue;
-                lineWidth += ch.w;
-                if(ch.h > lineHeight)
-                    lineHeight = ch.h;
+                lineWidth += ch.ratio * scale;
             }
         }
         return size;
     }
 
     @Override
-    public void drawText2D(SuperText text, Vector2f pos, float distance, float size) {
+    public Vector2f getSize(SuperText text, float scale) {
+        Vector2f size = new Vector2f(0.0f, scale);
+        float lineWidth = 0.0f;
+        for(TextPiece piece : text.asList()) {
+            final int length = piece.text.length();
+            for (int i = 0; i < length; i++) {
+                char c = piece.text.charAt(i);
+                if (c == '\n') {
+                    if (size.x < lineWidth)
+                        size.x = lineWidth;
+                    size.y += scale;
+                    lineWidth = 0;
+                } else {
+                    CharData ch = chars.get(c);
+                    if (ch == null)
+                        continue;
+                    lineWidth += ch.ratio * scale;
+                }
+            }
+        }
+
+        return size;
+    }
+
+    public void drawText2D0(SuperText text, Vector2f pos, float distance, float scale) {
         program.bind();
         texture.bind();
-
-        float maxLineH = 0;
 
         final float initX = pos.x;
 
@@ -169,8 +189,7 @@ public class BitmapTextRenderer implements TextRenderer {
                 char c = piece.text.charAt(i);
 
                 if(c == '\n') {
-                    pos.y -= maxLineH;
-                    maxLineH = 0;
+                    pos.y -= scale;
                     pos.x = initX;
                     continue;
                 }
@@ -181,12 +200,9 @@ public class BitmapTextRenderer implements TextRenderer {
                 if(data == null)
                     continue;
 
-                if(data.rh > maxLineH)
-                    maxLineH = data.rh;
+                final float widthScale = scale * data.ratio;
 
-                final float widthScale = size * data.ratio;
-
-                projectionLoc.set(new Matrix4f().translate(pos.x, pos.y, distance).scale(widthScale, size, 1.0f));
+                projectionLoc.set(new Matrix4f().translate(pos.x, pos.y, distance).scale(widthScale, scale, 1.0f));
 
                 pos.x += widthScale;
 

@@ -147,7 +147,7 @@ public final class FontUtil {
     }
 
     public static BitmapTextRenderer textRenderer(Font font) {
-        return textRenderer(font, true, new StandardCharDataManager(), DEF_TEX_PARAMS);
+        return textRenderer(font, false, new StandardCharDataManager(), DEF_TEX_PARAMS);
     }
 
     public static BitmapTextRenderer textRenderer(Font font, boolean antialiasing) {

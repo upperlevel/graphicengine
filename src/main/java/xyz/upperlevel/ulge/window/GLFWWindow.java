@@ -2,9 +2,9 @@ package xyz.upperlevel.ulge.window;
 
 import lombok.Getter;
 import lombok.NonNull;
+import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWVidMode;
-import xyz.upperlevel.ulge.util.math.Vec2;
 import xyz.upperlevel.ulge.window.event.key.GLFWKey;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
@@ -84,10 +84,10 @@ public class GLFWWindow extends GLWindow {
     }
 
     @Override
-    public Vec2 getPosition() {
+    public Vector2f getPosition() {
         IntBuffer x = BufferUtils.createIntBuffer(1), y = BufferUtils.createIntBuffer(1);
         glfwGetWindowPos(id, x, y);
-        return new Vec2(x.get(), y.get());
+        return new Vector2f(x.get(), y.get());
     }
 
     @Override
@@ -101,10 +101,10 @@ public class GLFWWindow extends GLWindow {
     }
 
     @Override
-    public Vec2 getCursorPosition() {
+    public Vector2f getCursorPosition() {
         DoubleBuffer x = BufferUtils.createDoubleBuffer(1), y = BufferUtils.createDoubleBuffer(1);
         glfwGetCursorPos(id, x, y);
-        return new Vec2(x.get(), y.get());
+        return new Vector2f((float)x.get()/getWidth(), (float)y.get()/getHeight());
     }
 
     @Override

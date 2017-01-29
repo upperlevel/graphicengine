@@ -1,5 +1,6 @@
 package xyz.upperlevel.ulge.simple;
 
+import org.joml.Vector2f;
 import xyz.upperlevel.ulge.window.GLFW;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.KeyChangeEvent;
@@ -172,6 +173,10 @@ public class SimpleGame {
 
     public boolean key(Key key) {
         return window.getKey(key);
+    }
+
+    public Vector2f cursorPos() {
+        return window.getCursorPosition();
     }
 
 

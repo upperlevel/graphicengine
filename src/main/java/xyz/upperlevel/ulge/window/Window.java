@@ -1,6 +1,6 @@
 package xyz.upperlevel.ulge.window;
 
-import xyz.upperlevel.ulge.util.math.Vec2;
+import org.joml.Vector2f;
 import xyz.upperlevel.ulge.window.event.WindowEventHandler;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
@@ -24,13 +24,13 @@ public interface Window {
 
     void setSize(int width, int height);
 
-    Vec2 getPosition();
+    Vector2f getPosition();
 
     void setPosition(int x, int y);
 
     boolean getKey(Key key);
 
-    Vec2 getCursorPosition();
+    Vector2f getCursorPosition();
 
     void setCursorPosition(double x, double y);
 
