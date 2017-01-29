@@ -3,7 +3,11 @@ package xyz.upperlevel.ulge.simple.shapes;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.opengl.DataType;
-import xyz.upperlevel.ulge.opengl.buffer.*;
+import xyz.upperlevel.ulge.opengl.buffer.VAO;
+import xyz.upperlevel.ulge.opengl.buffer.VBO;
+import xyz.upperlevel.ulge.opengl.buffer.VBOUsage;
+import xyz.upperlevel.ulge.opengl.buffer.VertexLinker;
+import xyz.upperlevel.ulge.opengl.shader.Uniform;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.opengl.texture.Texture;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
@@ -20,6 +24,8 @@ public class Circle extends SimpleRenderable{
     public Vector2f size;
 
     public final int segments;
+
+    protected Uniform uTransorm;
 
     public Circle(Vector2f pos, Vector2f size, Color color, int segments) {
         super(color);
@@ -62,11 +68,16 @@ public class Circle extends SimpleRenderable{
 
 
     @Override
+    public void init(Uniformer uniformer) {
+        super.init(uniformer);
+        uTransorm = uniformer.get("transform");
+    }
+
+    @Override
     public void draw(Uniformer uniformer) {
         super.draw(uniformer);
 
-        if(!uniformer.setUniformMatrix4("transform", getTransform().get(BufferUtil.createBuffer(new float[4*4]))))
-            throw new IllegalStateException();
+        uTransorm.set(getTransform());
 
         vao.bind();
         glDrawArrays(GL_TRIANGLE_FAN, 0, segments + 2);

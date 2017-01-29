@@ -44,8 +44,6 @@ public class BitmapTextRenderer implements TextRenderer {
     protected Uniform textureLoc, colorLoc, projectionLoc;
     protected Uniform charXLoc, charYLoc, charWidthLoc, charHeightLoc;
 
-    public boolean debug = false;
-
     static {
         vao = new VAO();
         vao.bind();
@@ -152,8 +150,12 @@ public class BitmapTextRenderer implements TextRenderer {
 
     @Override
     public void drawText2D(SuperText text, Vector2f pos, float distance, float size) {
-        program.bind().setUniform("draw", debug);
+        program.bind();
         texture.bind();
+
+        float maxLineH = 0;
+
+        final float initX = pos.x;
 
         for(TextPiece piece : text.asList()) {
             if(piece.bold) throw new NotImplementedException();
@@ -165,14 +167,28 @@ public class BitmapTextRenderer implements TextRenderer {
             final int length = piece.text.length();
             for(int i = 0; i < length; i++) {
                 char c = piece.text.charAt(i);
+
+                if(c == '\n') {
+                    pos.y -= maxLineH;
+                    maxLineH = 0;
+                    pos.x = initX;
+                    continue;
+                }
+
+
                 CharData data = get(c);
 
                 if(data == null)
                     continue;
 
-                projectionLoc.set(new Matrix4f().translate(pos.x, pos.y, distance).scale(size * data.ratio, size, 1.0f));
+                if(data.rh > maxLineH)
+                    maxLineH = data.rh;
 
-                pos.x += size * data.ratio;
+                final float widthScale = size * data.ratio;
+
+                projectionLoc.set(new Matrix4f().translate(pos.x, pos.y, distance).scale(widthScale, size, 1.0f));
+
+                pos.x += widthScale;
 
                 uniform2d(data);
 
@@ -184,7 +200,6 @@ public class BitmapTextRenderer implements TextRenderer {
     }
 
     protected void uniform2d(CharData data) {
-        //System.out.println("x:" + (data.x/(float)width) + ", y:" + (data.y/(float)height) + ", w:" + (data.w/(float)width) + ", h:" + (data.h/(float)height));
         charXLoc.set(data.rx);
         charYLoc.set(data.ry);
         charWidthLoc.set(data.rw);

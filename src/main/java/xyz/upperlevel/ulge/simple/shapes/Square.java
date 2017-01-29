@@ -4,6 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
+import xyz.upperlevel.ulge.opengl.shader.Uniform;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.opengl.texture.Texture;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
@@ -53,6 +54,8 @@ public class Square extends SimpleRenderable {
 
     public float rotation = 0f;
 
+    protected Uniform uTransform;
+
     public Square(Vector2f pos, Vector2f size, Color color) {
         super(color);
         this.pos = pos;
@@ -75,13 +78,17 @@ public class Square extends SimpleRenderable {
         return matrix;
     }
 
+    @Override
+    public void init(Uniformer uniformer) {
+        uTransform = uniformer.get("transform");
+    }
+
 
     @Override
     public void draw(Uniformer uniformer) {
         super.draw(uniformer);
 
-        if(!uniformer.setUniformMatrix4("transform", getTransform().get(BufferUtil.createBuffer(new float[4*4]))))
-            throw new IllegalStateException();
+        uTransform.set(getTransform());
 
         vao.bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

@@ -5,15 +5,14 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import xyz.upperlevel.ulge.opengl.shader.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class SimpleGraphicEngine {
     private final Program program = createProgram();
 
     private Set<Renderable> objects = new HashSet<>();
+
+    private Queue<Renderable> toInit = new ArrayDeque<>();
 
     @Getter
     private float width, height;
@@ -51,14 +50,16 @@ public class SimpleGraphicEngine {
 
     public void register(Renderable renderable) {
         objects.add(renderable);
+        toInit.add(renderable);
     }
 
     public void register(Renderable... renderables) {
-        objects.addAll(Arrays.asList(renderables));
+        register(Arrays.asList(renderables));
     }
 
     public void register(List<Renderable> renderables) {
         objects.addAll(renderables);
+        toInit.addAll(renderables);
     }
 
     public void remove(Renderable renderable) {
@@ -91,6 +92,12 @@ public class SimpleGraphicEngine {
 
         final Uniformer uniformer = program.bind();
 
+        if(!toInit.isEmpty()) {
+            System.out.println("INIT!");
+            toInit.forEach(i -> i.init(uniformer));
+            toInit.clear();
+        }
+
         if(projection == null) {
             projection = new Matrix4f().ortho2D(0, width, 0, height);
             projection.get(buffer);
@@ -99,5 +106,6 @@ public class SimpleGraphicEngine {
         uniformer.setUniformMatrix4("projection", buffer);
 
         objects.forEach(r -> r.draw(uniformer));
+        program.unbind();
     }
 }

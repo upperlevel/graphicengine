@@ -1,5 +1,6 @@
 package xyz.upperlevel.ulge.simple;
 
+import xyz.upperlevel.ulge.opengl.shader.Uniform;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.opengl.texture.Texture;
 import xyz.upperlevel.ulge.util.Color;
@@ -8,6 +9,8 @@ import xyz.upperlevel.ulge.util.Colors;
 public abstract class SimpleRenderable implements Renderable {
     protected final Texture tex;
     protected final Color color;
+
+    protected Uniform uColor;
 
     protected SimpleRenderable(Color color) {
         this.tex = Texture.NULL;
@@ -20,10 +23,13 @@ public abstract class SimpleRenderable implements Renderable {
     }
 
     @Override
+    public void init(Uniformer uniformer) {
+        uColor = uniformer.get("col");
+    }
+
+    @Override
     public void draw(Uniformer uniformer) {
         tex.bind();
-
-        if(!uniformer.setUniform("col", color))
-            throw new IllegalStateException("Cannot set color");
+        uColor.set(color);
     }
 }

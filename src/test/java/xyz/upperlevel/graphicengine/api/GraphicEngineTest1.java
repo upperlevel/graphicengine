@@ -2,7 +2,6 @@ package xyz.upperlevel.graphicengine.api;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -19,7 +18,6 @@ import xyz.upperlevel.ulge.window.event.MouseScrollEvent;
 import xyz.upperlevel.ulge.window.event.WindowEventHandler;
 
 import java.io.*;
-import java.nio.FloatBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -369,6 +367,11 @@ public class GraphicEngineTest1 {
         long last_t = 0;
         long delta_time = 0;
 
+        Uniform uViewPos = uniformer.get("viewPosition");
+        Uniform uCamera = uniformer.get("camera");
+        Uniform uModel = uniformer.get("model");
+        Uniform uMatShininess = uniformer.get("material.shininess");
+
         while (!win.isClosed()) {
             fps_counter++;
 
@@ -383,21 +386,15 @@ public class GraphicEngineTest1 {
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            FloatBuffer bfr;
-            bfr = BufferUtils.createFloatBuffer(16);
-            camera.getMatrix().get(bfr);
-            uniformer.setUniformMatrix4("camera", bfr);
+            uCamera.set(camera.getMatrix());
+            uViewPos.set(camera.getPosition());
 
-            Vector3f position = camera.getPosition();
-            uniformer.setUniform("viewPosition", position.x, position.y, position.z);
-
-            bfr = BufferUtils.createFloatBuffer(16);
             Matrix4f transformation = new Matrix4f();
             transformation.rotate((float) Math.toRadians(rot), new Vector3f(0, 1, 0));
-            transformation.get(bfr);
-            uniformer.setUniformMatrix4("model", bfr);
 
-            uniformer.setUniform("material.shininess", 32f);
+            uModel.set(transformation);
+
+            uMatShininess.set(32f);
 
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
             diffTex.bind();
