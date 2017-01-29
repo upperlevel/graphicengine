@@ -34,7 +34,7 @@ public class SimpleGraphicEngine {
     }
 
     protected Shader createFragmentShader() {
-        Shader shader =  new Shader(ShaderType.FRAGMENT).linkResource("simple/FragmentShader.glsl");
+        Shader shader =  new Shader(ShaderType.FRAGMENT).linkResource("simple/fragment_shader.glsl");
         CompileStatus status = shader.compileSource();
         if(!status.isOk())
             throw new IllegalStateException("Cannot compile default fragment shader: " + status.getLog());
@@ -42,7 +42,7 @@ public class SimpleGraphicEngine {
     }
 
     protected Shader createVertexShader() {
-        Shader shader =  new Shader(ShaderType.VERTEX).linkResource("simple/VertexShader.glsl");
+        Shader shader =  new Shader(ShaderType.VERTEX).linkResource("simple/vertex_shader.glsl");
         CompileStatus status = shader.compileSource();
         if(!status.isOk())
             throw new IllegalStateException("Cannot compile default vertex shader:\n" + status.getLog());
@@ -96,7 +96,7 @@ public class SimpleGraphicEngine {
             projection.get(buffer);
         }
 
-        uniformer.setUniformMatrix("projection", buffer);
+        uniformer.setUniformMatrix4("projection", buffer);
 
         objects.forEach(r -> r.draw(uniformer));
     }

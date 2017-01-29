@@ -46,10 +46,18 @@ public class SimpleGame {
 
         while (!window.isClosed()) {
             update(updateTime());
+            preDraw();
             engine.draw();
+            postDraw();
             window.update();
         }
         destroy();
+    }
+
+    protected void preDraw() {
+    }
+
+    protected void postDraw() {
     }
 
 

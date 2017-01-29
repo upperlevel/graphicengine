@@ -30,7 +30,11 @@ public class Shader {
 
     @Deprecated
     public Shader linkResource(String path) { // not sure if working with implemented game resources
-        InputStream stream = Program.class.getClassLoader().getResourceAsStream(path);
+        return linkResource(path, Shader.class);
+    }
+
+    public Shader linkResource(String path, Class<?> clazz) {
+        InputStream stream = clazz.getClassLoader().getResourceAsStream(path);
         if(stream == null)
             throw new IllegalArgumentException("Cannot find " + path);
         try (Scanner s = new Scanner(stream)) {

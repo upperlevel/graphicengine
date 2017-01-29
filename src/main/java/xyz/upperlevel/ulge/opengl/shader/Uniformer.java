@@ -12,6 +12,7 @@ import static org.lwjgl.opengl.GL20.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class Uniformer {
+    public static final float[] buffer = new float[4*4];
 
     @Getter @NonNull public final Program program;
 
@@ -25,6 +26,11 @@ public class Uniformer {
 
     public boolean hasUniform(String uniform) {
         return getUniLocation(uniform) >= 0;
+    }
+
+    public Uniform get(String uniform) {
+        final int loc = getUniLocation(uniform);
+        return loc == -1 ? null : new Uniform(program, getUniLocation(uniform));
     }
 
     private boolean testUniform(String uni, Runnable act) {
@@ -45,6 +51,10 @@ public class Uniformer {
 
     public boolean setUniform(String uniform, int value) {
         return testUniform(uniform, () -> glUniform1i(getUniLocation(uniform), value));
+    }
+
+    public boolean setUniform(String uniform, boolean value) {
+        return testUniform(uniform, () -> glUniform1i(getUniLocation(uniform), value ? 1 : 0));
     }
 
     public boolean setUniform(String uniform, float v1, float v2) {
@@ -71,12 +81,29 @@ public class Uniformer {
         return testUniform(uniform, () -> glUniform4i(getUniLocation(uniform), v1, v2, v3, v4));
     }
 
-    public boolean setUniformMatrix(String uniform, FloatBuffer buffer) {
+
+    public boolean setUniformMatrix4(String uniform, FloatBuffer buffer) {
         return testUniform(uniform, () -> glUniformMatrix4fv(getUniLocation(uniform), false, buffer));
     }
 
-    public boolean setUniformMatrix(String uniform, float[] buffer) {
+    public boolean setUniformMatrix4(String uniform, float[] buffer) {
         return testUniform(uniform, () -> glUniformMatrix4fv(getUniLocation(uniform), false, buffer));
+    }
+
+    public boolean setUniformMatrix3(String uniform, FloatBuffer buffer) {
+        return testUniform(uniform, () -> glUniformMatrix3fv(getUniLocation(uniform), false, buffer));
+    }
+
+    public boolean setUniformMatrix3(String uniform, float[] buffer) {
+        return testUniform(uniform, () -> glUniformMatrix3fv(getUniLocation(uniform), false, buffer));
+    }
+
+    public boolean setUniformMatrix2(String uniform, FloatBuffer buffer) {
+        return testUniform(uniform, () -> glUniformMatrix2fv(getUniLocation(uniform), false, buffer));
+    }
+
+    public boolean setUniformMatrix2(String uniform, float[] buffer) {
+        return testUniform(uniform, () -> glUniformMatrix2fv(getUniLocation(uniform), false, buffer));
     }
 
     public boolean setUniform(String uniform, Color color) {

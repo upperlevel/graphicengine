@@ -24,12 +24,12 @@ public class BaseOpenGLTest {
         win.show();
         win.setVSync(false);
 
-        // creates base program
+        // creates base standardProgram
         Program program = new Program();
         ClassLoader res = BaseOpenGLTest.class.getClassLoader();
         program.attach(ShaderUtil.load(ShaderType.VERTEX, res.getResourceAsStream("base/vertex_shader.glsl")));
         program.attach(ShaderUtil.load(ShaderType.FRAGMENT, res.getResourceAsStream("base/fragment_shader.glsl")));
-        // links program
+        // links standardProgram
         program.link();
         Uniformer uniformer = program.bind();
         GL30.glBindFragDataLocation(program.getId(), 0,"display");

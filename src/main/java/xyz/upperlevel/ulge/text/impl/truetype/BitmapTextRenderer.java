@@ -1,0 +1,207 @@
+package xyz.upperlevel.ulge.text.impl.truetype;
+
+import lombok.Getter;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import xyz.upperlevel.ulge.opengl.DataType;
+import xyz.upperlevel.ulge.opengl.buffer.*;
+import xyz.upperlevel.ulge.opengl.shader.*;
+import xyz.upperlevel.ulge.opengl.texture.Texture;
+import xyz.upperlevel.ulge.opengl.texture.loader.TextureContent;
+import xyz.upperlevel.ulge.text.SuperText;
+import xyz.upperlevel.ulge.text.TextPiece;
+import xyz.upperlevel.ulge.text.TextRenderer;
+
+public class BitmapTextRenderer implements TextRenderer {
+
+    private static final float[] VERTICES = {
+            0.0f, 0.0f,
+            0.0f, 1.0f,
+            1.0f, 0.0f,
+            1.0f, 1.0f
+    };
+
+    public static final int INDICES[] = {
+            0, 1, 2,
+            1, 2, 3,
+    };
+
+    public static final VAO vao;
+
+    public static Program standardProgram;
+
+
+
+    protected final Texture texture;
+    protected final Program program;
+
+    private final int width, height;
+
+    @Getter
+    protected CharDataManager chars;
+
+    protected Uniform textureLoc, colorLoc, projectionLoc;
+    protected Uniform charXLoc, charYLoc, charWidthLoc, charHeightLoc;
+
+    public boolean debug = false;
+
+    static {
+        vao = new VAO();
+        vao.bind();
+        {
+
+            EBO ebo = new EBO();
+            ebo.loadData(INDICES, EBOUsage.STATIC_DRAW);
+
+            VBO vbo = new VBO();
+            vbo.bind();
+            vbo.loadData(VERTICES, VBOUsage.STATIC_DRAW);
+            new VertexLinker(DataType.FLOAT)
+                    .attrib(0, 2)
+                    .setup();
+            vbo.unbind();
+        }
+        vao.unbind();
+
+        Shader vertex, fragment;
+
+        {
+            vertex = new Shader(ShaderType.VERTEX)
+                    .linkResource("text/bitmap/vertex_shader.glsl", BitmapTextRenderer.class);
+
+            CompileStatus status = vertex.compileSource();
+
+            if (!status.isOk())
+                throw new IllegalStateException("Error compiling vertex shader:\n" + status.getLog());
+        }
+
+        {
+            fragment = new Shader(ShaderType.FRAGMENT)
+                    .linkResource("text/bitmap/fragment_shader.glsl", BitmapTextRenderer.class);
+
+            CompileStatus status = fragment.compileSource();
+
+            if (!status.isOk())
+                throw new IllegalStateException("Error compiling fragment shader:\n" + status.getLog());
+        }
+
+        standardProgram = new Program()
+                .attach(vertex)
+                .attach(fragment)
+                .link();
+    }
+
+    public BitmapTextRenderer(Texture texture, CharDataManager chars) {
+        program = getProgram();
+        this.texture = texture;
+        this.chars = chars;
+
+        TextureContent content = texture.getContent().get();
+
+        width = content.getWidth();
+        height = content.getHeight();
+
+        chars.datas().forEachRemaining(c -> c.setup(width, height));
+    }
+
+    public Program getProgram() {
+        return standardProgram;
+    }
+
+    @Override
+    public void init() {
+        Uniformer uniformer = program.bind();
+
+        textureLoc = uniformer.get("tex");
+        colorLoc = uniformer.get("col");
+        projectionLoc = uniformer.get("projection");
+
+        charXLoc = uniformer.get("ch.x");
+        charYLoc = uniformer.get("ch.y");
+        charWidthLoc = uniformer.get("ch.w");
+        charHeightLoc = uniformer.get("ch.h");
+
+        program.unbind();
+    }
+
+    @Override
+    public Vector2f getSize(char[] str) {
+        Vector2f size = new Vector2f(0.0f, 0.0f);
+        float lineWidth = 0.0f;
+        float lineHeight = 0.0f;
+        for(char c : str) {
+            if(c == '\n') {
+                if(size.x < lineWidth)
+                    size.x = lineWidth;
+
+                size.y += lineHeight;
+                lineHeight = 0;
+                lineWidth = 0;
+            } else {
+                CharData ch = chars.get(c);
+                if(ch == null)
+                    continue;
+                lineWidth += ch.w;
+                if(ch.h > lineHeight)
+                    lineHeight = ch.h;
+            }
+        }
+        return size;
+    }
+
+    @Override
+    public void drawText2D(SuperText text, Vector2f pos, float distance, float size) {
+        program.bind().setUniform("draw", debug);
+        texture.bind();
+
+        for(TextPiece piece : text.asList()) {
+            if(piece.bold) throw new NotImplementedException();
+            if(piece.italic) throw new NotImplementedException();
+            if(piece.strikeThrough) throw new NotImplementedException();
+            colorLoc.set(piece.color);
+
+
+            final int length = piece.text.length();
+            for(int i = 0; i < length; i++) {
+                char c = piece.text.charAt(i);
+                CharData data = get(c);
+
+                if(data == null)
+                    continue;
+
+                projectionLoc.set(new Matrix4f().translate(pos.x, pos.y, distance).scale(size * data.ratio, size, 1.0f));
+
+                pos.x += size * data.ratio;
+
+                uniform2d(data);
+
+                Drawer.drawElements(DrawMode.TRIANGLES, DataType.UNSIGNED_INT, 0, 6);
+            }
+        }
+
+        program.unbind();
+    }
+
+    protected void uniform2d(CharData data) {
+        //System.out.println("x:" + (data.x/(float)width) + ", y:" + (data.y/(float)height) + ", w:" + (data.w/(float)width) + ", h:" + (data.h/(float)height));
+        charXLoc.set(data.rx);
+        charYLoc.set(data.ry);
+        charWidthLoc.set(data.rw);
+        charHeightLoc.set(data.rh);
+    }
+
+    public CharData get(char c) {
+        return chars.get(c);
+    }
+
+    @Override
+    public void drawText(SuperText text, Matrix4f position) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public void destroy() {
+        program.destroy();
+    }
+}

@@ -34,7 +34,7 @@ public class SimpleGETest {
 
         /*obj = new Circle(
                 new Vector2f(100f, 0f),
-                new Vector2f(w.getWidth() / 8, w.getHeight() / 8),
+                new Vector2f(w.getRw() / 8, w.getRh() / 8),
                 SimpleColor.RED
         );*/
 

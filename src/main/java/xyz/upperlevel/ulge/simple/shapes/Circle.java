@@ -65,7 +65,7 @@ public class Circle extends SimpleRenderable{
     public void draw(Uniformer uniformer) {
         super.draw(uniformer);
 
-        if(!uniformer.setUniformMatrix("transform", getTransform().get(BufferUtil.createBuffer(new float[4*4]))))
+        if(!uniformer.setUniformMatrix4("transform", getTransform().get(BufferUtil.createBuffer(new float[4*4]))))
             throw new IllegalStateException();
 
         vao.bind();

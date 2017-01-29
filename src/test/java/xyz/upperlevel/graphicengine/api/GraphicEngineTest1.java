@@ -180,7 +180,7 @@ public class GraphicEngineTest1 {
         cs = frag.compileSource();
         System.out.println(cs.log);
 
-        // defines the program, attaches the shaders to him and enables it
+        // defines the standardProgram, attaches the shaders to him and enables it
         Program program = new Program();
         program.attach(vtx);
         program.attach(frag);
@@ -386,7 +386,7 @@ public class GraphicEngineTest1 {
             FloatBuffer bfr;
             bfr = BufferUtils.createFloatBuffer(16);
             camera.getMatrix().get(bfr);
-            uniformer.setUniformMatrix("camera", bfr);
+            uniformer.setUniformMatrix4("camera", bfr);
 
             Vector3f position = camera.getPosition();
             uniformer.setUniform("viewPosition", position.x, position.y, position.z);
@@ -395,7 +395,7 @@ public class GraphicEngineTest1 {
             Matrix4f transformation = new Matrix4f();
             transformation.rotate((float) Math.toRadians(rot), new Vector3f(0, 1, 0));
             transformation.get(bfr);
-            uniformer.setUniformMatrix("model", bfr);
+            uniformer.setUniformMatrix4("model", bfr);
 
             uniformer.setUniform("material.shininess", 32f);
 
