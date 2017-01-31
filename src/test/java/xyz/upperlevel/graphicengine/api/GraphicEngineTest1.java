@@ -154,34 +154,12 @@ public class GraphicEngineTest1 {
         // starts
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_ALPHA);
-        // defines shader(s)
-
-        CompileStatus cs;
-
-        System.out.println("VERTEX");
-        Shader vtx = new Shader(ShaderType.VERTEX);
-        try {
-            vtx.linkSource(new File("C:/Users/Lorenzo/Desktop/SIGNOR MUCI DON'T TOUCH!/textureBasicVertexShader.glsl"));
-        } catch (IOException e) {
-            throw new IllegalStateException("failed to load vertex shader", e);
-        }
-        cs = vtx.compileSource();
-        System.out.println(cs.log);
-
-        System.out.println("FRAGMENT");
-        Shader frag = new Shader(ShaderType.FRAGMENT);
-        try {
-            frag.linkSource(new File("C:/Users/Lorenzo/Desktop/SIGNOR MUCI DON'T TOUCH!/textureBasicFragmentShader.glsl"));
-        } catch (IOException e) {
-            throw new IllegalStateException("failed to load fragment shader", e);
-        }
-        cs = frag.compileSource();
-        System.out.println(cs.log);
 
         // defines the standardProgram, attaches the shaders to him and enables it
         Program program = new Program();
-        program.attach(vtx);
-        program.attach(frag);
+        ClassLoader res = BaseOpenGLTest.class.getClassLoader();
+        program.attach(ShaderUtil.load(ShaderType.VERTEX, res.getResourceAsStream("ulge_test1/shaders/vertex_shader.glsl")));
+        program.attach(ShaderUtil.load(ShaderType.FRAGMENT, res.getResourceAsStream("ulge_test1/shaders/fragment_shader.glsl")));
         program.link();
         Uniformer uniformer = program.bind();
         GL30.glBindFragDataLocation(program.id, 0, "color");
