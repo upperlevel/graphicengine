@@ -1,27 +1,32 @@
 package xyz.upperlevel.ulge.opengl.texture.loader;
 
 import lombok.Getter;
+import org.lwjgl.BufferUtils;
 
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 import java.util.Hashtable;
 import java.util.Objects;
 
 public class TextureContent {
 
     private static final ColorModel openglAlphaModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
-            new int[] {8,8,8,8},
+            new int[]{8, 8, 8, 8},
             true,
             false,
             ComponentColorModel.TRANSLUCENT,
             DataBuffer.TYPE_BYTE
     );
 
-    @Getter private int width, height;
-    @Getter private ByteBuffer data;
+    @Getter
+    private int width, height;
+    @Getter
+    private ByteBuffer data;
 
     public TextureContent(int width, int height, ByteBuffer data) {
         setWidth(width);
@@ -36,7 +41,7 @@ public class TextureContent {
                 imageToByteBuffer(image, flip)
         );
     }
-    
+
     public void setWidth(int width) {
         if (width < 0)
             throw new IllegalArgumentException("Width cannot be negative.");
@@ -59,14 +64,35 @@ public class TextureContent {
 
         // build a byte buffer from the temporary image
         // that be used by OpenGL to produce a texture.
+        /*
         byte[] data = ((DataBufferByte) texImage.getRaster().getDataBuffer()).getData();
 
         ByteBuffer imageBuffer = ByteBuffer.allocateDirect(data.length);
         imageBuffer.order(ByteOrder.nativeOrder());
         imageBuffer.put(data, 0, data.length);
         imageBuffer.flip();
+        */
 
-        return imageBuffer;
+        // todo LOADS ONLY RGBA IMAGES!
+        final int BYTES_PER_PIXELS = 4;
+
+        int w = texImage.getWidth();
+        int h = texImage.getHeight();
+
+        int[] pixels = new int[w * h];
+        texImage.getRGB(0, 0, w, h, pixels, 0, w);
+        ByteBuffer buffer = BufferUtils.createByteBuffer(w * h * BYTES_PER_PIXELS);
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                int pixel = pixels[y * texImage.getWidth() + x];
+                buffer.put((byte) ((pixel >> 16) & 0xFF));    // red component
+                buffer.put((byte) ((pixel >> 8) & 0xFF));     // green component
+                buffer.put((byte) (pixel & 0xFF));            // blue component
+                buffer.put((byte) ((pixel >> 24) & 0xFF));    // alpha component
+            }
+        }
+        buffer.flip();
+        return buffer;
     }
 
     public static BufferedImage createNormalizedImage(BufferedImage image, boolean flip) {
