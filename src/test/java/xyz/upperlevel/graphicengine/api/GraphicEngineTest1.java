@@ -5,9 +5,11 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageLoaderManager;
 import xyz.upperlevel.ulge.util.math.Camera;
@@ -304,10 +306,10 @@ public class GraphicEngineTest1 {
         specTexContent = tlm.load(new File("C:/Users/Lorenzo/Desktop/textures/container2_specular.png"));
 
         Texture2D diffTex = new Texture2D();
-        diffTex.loadImage(diffTexContent);
+        diffTex.loadImage(0, TextureFormat.RGBA, diffTexContent.getWidth(), diffTexContent.getHeight(), DataType.UNSIGNED_BYTE, diffTexContent.getData());
 
         Texture2D specTex = new Texture2D();
-        specTex.loadImage(specTexContent);
+        diffTex.loadImage(0, TextureFormat.RGBA, specTexContent.getWidth(), specTexContent.getHeight(), DataType.UNSIGNED_BYTE, specTexContent.getData());
 
         VBO vbo = new VBO();
         vbo.loadData(vert, VBODataUsage.STATIC_DRAW);

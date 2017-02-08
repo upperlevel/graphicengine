@@ -1,7 +1,10 @@
 package xyz.upperlevel.graphicengine.api;
 
 import org.joml.Vector2f;
+import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
+import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 import xyz.upperlevel.ulge.opengl.texture.loader.UniversalImageLoader;
 import xyz.upperlevel.ulge.simple.SimpleGraphicEngine;
 import xyz.upperlevel.ulge.simple.shapes.Circle;
@@ -38,10 +41,13 @@ public class SimpleGETest {
                 SimpleColor.RED
         );*/
 
+        ImageContent c = UniversalImageLoader.INSTANCE.load(new File("cat.jpg"));
+        Texture2D tex = new Texture2D();
+        tex.loadImage(0, TextureFormat.RGBA, c.getWidth(), c.getHeight(), DataType.UNSIGNED_BYTE, c.getData());
         obj = new Circle(
                 new Vector2f(100f, 50f),
                 new Vector2f(w.getWidth() / 2, w.getHeight() / 2),
-                new Texture2D().loadImage(UniversalImageLoader.INSTANCE.load(new File("cat.jpg"))),
+                tex,
                 50
         );
 
@@ -71,12 +77,12 @@ public class SimpleGETest {
 
     public static void fpsCount() {
         double currentTime = glfwGetTime();
-        if(lastTime == -1) {
+        if (lastTime == -1) {
             lastTime = currentTime;
             return;
         }
         nbFrames++;
-        if ( currentTime - lastTime >= 1.0 ){ // If last print was more than 1 sec ago
+        if (currentTime - lastTime >= 1.0) { // If last print was more than 1 sec ago
             // printf and reset timer
             System.out.println("FPS:" + nbFrames);
             nbFrames = 0;
@@ -89,9 +95,9 @@ public class SimpleGETest {
     public static void update(long delta) {
         /*if(w.getKey(GLFWKey.ESCAPE))
             w.close();*/
-        if(w.getKey(Key.RIGHT))
+        if (w.getKey(Key.RIGHT))
             obj.pos.add(VEL * delta, 0f);
-        if(w.getKey(Key.LEFT))
+        if (w.getKey(Key.LEFT))
             obj.pos.sub(VEL * delta, 0f);
     }
 }
