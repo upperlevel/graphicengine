@@ -8,7 +8,7 @@ import java.nio.*;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.*;
 
-public class VBO extends Buffer {
+public class VBO {
 
     @Getter
     private int id;
@@ -18,7 +18,7 @@ public class VBO extends Buffer {
     }
 
     public void bind() {
-        bind(GL_ARRAY_BUFFER);
+        glBindBuffer(GL_ARRAY_BUFFER, id);
     }
 
     public void unbind() {
