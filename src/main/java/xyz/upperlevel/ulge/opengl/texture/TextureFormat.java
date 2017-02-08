@@ -7,7 +7,7 @@ import static org.lwjgl.opengl.GL12.GL_BGR;
 import static org.lwjgl.opengl.GL12.GL_BGRA;
 import static org.lwjgl.opengl.GL30.*;
 
-public enum TextureFormatType {
+public enum TextureFormat {
 
     RED             (GL_RED),
     RG              (GL_RG),
@@ -28,7 +28,7 @@ public enum TextureFormatType {
     @Getter
     private int id;
 
-    TextureFormatType(int id) {
+    TextureFormat(int id) {
         this.id = id;
     }
 }
