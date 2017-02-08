@@ -310,7 +310,7 @@ public class GraphicEngineTest1 {
         specTex.setContent(specTexContent);
 
         VBO vbo = new VBO();
-        vbo.loadData(vert, VBOUsage.STATIC_DRAW);
+        vbo.loadData(vert, VBODataUsage.STATIC_DRAW);
         vbo.bind();
         new VertexLinker(FLOAT)
                 .attrib(uniformer.getAttribLocation("position"), 3)
@@ -380,7 +380,7 @@ public class GraphicEngineTest1 {
             GL13.glActiveTexture(GL13.GL_TEXTURE1);
             specTex.bind();
 
-            Drawer.drawArrays(DrawMode.TRIANGLES, 0, vert.length / 8);
+            vbo.draw(DrawMode.TRIANGLES, 0, vert.length / 8);
 
             rot += 0.25f;
 
