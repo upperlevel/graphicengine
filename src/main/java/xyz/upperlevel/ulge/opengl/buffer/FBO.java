@@ -1,7 +1,7 @@
 package xyz.upperlevel.ulge.opengl.buffer;
 
 import lombok.Getter;
-import xyz.upperlevel.ulge.opengl.texture.Texture;
+import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL30.*;
@@ -46,7 +46,7 @@ public class FBO {
         );
     }
 
-    public void addTextureColorAttachment(int colorAttachmentIndex, Texture texture, int mipmapLevel) {
+    public void addTextureColorAttachment(int colorAttachmentIndex, Texture2D texture, int mipmapLevel) {
         addTextureColorAttachment(colorAttachmentIndex, texture.getId(), mipmapLevel);
     }
 
@@ -60,7 +60,7 @@ public class FBO {
         );
     }
 
-    public void addTextureDepthAttachment(Texture texture, int mipmapLevel) {
+    public void addTextureDepthAttachment(Texture2D texture, int mipmapLevel) {
         addTextureDepthAttachment(texture.getId(), mipmapLevel);
     }
 
@@ -74,7 +74,7 @@ public class FBO {
         );
     }
 
-    public void addTextureStencilAttachment(Texture texture, int mipmapLevel) {
+    public void addTextureStencilAttachment(Texture2D texture, int mipmapLevel) {
         addTextureStencilAttachment(texture.getId(), mipmapLevel);
     }
 
@@ -88,7 +88,7 @@ public class FBO {
         );
     }
 
-    public void addTextureDepthStencilAttachment(Texture texture, int mipmapLevel) {
+    public void addTextureDepthStencilAttachment(Texture2D texture, int mipmapLevel) {
         addTextureDepthStencilAttachment(texture.getId(), mipmapLevel);
     }
 

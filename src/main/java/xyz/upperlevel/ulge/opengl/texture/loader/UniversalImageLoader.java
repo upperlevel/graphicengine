@@ -11,33 +11,33 @@ import java.util.List;
 
 import static org.lwjgl.BufferUtils.createIntBuffer;
 
-public class UniversalTextureLoader implements TextureLoader {
+public class UniversalImageLoader implements ImageLoader {
 
-    public static final UniversalTextureLoader INSTANCE = new UniversalTextureLoader();
+    public static final UniversalImageLoader INSTANCE = new UniversalImageLoader();
 
-    public static final List<TextureFormat> SUPPORTED = Collections.unmodifiableList(Arrays.asList(
-            TextureFormat.JPEG,
-            TextureFormat.PNG,
-            TextureFormat.TGA,
-            TextureFormat.PSD,
-            TextureFormat.GIF,
-            TextureFormat.HDR,
-            TextureFormat.PIC,
-            TextureFormat.PNM
+    public static final List<ImageFormat> SUPPORTED = Collections.unmodifiableList(Arrays.asList(
+            ImageFormat.JPEG,
+            ImageFormat.PNG,
+            ImageFormat.TGA,
+            ImageFormat.PSD,
+            ImageFormat.GIF,
+            ImageFormat.HDR,
+            ImageFormat.PIC,
+            ImageFormat.PNM
     ));
 
     @Override
-    public List<TextureFormat> getSupportedExtensions() {
+    public List<ImageFormat> getSupportedExtensions() {
         return SUPPORTED;
     }
 
     @Override
-    public TextureContent load(File file) {
+    public ImageContent load(File file) {
         IntBuffer width = createIntBuffer(1),
                 height = createIntBuffer(1),
                 comp = createIntBuffer(1);
         ByteBuffer data = STBImage.stbi_load(file.getPath(), width, height, comp, STBImage.STBI_rgb_alpha);
-        return new TextureContent(
+        return new ImageContent(
                 width.get(),
                 height.get(),
                 data

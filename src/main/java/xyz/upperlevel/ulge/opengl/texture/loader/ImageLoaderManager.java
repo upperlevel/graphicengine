@@ -11,18 +11,18 @@ import java.util.Objects;
 import java.util.Optional;
 
 @NoArgsConstructor
-public class TextureLoaderManager {
+public class ImageLoaderManager {
 
-    public static final TextureLoaderManager DEFAULT = new TextureLoaderManager()
-            .register(UniversalTextureLoader.INSTANCE);
+    public static final ImageLoaderManager DEFAULT = new ImageLoaderManager()
+            .register(UniversalImageLoader.INSTANCE);
 
-    @Getter public final List<TextureLoader> loaders = new ArrayList<>();
+    @Getter public final List<ImageLoader> loaders = new ArrayList<>();
 
-    public Optional<TextureLoader> getLoader(TextureFormat format) {
+    public Optional<ImageLoader> getLoader(ImageFormat format) {
         Objects.requireNonNull(format, "Format cannot be null.");
         return loaders.stream()
                 .filter(loader -> {
-                    for (TextureFormat fmt : loader.getSupportedExtensions())
+                    for (ImageFormat fmt : loader.getSupportedExtensions())
                         for (String ext1 : fmt.getFormats())
                             for (String ext2 : format.getFormats())
                                 if (ext1.equalsIgnoreCase(ext2))
@@ -31,25 +31,25 @@ public class TextureLoaderManager {
                 }).findAny();
     }
 
-    public TextureContent load(File file) {
-        return load(file, new TextureFormat(FileUtil.getExtension(file)));
+    public ImageContent load(File file) {
+        return load(file, new ImageFormat(FileUtil.getExtension(file)));
     }
 
-    public TextureContent load(File file, TextureFormat format) {
-        Optional<TextureLoader> optLdr = getLoader(format);
+    public ImageContent load(File file, ImageFormat format) {
+        Optional<ImageLoader> optLdr = getLoader(format);
         if (!optLdr.isPresent()) {
             throw new IllegalStateException("Any loader found for that format.");
         }
         return optLdr.get().load(file);
     }
 
-    public TextureLoaderManager register(TextureLoader loader) {
+    public ImageLoaderManager register(ImageLoader loader) {
         Objects.requireNonNull(loader, "Loader cannot be null.");
         loaders.add(loader);
         return this;
     }
 
-    public boolean unregister(TextureLoader loader) {
+    public boolean unregister(ImageLoader loader) {
         return loaders.remove(loader);
     }
 }

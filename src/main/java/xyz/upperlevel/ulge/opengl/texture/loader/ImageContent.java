@@ -7,13 +7,10 @@ import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.*;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
 import java.util.Hashtable;
 import java.util.Objects;
 
-public class TextureContent {
+public class ImageContent {
 
     private static final ColorModel openglAlphaModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
             new int[]{8, 8, 8, 8},
@@ -28,13 +25,13 @@ public class TextureContent {
     @Getter
     private ByteBuffer data;
 
-    public TextureContent(int width, int height, ByteBuffer data) {
+    public ImageContent(int width, int height, ByteBuffer data) {
         setWidth(width);
         setHeight(height);
         setData(data);
     }
 
-    public TextureContent(BufferedImage image, boolean flip) {
+    public ImageContent(BufferedImage image, boolean flip) {
         this(
                 image.getWidth(),
                 image.getHeight(),
