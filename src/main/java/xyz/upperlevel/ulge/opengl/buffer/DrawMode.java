@@ -8,14 +8,14 @@ import static org.lwjgl.opengl.GL11.*;
 
 public enum DrawMode {
 
-    POINTS(GL_POINTS),
+    POINTS      (GL_POINTS),
 
-    LINES(GL_LINES),
+    LINES       (GL_LINES),
 
-    TRIANGLES(GL_TRIANGLES),
+    TRIANGLES   (GL_TRIANGLES),
 
     @Deprecated
-    QUADS(GL_QUADS);
+    QUADS       (GL_QUADS);
 
     @Getter
     private int id;
