@@ -43,14 +43,12 @@ public class Texture2D {
         id = glGenTextures();
     }
 
-    public Texture2D bind() {
+    public void bind() {
         glBindTexture(GL_TEXTURE_2D, id);
-        return this;
     }
 
-    public Texture2D unbind() {
+    public void unbind() {
         glBindTexture(GL_TEXTURE_2D, 0);
-        return this;
     }
 
     public void loadImage(int mipmapLevel, int formatType, int width, int height, int dataType, ByteBuffer contentData) {
@@ -64,8 +62,7 @@ public class Texture2D {
         loadImage(mipmapLevel, formatType.getId(), width, height, dataType.getId(), contentData);
     }
 
-    public Texture2D destroy() {
+    public void destroy() {
         glDeleteTextures(id);
-        return this;
     }
 }
