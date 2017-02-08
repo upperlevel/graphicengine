@@ -1,161 +1,98 @@
 package xyz.upperlevel.ulge.opengl.buffer;
 
 import lombok.Getter;
+import org.lwjgl.opengl.GL11;
 
 import java.nio.*;
 
+import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-public class VBO {
+public class VBO extends Buffer {
 
     @Getter
-    public final int id;
+    private int id;
 
-    /**
-     * Generates a new VBO buffer.
-     */
     public VBO() {
         id = glGenBuffers();
     }
 
-    /**
-     * Binds this VBO buffer.
-     */
     public void bind() {
-        glBindBuffer(GL_ARRAY_BUFFER, id);
+        bind(GL_ARRAY_BUFFER);
     }
 
-    /**
-     * Unbinds the using VBO buffer. It does not checks if the
-     * current one is this VBO buffer.
-     */
     public void unbind() {
-        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    /**
-     * Loads vertices on this EBO.
-     *
-     * @param usage The expected usage of the vertices loaded.
-     */
-    public void loadData(float[] vertices, VBOUsage usage) {
-        loadData(vertices, usage.id);
+    // loadData(float)
+
+    public void loadData(float[] vertices, VBODataUsage usage) {
+        loadData(vertices, usage.getId());
     }
 
-    /**
-     * Loads vertices on this EBO.
-     *
-     * @param usage The expected usage of the vertices loaded.
-     */
     public void loadData(float[] vertices, int usage) {
         loadData(BufferUtil.createBuffer(vertices), usage);
     }
 
-    /**
-     * Loads vertices on this EBO.
-     *
-     * @param usage The expected usage of the vertices loaded.
-     */
-    public void loadData(FloatBuffer buffer, VBOUsage usage) {
-        loadData(buffer, usage.id);
+    public void loadData(FloatBuffer buffer, VBODataUsage usage) {
+        loadData(buffer, usage.getId());
     }
 
-    /**
-     * Loads vertices on this EBO.
-     *
-     * @param usage The expected usage of the vertices loaded.
-     */
     public void loadData(FloatBuffer buffer, int usage) {
         bind();
         glBufferData(GL_ARRAY_BUFFER, buffer, usage);
     }
 
-    /**
-     * Updates vertices at a precise offset.
-     *
-     * @param offset The offset where to update the vertices.
-     */
-    public void updateData(int offset, float[] vertices) {
-        updateData(offset, BufferUtil.createBuffer(vertices));
+    // loadData(double)
+
+    public void loadData(double[] vertices, VBODataUsage usage) {
+        loadData(vertices, usage.getId());
     }
 
-    /**
-     * Updates vertices at a precise offset.
-     *
-     * @param offset The offset where to update the vertices.
-     */
-    public void updateData(int offset, FloatBuffer buffer) {
-        bind();
-        glBufferSubData(GL_ARRAY_BUFFER, offset, buffer);
-    }
-
-    /**
-     * Loads vertices on this EBO.
-     *
-     * @param usage The expected usage of the vertices loaded.
-     */
-    public void loadData(double[] vertices, VBOUsage usage) {
-        loadData(vertices, usage.id);
-    }
-
-    /**
-     * Loads vertices on this EBO.
-     *
-     * @param usage The expected usage of the vertices loaded.
-     */
     public void loadData(double[] vertices, int usage) {
         loadData(BufferUtil.createBuffer(vertices), usage);
     }
 
-    /**
-     * Loads vertices on this EBO.
-     *
-     * @param usage The expected usage of the vertices loaded.
-     */
-    public void loadData(DoubleBuffer buffer, VBOUsage usage) {
-        loadData(buffer, usage.id);
+    public void loadData(DoubleBuffer buffer, VBODataUsage usage) {
+        loadData(buffer, usage.getId());
     }
 
-    /**
-     * Loads vertices on this EBO.
-     *
-     * @param usage The expected usage of the vertices loaded.
-     */
     public void loadData(DoubleBuffer buffer, int usage) {
         bind();
         glBufferData(GL_ARRAY_BUFFER, buffer, usage);
     }
 
-    /**
-     * Updates vertices at a precise offset.
-     *
-     * @param offset The offset where to update the vertices.
-     */
+    // updateData(float)
+
+    public void updateData(int offset, float[] vertices) {
+        updateData(offset, BufferUtil.createBuffer(vertices));
+    }
+
+    public void updateData(int offset, FloatBuffer buffer) {
+        bind();
+        glBufferSubData(GL_ARRAY_BUFFER, offset, buffer);
+    }
+
+    // updateData(double)
+
     public void updateData(int offset, double[] vertices) {
         updateData(offset, BufferUtil.createBuffer(vertices));
     }
 
-    /**
-     * Updates vertices at a precise offset.
-     *
-     * @param offset The offset where to update the vertices.
-     */
     public void updateData(int offset, DoubleBuffer buffer) {
         bind();
         glBufferSubData(GL_ARRAY_BUFFER, offset, buffer);
     }
 
-    /**
-     * Destroys this VBO buffer.
-     */
-    public void destroy() {
-        glDeleteBuffers(id);
+    public void draw(int drawMode, int startOffset, int verticesCount) {
+        glDrawArrays(drawMode, startOffset, verticesCount);
     }
 
-    /**
-     * Generates a new VBO buffer.
-     */
+    public void draw(DrawMode drawMode, int startOffset, int verticesCount) {
+        draw(drawMode.getId(), startOffset, verticesCount);
+    }
+
     public static VBO generate() {
         return new VBO();
     }
