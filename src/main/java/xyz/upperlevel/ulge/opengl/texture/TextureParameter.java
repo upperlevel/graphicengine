@@ -10,10 +10,11 @@ import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL13.GL_CLAMP_TO_BORDER;
 import static org.lwjgl.opengl.GL14.GL_MIRRORED_REPEAT;
 
-@RequiredArgsConstructor
-public class TextureParameter {
+public final class TextureParameter {
 
-    @RequiredArgsConstructor
+    private TextureParameter() {
+    }
+
     public static class Type {
 
         @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -42,10 +43,24 @@ public class TextureParameter {
             public static final Type MAG = new Type(GL_TEXTURE_MAG_FILTER);
         }
 
-        @Getter public final int id;
+        @Getter
+        private int id;
+
+        public Type(int id) {
+            this.id = id;
+        }
+
+        @Override
+        public int hashCode() {
+            return id;
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            return object instanceof Type && id == ((Type) object).id;
+        }
     }
 
-    @RequiredArgsConstructor
     public static class Value {
 
         @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -85,9 +100,21 @@ public class TextureParameter {
             public static final Value NEAREST = new Value(GL_NEAREST);
         }
 
-        @Getter public final int id;
-    }
+        @Getter
+        private int id;
 
-    @Getter public final Type type;
-    @Getter public final Value value;
+        public Value(int id) {
+            this.id = id;
+        }
+
+        @Override
+        public int hashCode() {
+            return id;
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            return object instanceof Type && id == ((Type) object).id;
+        }
+    }
 }

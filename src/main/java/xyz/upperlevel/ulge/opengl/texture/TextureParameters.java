@@ -4,59 +4,64 @@ package xyz.upperlevel.ulge.opengl.texture;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 
-@NoArgsConstructor
 public class TextureParameters {
 
-    public static final TextureParameters DEFAULTS = new TextureParameters(Collections.emptyList());
+    @Getter
+    private Map<TextureParameter.Type, TextureParameter.Value> parameters = new HashMap<>();
 
-    @Getter public final List<TextureParameter> parameters = new ArrayList<>();
-
-    private void initDefPar() {
-        parameters.add(new TextureParameter(TextureParameter.Type.Wrapping.S, TextureParameter.Value.Wrapping.CLAMP_TO_EDGE));
-        parameters.add(new TextureParameter(TextureParameter.Type.Wrapping.T, TextureParameter.Value.Wrapping.CLAMP_TO_EDGE));
-        parameters.add(new TextureParameter(TextureParameter.Type.Filter.MIN, TextureParameter.Value.Filter.LINEAR));
-        parameters.add(new TextureParameter(TextureParameter.Type.Filter.MAG, TextureParameter.Value.Filter.LINEAR));
+    public TextureParameters() {
     }
 
-    private void addParSafely(TextureParameter toAdd) {
-        parameters.removeIf(parameter -> parameter.getType() == toAdd.getType());
-        parameters.add(toAdd);
+    public TextureParameters(Map<TextureParameter.Type, TextureParameter.Value> initialParameters) {
+        parameters.putAll(initialParameters);
     }
 
-    public TextureParameters(List<TextureParameter> parameters) {
-        initDefPar();
-        parameters.forEach(this::addParSafely);
-    }
-
-    public TextureParameters setSWrapping(TextureParameter.Value wrapping) {
-        return add(new TextureParameter(TextureParameter.Type.Wrapping.S, wrapping));
-    }
-
-    public TextureParameters setTWrapping(TextureParameter.Value wrapping) {
-        return add(new TextureParameter(TextureParameter.Type.Wrapping.T, wrapping));
-    }
-
-    public TextureParameters setMinFilter(TextureParameter.Value filter) {
-        return add(new TextureParameter(TextureParameter.Type.Filter.MIN, filter));
-    }
-
-    public TextureParameters setMagFilter(TextureParameter.Value filter) {
-        return add(new TextureParameter(TextureParameter.Type.Filter.MAG, filter));
-    }
-
-    public TextureParameters add(TextureParameter parameter) {
-        addParSafely(parameter);
+    public TextureParameters addParameter(TextureParameter.Type type, TextureParameter.Value value) {
+        parameters.put(type, value);
         return this;
     }
 
+    public boolean removeParameter(TextureParameter.Type type) {
+        return parameters.remove(type) != null;
+    }
+
+    public TextureParameters setSWrapping(TextureParameter.Value sWrappingValue) {
+        return addParameter(TextureParameter.Type.Wrapping.S, sWrappingValue);
+    }
+
+    public TextureParameters setTWrapping(TextureParameter.Value tWrappingValue) {
+        return addParameter(TextureParameter.Type.Wrapping.T, tWrappingValue);
+    }
+
+    public TextureParameters setMinFilter(TextureParameter.Value minFilterValue) {
+        return addParameter(TextureParameter.Type.Filter.MIN, minFilterValue);
+    }
+
+    public TextureParameters setMagFilter(TextureParameter.Value magFilterValue) {
+        return addParameter(TextureParameter.Type.Filter.MAG, magFilterValue);
+    }
+
     public void setup() {
-        parameters.forEach(parameter -> glTexParameteri(GL_TEXTURE_2D, parameter.getType().getId(), parameter.getValue().getId()));
+        parameters.forEach((parType, parVal) -> glTexParameteri(GL_TEXTURE_2D, parType.getId(), parVal.getId()));
+    }
+
+    public static TextureParameters getEmpty() {
+        return new TextureParameters();
+    }
+
+    public static TextureParameters getDefault() {
+        return new TextureParameters(new HashMap<TextureParameter.Type, TextureParameter.Value>() {
+            {
+                put(TextureParameter.Type.Wrapping.S, TextureParameter.Value.Wrapping.CLAMP_TO_EDGE);
+                put(TextureParameter.Type.Wrapping.T, TextureParameter.Value.Wrapping.CLAMP_TO_EDGE);
+                put(TextureParameter.Type.Filter.MIN, TextureParameter.Value.Filter.LINEAR);
+                put(TextureParameter.Type.Filter.MAG, TextureParameter.Value.Filter.LINEAR);
+            }
+        });
     }
 }
