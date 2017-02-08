@@ -4,6 +4,7 @@ import org.joml.Vector2f;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
+import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 import xyz.upperlevel.ulge.opengl.texture.loader.UniversalImageLoader;
 import xyz.upperlevel.ulge.simple.SimpleGraphicEngine;
@@ -42,8 +43,11 @@ public class SimpleGETest {
         );*/
 
         ImageContent c = UniversalImageLoader.INSTANCE.load(new File("cat.jpg"));
+
         Texture2D tex = new Texture2D();
         tex.loadImage(0, TextureFormat.RGBA, c.getWidth(), c.getHeight(), DataType.UNSIGNED_BYTE, c.getData());
+        TextureParameters.getDefault().setup();
+
         obj = new Circle(
                 new Vector2f(100f, 50f),
                 new Vector2f(w.getWidth() / 2, w.getHeight() / 2),

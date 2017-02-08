@@ -10,6 +10,7 @@ import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
+import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageLoaderManager;
 import xyz.upperlevel.ulge.util.math.Camera;
@@ -307,9 +308,11 @@ public class GraphicEngineTest1 {
 
         Texture2D diffTex = new Texture2D();
         diffTex.loadImage(0, TextureFormat.RGBA, diffTexContent.getWidth(), diffTexContent.getHeight(), DataType.UNSIGNED_BYTE, diffTexContent.getData());
+        TextureParameters.getDefault().setup();
 
         Texture2D specTex = new Texture2D();
         diffTex.loadImage(0, TextureFormat.RGBA, specTexContent.getWidth(), specTexContent.getHeight(), DataType.UNSIGNED_BYTE, specTexContent.getData());
+        TextureParameters.getDefault().setup();
 
         VBO vbo = new VBO();
         vbo.loadData(vert, VBODataUsage.STATIC_DRAW);
