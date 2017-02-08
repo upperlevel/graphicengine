@@ -4,18 +4,23 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.lwjgl.opengl.GL11;
 
-@RequiredArgsConstructor
+import static org.lwjgl.opengl.GL11.*;
+
 public enum DrawMode {
 
-    POINTS(GL11.GL_POINTS),
+    POINTS(GL_POINTS),
 
-    LINES(GL11.GL_LINES),
+    LINES(GL_LINES),
 
-    TRIANGLES(GL11.GL_TRIANGLES),
+    TRIANGLES(GL_TRIANGLES),
 
     @Deprecated
-    QUADS(GL11.GL_QUADS);
+    QUADS(GL_QUADS);
 
     @Getter
-    public final int id;
+    private int id;
+
+    DrawMode(int id) {
+        this.id = id;
+    }
 }
