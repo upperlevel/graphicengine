@@ -1,209 +1,128 @@
 package xyz.upperlevel.ulge.opengl.buffer;
 
 import lombok.Getter;
+import xyz.upperlevel.ulge.opengl.DataType;
 
 import java.nio.*;
 
+import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.*;
 
 public class EBO {
 
     @Getter
-    public final int id;
+    private int id;
 
-    /**
-     * Generates a new EBO buffer.
-     */
     public EBO() {
         id = glGenBuffers();
     }
 
-    /**
-     * Binds this EBO buffer.
-     */
     public void bind() {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
     }
 
-    /**
-     * Unbinds the using EBO buffer. It does not checks if the
-     * current one is this EBO buffer.
-     */
     public void unbind() {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(byte[] indices, EBOUsage usage) {
-        loadData(indices, usage.id);
+    // loadData(byte)
+
+    public void loadData(byte[] elements, EBODataUsage dataUsage) {
+        loadData(elements, dataUsage.getId());
     }
 
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(byte[] indices, int usage) {
-        loadData(BufferUtil.createBuffer(indices), usage);
+    public void loadData(byte[] elements, int dataUsage) {
+        loadData(BufferUtil.createBuffer(elements), dataUsage);
     }
 
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(ByteBuffer buffer, EBOUsage usage) {
-        loadData(buffer, usage.id);
+    public void loadData(ByteBuffer buffer, EBODataUsage dataUsage) {
+        loadData(buffer, dataUsage.getId());
     }
 
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(ByteBuffer buffer, int usage) {
+    public void loadData(ByteBuffer buffer, int dataUsage) {
         bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, usage);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, dataUsage);
     }
 
-    /**
-     * Updates indices at a precise offset.
-     *
-     * @param offset The offset where to update the indices.
-     */
-    public void updateData(int offset, byte[] indices) {
-        updateData(offset, BufferUtil.createBuffer(indices));
+    // loadData(short)
+
+    public void loadData(short[] elements, EBODataUsage dataUsage) {
+        loadData(elements, dataUsage.getId());
     }
 
-    /**
-     * Updates indices at a precise offset.
-     *
-     * @param offset The offset where to update the indices.
-     */
+    public void loadData(short[] elements, int dataUsage) {
+        loadData(BufferUtil.createBuffer(elements), dataUsage);
+    }
+
+    public void loadData(ShortBuffer buffer, EBODataUsage dataUsage) {
+        loadData(buffer, dataUsage.getId());
+    }
+
+    public void loadData(ShortBuffer buffer, int dataUsage) {
+        bind();
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, dataUsage);
+    }
+
+    // loadData(int)
+
+    public void loadData(int[] elements, EBODataUsage dataUsage) {
+        loadData(elements, dataUsage.getId());
+    }
+
+    public void loadData(int[] elements, int dataUsage) {
+        loadData(BufferUtil.createBuffer(elements), dataUsage);
+    }
+
+    public void loadData(IntBuffer buffer, EBODataUsage dataUsage) {
+        loadData(buffer, dataUsage.getId());
+    }
+
+    public void loadData(IntBuffer buffer, int dataUsage) {
+        bind();
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, dataUsage);
+    }
+
+    // updateData(byte)
+
+    public void updateData(int offset, byte[] elements) {
+        updateData(offset, BufferUtil.createBuffer(elements));
+    }
+
     public void updateData(int offset, ByteBuffer buffer) {
         bind();
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, buffer);
     }
 
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(short[] indices, EBOUsage usage) {
-        loadData(indices, usage.id);
+    // updateData(short)
+
+    public void updateData(int offset, short[] elements) {
+        updateData(offset, BufferUtil.createBuffer(elements));
     }
 
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(short[] indices, int usage) {
-        loadData(BufferUtil.createBuffer(indices), usage);
-    }
-
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(ShortBuffer buffer, EBOUsage usage) {
-        loadData(buffer, usage.id);
-    }
-
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(ShortBuffer buffer, int usage) {
-        bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, usage);
-    }
-
-    /**
-     * Updates indices at a precise offset.
-     *
-     * @param offset The offset where to update the indices.
-     */
-    public void updateData(int offset, short[] indices) {
-        updateData(offset, BufferUtil.createBuffer(indices));
-    }
-
-    /**
-     * Updates indices at a precise offset.
-     *
-     * @param offset The offset where to update the indices.
-     */
     public void updateData(int offset, ShortBuffer buffer) {
         bind();
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, buffer);
     }
 
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(int[] indices, EBOUsage usage) {
-        loadData(indices, usage.id);
+    // updateData(int)
+
+    public void updateData(int offset, int[] elements) {
+        updateData(offset, BufferUtil.createBuffer(elements));
     }
 
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(int[] indices, int usage) {
-        loadData(BufferUtil.createBuffer(indices), usage);
-    }
-
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(IntBuffer buffer, EBOUsage usage) {
-        loadData(buffer, usage.id);
-    }
-
-    /**
-     * Loads indices on this EBO.
-     *
-     * @param usage The expected usage of the indices loaded.
-     */
-    public void loadData(IntBuffer buffer, int usage) {
-        bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, usage);
-    }
-
-    /**
-     * Updates indices at a precise offset.
-     *
-     * @param offset The offset where to update the indices.
-     */
-    public void updateData(int offset, int[] indices) {
-        updateData(offset, BufferUtil.createBuffer(indices));
-    }
-
-    /**
-     * Updates indices at a precise offset.
-     *
-     * @param offset The offset where to update the indices.
-     */
     public void updateData(int offset, IntBuffer buffer) {
         bind();
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, buffer);
     }
 
-    /**
-     * Generates a new EBO buffer.
-     */
+    public void draw(int drawMode, int dataType, long elementsOffset, int elementsCount) {
+        glDrawElements(drawMode, elementsCount, dataType, elementsOffset);
+    }
+
+    public void draw(DrawMode drawMode, DataType dataType, long elementsOffset, int elementsCount) {
+        draw(drawMode.getId(), dataType.getId(), elementsOffset, elementsCount);
+    }
+
     public static EBO generate() {
         return new EBO();
     }
