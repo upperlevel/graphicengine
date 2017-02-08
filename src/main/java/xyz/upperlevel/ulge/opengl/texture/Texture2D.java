@@ -11,7 +11,8 @@ import java.util.Objects;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Texture2D {
-    public static Texture2D NULL;
+
+    public static final Texture2D NULL;
 
     static {
         NULL = new Texture2D();
