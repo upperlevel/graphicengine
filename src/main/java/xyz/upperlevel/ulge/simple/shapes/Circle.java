@@ -5,11 +5,11 @@ import org.joml.Vector2f;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.VAO;
 import xyz.upperlevel.ulge.opengl.buffer.VBO;
-import xyz.upperlevel.ulge.opengl.buffer.VBOUsage;
+import xyz.upperlevel.ulge.opengl.buffer.VBODataUsage;
 import xyz.upperlevel.ulge.opengl.buffer.VertexLinker;
 import xyz.upperlevel.ulge.opengl.shader.Uniform;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
-import xyz.upperlevel.ulge.opengl.texture.Texture;
+import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
 import xyz.upperlevel.ulge.util.Color;
 
@@ -35,7 +35,7 @@ public class Circle extends SimpleRenderable{
         this.size = size;
     }
 
-    public Circle(Vector2f pos, Vector2f size, Texture texture, int segments) {
+    public Circle(Vector2f pos, Vector2f size, Texture2D texture, int segments) {
         super(texture);
         this.segments = segments;
         initVerts(segments);
@@ -49,7 +49,7 @@ public class Circle extends SimpleRenderable{
         {
             VBO vbo = new VBO();
             vbo.bind();
-            vbo.loadData(genVertices(segments), VBOUsage.STATIC_DRAW);
+            vbo.loadData(genVertices(segments), VBODataUsage.STATIC_DRAW);
             new VertexLinker(DataType.FLOAT)
                     .attrib(0, 2)
                     .attrib(1, 2)

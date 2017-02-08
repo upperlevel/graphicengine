@@ -6,7 +6,7 @@ import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.Uniform;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
-import xyz.upperlevel.ulge.opengl.texture.Texture;
+import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
 import xyz.upperlevel.ulge.util.Color;
 
@@ -35,11 +35,11 @@ public class Square extends SimpleRenderable {
         {
 
             EBO ebo = new EBO();
-            ebo.loadData(indices, EBOUsage.STATIC_DRAW);
+            ebo.loadData(indices, EBODataUsage.STATIC_DRAW);
 
             VBO vbo = new VBO();
             vbo.bind();
-            vbo.loadData(vertices, VBOUsage.STATIC_DRAW);
+            vbo.loadData(vertices, VBODataUsage.STATIC_DRAW);
             new VertexLinker(DataType.FLOAT)
                     .attrib(0, 2)
                     .attrib(1, 2)
@@ -62,7 +62,7 @@ public class Square extends SimpleRenderable {
         this.size = size;
     }
 
-    public Square(Vector2f pos, Vector2f size, Texture texture) {
+    public Square(Vector2f pos, Vector2f size, Texture2D texture) {
         super(texture);
         this.pos = pos;
         this.size = size;

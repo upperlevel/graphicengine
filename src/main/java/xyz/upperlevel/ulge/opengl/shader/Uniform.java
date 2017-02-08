@@ -2,7 +2,7 @@ package xyz.upperlevel.ulge.opengl.shader;
 
 import lombok.AllArgsConstructor;
 import org.joml.*;
-import xyz.upperlevel.ulge.opengl.texture.Texture;
+import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.util.Color;
 
 import java.nio.FloatBuffer;
@@ -100,7 +100,7 @@ public class Uniform {
         glUniform2f(loc, value.x, value.y);
     }
 
-    public void set(Texture value) {
+    public void set(Texture2D value) {
         glUniform1i(loc, value.id);
     }
 }

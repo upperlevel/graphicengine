@@ -1,8 +1,8 @@
 package xyz.upperlevel.graphicengine.api;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.ulge.opengl.texture.Texture;
-import xyz.upperlevel.ulge.opengl.texture.loader.UniversalTextureLoader;
+import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.loader.UniversalImageLoader;
 import xyz.upperlevel.ulge.simple.SimpleGraphicEngine;
 import xyz.upperlevel.ulge.simple.shapes.Circle;
 import xyz.upperlevel.ulge.window.GLFW;
@@ -41,7 +41,7 @@ public class SimpleGETest {
         obj = new Circle(
                 new Vector2f(100f, 50f),
                 new Vector2f(w.getWidth() / 2, w.getHeight() / 2),
-                new Texture().setContent(UniversalTextureLoader.INSTANCE.load(new File("cat.jpg"))),
+                new Texture2D().loadImage(UniversalImageLoader.INSTANCE.load(new File("cat.jpg"))),
                 50
         );
 

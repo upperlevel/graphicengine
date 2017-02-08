@@ -7,8 +7,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
-import xyz.upperlevel.ulge.opengl.texture.Texture;
-import xyz.upperlevel.ulge.opengl.texture.loader.TextureContent;
+import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 import xyz.upperlevel.ulge.text.SuperText;
 import xyz.upperlevel.ulge.text.TextPiece;
 import xyz.upperlevel.ulge.text.TextRenderer;
@@ -28,12 +28,13 @@ public class BitmapTextRenderer extends TextRenderer {
     };
 
     public static final VAO vao;
+    public static final EBO ebo;
 
     public static Program standardProgram;
 
 
 
-    protected final Texture texture;
+    protected final Texture2D texture;
     protected final Program program;
 
     private final int width, height;
@@ -49,12 +50,12 @@ public class BitmapTextRenderer extends TextRenderer {
         vao.bind();
         {
 
-            EBO ebo = new EBO();
-            ebo.loadData(INDICES, EBOUsage.STATIC_DRAW);
+            ebo = new EBO();
+            ebo.loadData(INDICES, EBODataUsage.STATIC_DRAW);
 
             VBO vbo = new VBO();
             vbo.bind();
-            vbo.loadData(VERTICES, VBOUsage.STATIC_DRAW);
+            vbo.loadData(VERTICES, VBODataUsage.STATIC_DRAW);
             new VertexLinker(DataType.FLOAT)
                     .attrib(0, 2)
                     .setup();
@@ -90,12 +91,12 @@ public class BitmapTextRenderer extends TextRenderer {
                 .link();
     }
 
-    public BitmapTextRenderer(Texture texture, CharDataManager chars) {
+    public BitmapTextRenderer(Texture2D texture, CharDataManager chars) {
         program = getProgram();
         this.texture = texture;
         this.chars = chars;
 
-        TextureContent content = texture.getContent().get();
+        ImageContent content = texture.getImageContent().get();
 
         width = content.getWidth();
         height = content.getHeight();
@@ -208,7 +209,7 @@ public class BitmapTextRenderer extends TextRenderer {
 
                 uniform2d(data);
 
-                Drawer.drawElements(DrawMode.TRIANGLES, DataType.UNSIGNED_INT, 0, 6);
+                ebo.draw(DrawMode.TRIANGLES, DataType.UNSIGNED_INT, 0, 6);
             }
         }
 

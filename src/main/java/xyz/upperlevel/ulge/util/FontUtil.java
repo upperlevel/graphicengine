@@ -1,9 +1,9 @@
 package xyz.upperlevel.ulge.util;
 
-import xyz.upperlevel.ulge.opengl.texture.Texture;
+import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameter;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
-import xyz.upperlevel.ulge.opengl.texture.loader.TextureContent;
+import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 import xyz.upperlevel.ulge.text.impl.truetype.BitmapTextRenderer;
 import xyz.upperlevel.ulge.text.impl.truetype.CharData;
 import xyz.upperlevel.ulge.text.impl.truetype.CharDataManager;
@@ -141,7 +141,7 @@ public final class FontUtil {
             }
         }
 
-        Texture tex = new Texture().setContent(new TextureContent(image, false), parameters);
+        Texture2D tex = new Texture2D().loadImage(new ImageContent(image, false), parameters);
 
         return new BitmapTextRenderer(tex, chars);
     }
