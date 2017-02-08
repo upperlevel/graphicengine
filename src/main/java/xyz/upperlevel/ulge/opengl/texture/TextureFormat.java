@@ -1,16 +1,13 @@
 package xyz.upperlevel.ulge.opengl.texture;
 
 import lombok.Getter;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL30;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_BGR;
 import static org.lwjgl.opengl.GL12.GL_BGRA;
 import static org.lwjgl.opengl.GL30.*;
 
-public enum TextureFormat {
+public enum TextureFormatType {
 
     RED             (GL_RED),
     RG              (GL_RG),
@@ -31,7 +28,7 @@ public enum TextureFormat {
     @Getter
     private int id;
 
-    TextureFormat(int id) {
+    TextureFormatType(int id) {
         this.id = id;
     }
 }

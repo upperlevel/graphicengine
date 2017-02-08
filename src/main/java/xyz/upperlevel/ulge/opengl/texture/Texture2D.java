@@ -5,7 +5,6 @@ import org.lwjgl.BufferUtils;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 
-import java.awt.*;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
@@ -16,16 +15,22 @@ public class Texture2D {
 
     static {
         NULL = new Texture2D();
-        NULL.loadImage(new ImageContent(
+        NULL.loadImage(
+                0,
+                TextureFormat.RGBA,
                 1,
                 1,
+                DataType.UNSIGNED_BYTE,
                 (ByteBuffer) BufferUtils.createByteBuffer(4)
                         .put(new byte[]{
                                 (byte) 255,
                                 (byte) 255,
                                 (byte) 255,
                                 (byte) 255
-                        }).flip()));
+                        })
+                        .flip()
+        );
+        TextureParameters.getDefault().setup();
     }
 
     @Getter
@@ -53,7 +58,7 @@ public class Texture2D {
         glTexImage2D(GL_TEXTURE_2D, mipmapLevel, formatType, width, height, 0, formatType, dataType, contentData);
     }
 
-    public void loadImage(int mipmapLevel, TextureFormatType formatType, int width, int height, DataType dataType, ByteBuffer contentData) {
+    public void loadImage(int mipmapLevel, TextureFormat formatType, int width, int height, DataType dataType, ByteBuffer contentData) {
         Objects.requireNonNull(formatType, "formatType");
         Objects.requireNonNull(contentData, "contentData");
         loadImage(mipmapLevel, formatType.getId(), width, height, dataType.getId(), contentData);
