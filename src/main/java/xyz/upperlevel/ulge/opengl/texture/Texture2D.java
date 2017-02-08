@@ -2,69 +2,64 @@ package xyz.upperlevel.ulge.opengl.texture;
 
 import lombok.Getter;
 import org.lwjgl.BufferUtils;
-import xyz.upperlevel.ulge.opengl.texture.loader.TextureContent;
+import xyz.upperlevel.ulge.opengl.DataType;
+import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 
+import java.awt.*;
 import java.nio.ByteBuffer;
 import java.util.Objects;
-import java.util.Optional;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Texture {
-    public static Texture NULL;
+public class Texture2D {
+    public static Texture2D NULL;
 
     static {
-        NULL = new Texture();
-        NULL.setContent(new TextureContent(
+        NULL = new Texture2D();
+        NULL.loadImage(new ImageContent(
                 1,
                 1,
                 (ByteBuffer) BufferUtils.createByteBuffer(4)
-                .put(new byte[] {
-                        (byte) 255,
-                        (byte) 255,
-                        (byte) 255,
-                        (byte) 255
-                }).flip()));
+                        .put(new byte[]{
+                                (byte) 255,
+                                (byte) 255,
+                                (byte) 255,
+                                (byte) 255
+                        }).flip()));
     }
 
-    @Getter public final int id;
+    @Getter
+    private int id;
 
-    private TextureContent content = null;
+    @Getter
+    private ImageContent imageContent = null;
 
-    public Texture() {
+    public Texture2D() {
         id = glGenTextures();
     }
 
-    public Optional<TextureContent> getContent() {
-        return Optional.ofNullable(content);
-    }
-
-    public Texture setContent(TextureContent content) {
-        setContent(content, TextureParameters.DEFAULTS);
-        return this;
-    }
-
-    public Texture setContent(TextureContent content, TextureParameters parameters) {
-        Objects.requireNonNull(content, "Content cannot be null.");
-        Objects.requireNonNull(content, "Parameters cannot be null.");
-        bind();
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, content.getWidth(), content.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, content.getData());
-        parameters.setup();
-        this.content = content;
-        return this;
-    }
-
-    public Texture bind() {
+    public Texture2D bind() {
         glBindTexture(GL_TEXTURE_2D, id);
         return this;
     }
 
-    public Texture unbind() {
+    public Texture2D unbind() {
         glBindTexture(GL_TEXTURE_2D, 0);
         return this;
     }
 
-    public Texture destroy() {
+    public void loadImage(int mipmapLevel, int formatType, int width, int height, int dataType, ByteBuffer contentData) {
+        bind();
+        glTexImage2D(GL_TEXTURE_2D, mipmapLevel, formatType, width, height, 0, formatType, dataType, contentData);
+    }
+
+    public void loadImage(int mipmapLevel, TextureFormatType formatType, int width, int height, DataType dataType, ByteBuffer contentData) {
+        Objects.requireNonNull(formatType, "formatType");
+        Objects.requireNonNull(contentData, "contentData");
+        loadImage(mipmapLevel, formatType.getId(), width, height, dataType.getId(), contentData);
+    }
+
+    public Texture2D destroy() {
         glDeleteTextures(id);
         return this;
     }
