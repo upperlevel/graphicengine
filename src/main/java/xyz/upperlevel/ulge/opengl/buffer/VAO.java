@@ -16,24 +16,29 @@ public class VAO {
         id = glGenBuffers();
     }
 
-    public void bind() {
+    public VAO bind() {
         glBindVertexArray(id);
+        return this;
     }
 
-    public void unbind() {
+    public VAO unbind() {
         glBindVertexArray(0);
+        return this;
     }
 
-    public void destroy() {
+    public VAO destroy() {
         glDeleteVertexArrays(id);
+        return this;
     }
 
-    public void draw(int drawMode, int startOffset, int verticesCount) {
+    public VAO draw(int drawMode, int startOffset, int verticesCount) {
         glDrawArrays(drawMode, startOffset, verticesCount);
+        return this;
     }
 
-    public void draw(DrawMode drawMode, int startOffset, int verticesCount) {
+    public VAO draw(DrawMode drawMode, int startOffset, int verticesCount) {
         draw(drawMode.getId(), startOffset, verticesCount);
+        return this;
     }
 
     public static VAO generate() {
