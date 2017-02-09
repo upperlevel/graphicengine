@@ -16,7 +16,8 @@ public class ImageLoaderManager {
     public static final ImageLoaderManager DEFAULT = new ImageLoaderManager()
             .register(UniversalImageLoader.INSTANCE);
 
-    @Getter public final List<ImageLoader> loaders = new ArrayList<>();
+    @Getter
+    private final List<ImageLoader> loaders = new ArrayList<>();
 
     public Optional<ImageLoader> getLoader(ImageFormat format) {
         Objects.requireNonNull(format, "Format cannot be null.");

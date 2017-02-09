@@ -20,7 +20,8 @@ public class ImageFormat {
             PIC = new ImageFormat("pic"),
             PNM = new ImageFormat("ppm", "pgm", "pnm");
 
-    @Getter public final List<String> formats;
+    @Getter
+    private final List<String> formats;
 
     public ImageFormat(String... extensions) {
         formats = Collections.unmodifiableList(Arrays.asList(extensions));

@@ -108,8 +108,7 @@ public class ImageContent {
         while (texHeight < height)
             texHeight *= 2;
 
-        System.out.println("W: " + width + "->" + texWidth + ", H:" + height + "->" + texHeight);
-
+        //System.out.println("W: " + width + "->" + texWidth + ", H:" + height + "->" + texHeight);
 
         WritableRaster raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, texWidth, texHeight, 4, null);
         BufferedImage texImage = new BufferedImage(openglAlphaModel, raster, false, new Hashtable());
