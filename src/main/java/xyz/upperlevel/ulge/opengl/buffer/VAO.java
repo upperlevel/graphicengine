@@ -9,6 +9,8 @@ import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 
 public class VAO {
 
+    private static VAO bound;
+
     @Getter
     private int id;
 
@@ -43,5 +45,14 @@ public class VAO {
 
     public static VAO generate() {
         return new VAO();
+    }
+
+    public static VAO getBound() {
+        return bound;
+    }
+
+    @Deprecated
+    public static void setBound(VAO vao) {
+        bound = vao;
     }
 }
