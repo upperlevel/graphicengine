@@ -19,12 +19,18 @@ public class VAO {
     }
 
     public VAO bind() {
-        glBindVertexArray(id);
+        if (!equals(bound)) {
+            glBindVertexArray(id);
+            bound = this;
+        }
         return this;
     }
 
     public VAO unbind() {
-        glBindVertexArray(0);
+        if (equals(bound)) {
+            glBindVertexArray(0);
+            bound = null;
+        }
         return this;
     }
 
