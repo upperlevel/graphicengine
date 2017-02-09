@@ -17,16 +17,19 @@ public class FBO {
         id = glGenFramebuffers();
     }
 
-    public void bind() {
+    public FBO bind() {
         glBindFramebuffer(GL_FRAMEBUFFER, id);
+        return this;
     }
 
-    public void bindDefault() {
+    public FBO bindDefault() {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        return this;
     }
 
-    public void unbind() {
+    public FBO unbind() {
         bindDefault();
+        return this;
     }
 
     public FBOStatus getStatus() {
@@ -34,7 +37,7 @@ public class FBO {
         return status != null ? status : FBOStatus.UNDEFINED;
     }
 
-    public void addTextureColorAttachment(int colorAttachmentIndex, int textureId, int mipmapLevel) {
+    public FBO addTextureColorAttachment(int colorAttachmentIndex, int textureId, int mipmapLevel) {
         if (colorAttachmentIndex > MAX_COLOR_ATTACHMENTS)
             throw new IllegalArgumentException("Max color attachments count is: " + MAX_COLOR_ATTACHMENTS);
         glFramebufferTexture2D(
@@ -44,13 +47,15 @@ public class FBO {
                 textureId,
                 mipmapLevel
         );
+        return this;
     }
 
-    public void addTextureColorAttachment(int colorAttachmentIndex, Texture2D texture, int mipmapLevel) {
+    public FBO addTextureColorAttachment(int colorAttachmentIndex, Texture2D texture, int mipmapLevel) {
         addTextureColorAttachment(colorAttachmentIndex, texture.getId(), mipmapLevel);
+        return this;
     }
 
-    public void addTextureDepthAttachment(int textureId, int mipmapLevel) {
+    public FBO addTextureDepthAttachment(int textureId, int mipmapLevel) {
         glFramebufferTexture2D(
                 GL_FRAMEBUFFER,
                 GL_DEPTH_ATTACHMENT,
@@ -58,13 +63,15 @@ public class FBO {
                 textureId,
                 mipmapLevel
         );
+        return this;
     }
 
-    public void addTextureDepthAttachment(Texture2D texture, int mipmapLevel) {
+    public FBO addTextureDepthAttachment(Texture2D texture, int mipmapLevel) {
         addTextureDepthAttachment(texture.getId(), mipmapLevel);
+        return this;
     }
 
-    public void addTextureStencilAttachment(int textureId, int mipmapLevel) {
+    public FBO addTextureStencilAttachment(int textureId, int mipmapLevel) {
         glFramebufferTexture2D(
                 GL_FRAMEBUFFER,
                 GL_STENCIL_ATTACHMENT,
@@ -72,13 +79,15 @@ public class FBO {
                 textureId,
                 mipmapLevel
         );
+        return this;
     }
 
-    public void addTextureStencilAttachment(Texture2D texture, int mipmapLevel) {
+    public FBO addTextureStencilAttachment(Texture2D texture, int mipmapLevel) {
         addTextureStencilAttachment(texture.getId(), mipmapLevel);
+        return this;
     }
 
-    public void addTextureDepthStencilAttachment(int textureId, int mipmapLevel) {
+    public FBO addTextureDepthStencilAttachment(int textureId, int mipmapLevel) {
         glFramebufferTexture2D(
                 GL_FRAMEBUFFER,
                 GL_DEPTH_STENCIL_ATTACHMENT,
@@ -86,14 +95,17 @@ public class FBO {
                 textureId,
                 mipmapLevel
         );
+        return this;
     }
 
-    public void addTextureDepthStencilAttachment(Texture2D texture, int mipmapLevel) {
+    public FBO addTextureDepthStencilAttachment(Texture2D texture, int mipmapLevel) {
         addTextureDepthStencilAttachment(texture.getId(), mipmapLevel);
+        return this;
     }
 
-    public void destroy() {
+    public FBO destroy() {
         glDeleteFramebuffers(id);
+        return this;
     }
 
     public static FBO generate() {
