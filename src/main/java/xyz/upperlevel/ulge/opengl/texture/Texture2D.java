@@ -34,6 +34,8 @@ public class Texture2D {
         TextureParameters.getDefault().setup();
     }
 
+    public static Texture2D bound = null;
+
     @Getter
     private int id;
 
@@ -44,23 +46,34 @@ public class Texture2D {
         id = glGenTextures();
     }
 
-    public void bind() {
-        glBindTexture(GL_TEXTURE_2D, id);
+    public boolean bind() {
+        if (!equals(bound)) {
+            glBindTexture(GL_TEXTURE_2D, id);
+            bound = this;
+            return true;
+        }
+        return false;
     }
 
-    public void unbind() {
-        glBindTexture(GL_TEXTURE_2D, 0);
+    public boolean unbind() {
+        if (equals(bound)) {
+            glBindTexture(GL_TEXTURE_2D, 0);
+            return true;
+        }
+        return false;
     }
 
-    public void loadImage(int mipmapLevel, int formatType, int width, int height, int dataType, ByteBuffer contentData) {
+    public Texture2D loadImage(int mipmapLevel, int formatType, int width, int height, int dataType, ByteBuffer contentData) {
         bind();
         glTexImage2D(GL_TEXTURE_2D, mipmapLevel, formatType, width, height, 0, formatType, dataType, contentData);
+        return this;
     }
 
-    public void loadImage(int mipmapLevel, TextureFormat formatType, int width, int height, DataType dataType, ByteBuffer contentData) {
+    public Texture2D loadImage(int mipmapLevel, TextureFormat formatType, int width, int height, DataType dataType, ByteBuffer contentData) {
         Objects.requireNonNull(formatType, "formatType");
         Objects.requireNonNull(contentData, "contentData");
         loadImage(mipmapLevel, formatType.getId(), width, height, dataType.getId(), contentData);
+        return this;
     }
 
     public void destroy() {
