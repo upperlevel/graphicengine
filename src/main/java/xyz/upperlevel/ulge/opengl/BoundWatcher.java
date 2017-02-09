@@ -29,7 +29,7 @@ public final class BoundWatcher {
     }
 
     public static Program getBoundProgram() {
-        return Program.
+        return Program.getBound();
     }
 
     public static Texture2D getBoundTexture2D() {
