@@ -11,6 +11,8 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class Program {
 
+    private static Program bound;
+
     @Getter
     private int id;
 
@@ -49,12 +51,18 @@ public class Program {
     }
 
     public Uniformer bind() {
-        glUseProgram(id);
+        if (!equals(bound)) {
+            glUseProgram(id);
+            bound = this;
+        }
         return uniformer;
     }
 
     public Program unbind() {
-        glUseProgram(0);
+        if (equals(bound)) {
+            glUseProgram(0);
+            bound = null;
+        }
         return this;
     }
 
