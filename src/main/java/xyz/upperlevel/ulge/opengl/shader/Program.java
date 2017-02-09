@@ -76,4 +76,13 @@ public class Program {
         glDeleteProgram(id);
         return this;
     }
+
+    public static Program getBound() {
+        return bound;
+    }
+
+    @Deprecated
+    public static void setBound(Program program) {
+        bound = program;
+    }
 }
