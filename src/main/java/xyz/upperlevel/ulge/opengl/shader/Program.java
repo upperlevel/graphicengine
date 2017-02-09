@@ -11,10 +11,13 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class Program {
 
-    @Getter public final int id;
-    @Getter public final List<Shader> shaders = new ArrayList<>();
+    @Getter
+    private int id;
 
-    public final Uniformer UNIFORMER = new Uniformer(this);
+    @Getter
+    private List<Shader> shaders = new ArrayList<>();
+
+    private Uniformer uniformer = new Uniformer(this);
 
     public Program() {
         id = glCreateProgram();
@@ -33,14 +36,11 @@ public class Program {
         return this;
     }
 
-    public boolean detach(Shader shader) {
+    public Program detach(Shader shader) {
         Objects.requireNonNull(shader, "Shader cannot be null.");
-        boolean result = shaders.remove(shader);
-        if (result) {
+        if (shaders.remove(shader))
             strictDetach(shader);
-            return true;
-        }
-        return false;
+        return this;
     }
 
     public Program link() {
@@ -50,7 +50,7 @@ public class Program {
 
     public Uniformer bind() {
         glUseProgram(id);
-        return UNIFORMER;
+        return uniformer;
     }
 
     public Program unbind() {
@@ -59,7 +59,7 @@ public class Program {
     }
 
     public Program destroy() {
-        for (Iterator<Shader> iterator = shaders.iterator(); iterator.hasNext();) {
+        for (Iterator<Shader> iterator = shaders.iterator(); iterator.hasNext(); ) {
             Shader shader = iterator.next();
             strictDetach(shader);
             iterator.remove();
