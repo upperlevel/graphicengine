@@ -10,6 +10,8 @@ import static org.lwjgl.opengl.GL15.*;
 
 public class EBO {
 
+    private static EBO bound;
+
     @Getter
     private int id;
 
@@ -18,12 +20,18 @@ public class EBO {
     }
 
     public EBO bind() {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+        if (!equals(bound)) {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+            bound = this;
+        }
         return this;
     }
 
     public EBO unbind() {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        if (equals(bound)) {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            bound = null;
+        }
         return this;
     }
 
@@ -147,5 +155,14 @@ public class EBO {
 
     public static EBO generate() {
         return new EBO();
+    }
+
+    public static EBO getBound() {
+        return bound;
+    }
+
+    @Deprecated
+    public static void setBound(EBO ebo) {
+        bound = ebo;
     }
 }
