@@ -8,6 +8,8 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class FBO {
 
+    private static FBO bound;
+
     @Getter
     private int id;
 
@@ -18,7 +20,10 @@ public class FBO {
     }
 
     public FBO bind() {
-        glBindFramebuffer(GL_FRAMEBUFFER, id);
+        if (!equals(bound)) {
+            glBindFramebuffer(GL_FRAMEBUFFER, id);
+            bound = this;
+        }
         return this;
     }
 
@@ -28,7 +33,10 @@ public class FBO {
     }
 
     public FBO unbind() {
-        bindDefault();
+        if (equals(bound)) {
+            bindDefault();
+            bound = null;
+        }
         return this;
     }
 
@@ -110,5 +118,14 @@ public class FBO {
 
     public static FBO generate() {
         return new FBO();
+    }
+
+    public static FBO getBound() {
+        return bound;
+    }
+
+    @Deprecated
+    public static void setBound(FBO fbo) {
+        bound = fbo;
     }
 }
