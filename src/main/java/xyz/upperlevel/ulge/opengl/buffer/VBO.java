@@ -10,6 +10,8 @@ import static org.lwjgl.opengl.GL15.*;
 
 public class VBO {
 
+    private static VBO bound;
+
     @Getter
     private int id;
 
@@ -18,12 +20,18 @@ public class VBO {
     }
 
     public VBO bind() {
-        glBindBuffer(GL_ARRAY_BUFFER, id);
+        if (!equals(bound)) {
+            glBindBuffer(GL_ARRAY_BUFFER, id);
+            bound = this;
+        }
         return this;
     }
 
     public VBO unbind() {
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        if (equals(bound)) {
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            bound = null;
+        }
         return this;
     }
 
@@ -111,5 +119,14 @@ public class VBO {
 
     public static VBO generate() {
         return new VBO();
+    }
+
+    public static VBO getBound() {
+        return bound;
+    }
+
+    @Deprecated
+    public static void setBound(VBO vbo) {
+        bound = vbo;
     }
 }
