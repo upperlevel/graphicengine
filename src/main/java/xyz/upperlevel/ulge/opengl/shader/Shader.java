@@ -13,7 +13,8 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class Shader {
 
-    @Getter public final int id;
+    @Getter
+    private int id;
 
     public Shader(ShaderType type) {
         this(type.id);
@@ -35,7 +36,7 @@ public class Shader {
 
     public Shader linkResource(String path, Class<?> clazz) {
         InputStream stream = clazz.getClassLoader().getResourceAsStream(path);
-        if(stream == null)
+        if (stream == null)
             throw new IllegalArgumentException("Cannot find " + path);
         try (Scanner s = new Scanner(stream)) {
             s.useDelimiter("\\A");
