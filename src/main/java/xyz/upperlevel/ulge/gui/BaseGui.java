@@ -6,7 +6,7 @@ import lombok.Setter;
 import xyz.upperlevel.ulge.events.EventManager;
 import xyz.upperlevel.ulge.events.impl.SimpleEventManager;
 
-public class BaseGui implements Gui {
+public abstract class BaseGui implements Gui {
 
     @Getter
     @Setter
@@ -32,13 +32,16 @@ public class BaseGui implements Gui {
     }
 
     @Override
-    public void init(GuiRenderer r) {
+    public void init(GuiRenderer renderer) {
     }
 
+    protected abstract void onPreDraw(GuiRenderer renderer);
+
     @Override
-    public void draw(GuiRenderer r) {
-        r.getTexture().bind();
-        r.setBounds(bounds);
-        r.fill();
+    public void draw(GuiRenderer renderer) {
+        renderer.getTexture().bind();
+        renderer.setBounds(bounds);
+        onPreDraw(renderer);
+        renderer.fill();
     }
 }

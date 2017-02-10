@@ -17,7 +17,7 @@ public interface EventManager {
     void call(Event event);
 
     default boolean call(CancellableEvent event) {
-        call(event);
+        call((Event) event);
         return !event.isCancelled();
     }
 }

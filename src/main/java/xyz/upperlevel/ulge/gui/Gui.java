@@ -9,24 +9,24 @@ import xyz.upperlevel.ulge.gui.events.GuiOpenEvent;
 
 public interface Gui {
 
-    void init(GuiRenderer r);
+    void init(GuiRenderer renderer);
 
-    void draw(GuiRenderer r);
+    void draw(GuiRenderer renderer);
 
-    default boolean hover(Vector2f pos) {
-        return getEventManager().call(new GuiHoverEvent(this, pos));
+    default boolean onHover(Vector2f position) {
+        return getEventManager().call(new GuiHoverEvent(this, position));
     }
 
-    default boolean clickBegin(Vector2f pos) {
-        return getEventManager().call(new GuiClickEvent(this, pos, GuiClickEvent.Type.BEGIN));
+    default boolean onClickBegin(Vector2f position) {
+        return getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.BEGIN));
     }
 
-    default boolean clickDrag(Vector2f pos) {
-        return getEventManager().call(new GuiClickEvent(this, pos, GuiClickEvent.Type.DRAG));
+    default boolean onClickDrag(Vector2f position) {
+        return getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.DRAG));
     }
 
-    default boolean clickEnd(Vector2f pos) {
-        return getEventManager().call(new GuiClickEvent(this, pos, GuiClickEvent.Type.END));
+    default boolean onClickEnd(Vector2f position) {
+        return getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.END));
     }
 
     default boolean onOpen() {

@@ -181,7 +181,6 @@ public class SimpleGame {
 
 
 
-
     private void checkPreWindowState() {
         if(window != null)
             throw new IllegalStateException("Cannot call this after window creation!");
