@@ -142,7 +142,7 @@ public final class FontUtil {
 
         parameters.setup();
         ImageContent content = new ImageContent(image, false);
-        Texture2D tex = new Texture2D().loadImage(0, TextureFormat.RGBA, content);
+        Texture2D tex = new Texture2D().loadImage(TextureFormat.RGBA, content);
 
         return new BitmapTextRenderer(tex, chars);
     }

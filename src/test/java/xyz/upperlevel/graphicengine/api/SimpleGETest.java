@@ -44,8 +44,8 @@ public class SimpleGETest {
 
         ImageContent c = UniversalImageLoader.INSTANCE.load(new File("cat.jpg"));
 
-        Texture2D tex = new Texture2D();
-        tex.loadImage(0, TextureFormat.RGBA, c.getWidth(), c.getHeight(), DataType.UNSIGNED_BYTE, c.getData());
+        Texture2D tex = new Texture2D()
+                .loadImage(TextureFormat.RGBA, c);
         TextureParameters.getDefault().setup();
 
         obj = new Circle(

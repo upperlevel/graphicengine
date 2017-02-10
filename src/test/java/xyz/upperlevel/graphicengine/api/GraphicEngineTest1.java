@@ -306,12 +306,12 @@ public class GraphicEngineTest1 {
         diffTexContent = tlm.load(new File("C:/Users/Lorenzo/Desktop/textures/container2.png"));
         specTexContent = tlm.load(new File("C:/Users/Lorenzo/Desktop/textures/container2_specular.png"));
 
-        Texture2D diffTex = new Texture2D();
-        diffTex.loadImage(0, TextureFormat.RGBA, diffTexContent.getWidth(), diffTexContent.getHeight(), DataType.UNSIGNED_BYTE, diffTexContent.getData());
+        Texture2D diffTex = new Texture2D()
+                .loadImage(TextureFormat.RGBA, diffTexContent);
         TextureParameters.getDefault().setup();
 
-        Texture2D specTex = new Texture2D();
-        diffTex.loadImage(0, TextureFormat.RGBA, specTexContent.getWidth(), specTexContent.getHeight(), DataType.UNSIGNED_BYTE, specTexContent.getData());
+        Texture2D specTex = new Texture2D()
+                .loadImage(TextureFormat.RGBA, specTexContent);
         TextureParameters.getDefault().setup();
 
         VBO vbo = new VBO();
