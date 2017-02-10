@@ -1,6 +1,7 @@
 package xyz.upperlevel.ulge.util;
 
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameter;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
@@ -12,17 +13,15 @@ import xyz.upperlevel.ulge.text.impl.truetype.chardata.StandardCharDataManager;
 import java.awt.Color;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 public final class FontUtil {
     public static final char[] NO_CHARS = new char[0];
 
-    public static final TextureParameters DEF_TEX_PARAMS = new TextureParameters(Arrays.asList(
-            new TextureParameter(TextureParameter.Type.Wrapping.S, TextureParameter.Value.Wrapping.CLAMP_TO_EDGE),
-                        new TextureParameter(TextureParameter.Type.Wrapping.T, TextureParameter.Value.Wrapping.CLAMP_TO_EDGE),
-                        new TextureParameter(TextureParameter.Type.Filter.MIN, TextureParameter.Value.Filter.NEAREST),
-                        new TextureParameter(TextureParameter.Type.Filter.MAG, TextureParameter.Value.Filter.NEAREST)
-                ));
+    public static final TextureParameters DEF_TEX_PARAMS = new TextureParameters()
+            .addParameter(TextureParameter.Type.Wrapping.S, TextureParameter.Value.Wrapping.CLAMP_TO_EDGE)
+            .addParameter(TextureParameter.Type.Wrapping.T, TextureParameter.Value.Wrapping.CLAMP_TO_EDGE)
+            .addParameter(TextureParameter.Type.Filter.MIN, TextureParameter.Value.Filter.NEAREST)
+            .addParameter(TextureParameter.Type.Filter.MAG, TextureParameter.Value.Filter.NEAREST);
 
     public static BufferedImage drawFont(Font font, char c, boolean antiAliasing) {
         // Create a temporary image to extract the character's size
@@ -141,7 +140,9 @@ public final class FontUtil {
             }
         }
 
-        Texture2D tex = new Texture2D().loadImage(new ImageContent(image, false), parameters);
+        parameters.setup();
+        ImageContent content = new ImageContent(image, false);
+        Texture2D tex = new Texture2D().loadImage(0, TextureFormat.RGBA, content);
 
         return new BitmapTextRenderer(tex, chars);
     }

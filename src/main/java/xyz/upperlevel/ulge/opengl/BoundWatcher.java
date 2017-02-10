@@ -13,26 +13,26 @@ public final class BoundWatcher {
     }
 
     public static VAO getBoundVAO() {
-        return VAO.getBound();
+        return VAO.bound;
     }
 
     public static VBO getBoundVBO() {
-        return VBO.getBound();
+        return VBO.bound;
     }
 
     public static EBO getBoundEBO() {
-        return EBO.getBound();
+        return EBO.bound;
     }
 
     public static FBO getBoundFBO() {
-        return FBO.getBound();
+        return FBO.bound;
     }
 
     public static Program getBoundProgram() {
-        return Program.getBound();
+        return Program.bound;
     }
 
     public static Texture2D getBoundTexture2D() {
-        return Texture2D.getBound();
+        return Texture2D.bound;
     }
 }

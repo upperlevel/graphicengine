@@ -14,6 +14,8 @@ public class Texture2D {
 
     public static final Texture2D NULL;
 
+    public static Texture2D bound = null;
+
     static {
         NULL = new Texture2D();
         NULL.loadImage(
@@ -34,10 +36,8 @@ public class Texture2D {
         TextureParameters.getDefault().setup();
     }
 
-    private static Texture2D bound = null;
-
     @Getter
-    private int id;
+    public final int id;
 
     @Getter
     private ImageContent imageContent = null;
@@ -46,20 +46,40 @@ public class Texture2D {
         id = glGenTextures();
     }
 
+    public Texture2D(int id) {
+        this.id = id;
+    }
+
     public Texture2D bind() {
-        if (!equals(bound)) {
+        if (bound == null || bound.id != id) {
             glBindTexture(GL_TEXTURE_2D, id);
             bound = this;
         }
         return this;
     }
 
+    public Texture2D forceBind() {
+        glBindTexture(GL_TEXTURE_2D, id);
+        bound = this;
+        return this;
+    }
+
     public Texture2D unbind() {
-        if (equals(bound)) {
+        if (bound != null) {
             glBindTexture(GL_TEXTURE_2D, 0);
             bound = null;
         }
         return this;
+    }
+
+    public Texture2D forceUnbind() {
+        glBindTexture(GL_TEXTURE_2D, 0);
+        bound = null;
+        return this;
+    }
+
+    public Texture2D loadImage(int mipmapLevel, TextureFormat formatType, ImageContent content) {
+        return loadImage(mipmapLevel, formatType, content.getWidth(), content.getHeight(), DataType.BYTE, content.getData());
     }
 
     public Texture2D loadImage(int mipmapLevel, int formatType, int width, int height, int dataType, ByteBuffer contentData) {
@@ -80,12 +100,7 @@ public class Texture2D {
         return this;
     }
 
-    public static Texture2D getBound() {
-        return bound;
-    }
-
-    @Deprecated
-    public static void setBound(Texture2D texture) {
-        bound = texture;
+    public static Texture2D wrap(int id) {
+        return new Texture2D(id);
     }
 }

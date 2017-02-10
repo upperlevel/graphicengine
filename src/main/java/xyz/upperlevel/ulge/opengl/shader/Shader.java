@@ -70,4 +70,13 @@ public class Shader {
         glDeleteShader(id);
         return this;
     }
+
+    public static Shader create(ShaderType type, String path, Class<?> callingClazz) {
+        Shader shader = new Shader(type);
+        shader.linkResource(path, callingClazz);
+        CompileStatus status = shader.compileSource();
+        if(!status.isOk())
+            throw new ShaderCompileException(type, status.log);
+        return shader;
+    }
 }

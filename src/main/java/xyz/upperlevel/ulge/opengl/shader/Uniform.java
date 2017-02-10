@@ -101,6 +101,6 @@ public class Uniform {
     }
 
     public void set(Texture2D value) {
-        glUniform1i(loc, value.id);
+        glUniform1i(loc, value.getId());
     }
 }

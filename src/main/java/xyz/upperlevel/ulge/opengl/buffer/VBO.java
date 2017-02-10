@@ -1,16 +1,16 @@
 package xyz.upperlevel.ulge.opengl.buffer;
 
 import lombok.Getter;
-import org.lwjgl.opengl.GL11;
 
-import java.nio.*;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.*;
 
 public class VBO {
 
-    private static VBO bound;
+    public static VBO bound;
 
     @Getter
     private int id;
@@ -19,19 +19,35 @@ public class VBO {
         id = glGenBuffers();
     }
 
+    public VBO(int id) {
+        this.id = id;
+    }
+
     public VBO bind() {
-        if (!equals(bound)) {
+        if (bound == null || bound.id != id) {
             glBindBuffer(GL_ARRAY_BUFFER, id);
             bound = this;
         }
         return this;
     }
 
+    public VBO forceBind() {
+        glBindBuffer(GL_ARRAY_BUFFER, id);
+        bound = this;
+        return this;
+    }
+
     public VBO unbind() {
-        if (equals(bound)) {
+        if (bound != null) {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             bound = null;
         }
+        return this;
+    }
+
+    public VBO forceUnbind() {
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        bound = null;
         return this;
     }
 
@@ -121,12 +137,7 @@ public class VBO {
         return new VBO();
     }
 
-    public static VBO getBound() {
-        return bound;
-    }
-
-    @Deprecated
-    public static void setBound(VBO vbo) {
-        bound = vbo;
+    public static VBO wrap(int id) {
+        return new VBO(id);
     }
 }

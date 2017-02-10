@@ -3,7 +3,6 @@ package xyz.upperlevel.ulge.opengl.shader;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,18 +10,21 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class Program {
 
-    private static Program bound;
+    public static Program bound;
 
     @Getter
-    private int id;
-
+    public final int id;
     @Getter
-    private List<Shader> shaders = new ArrayList<>();
+    public final List<Shader> shaders = new ArrayList<>();
 
-    private Uniformer uniformer = new Uniformer(this);
+    public final Uniformer uniformer = new Uniformer(this);
 
     public Program() {
         id = glCreateProgram();
+    }
+
+    public Program(int id) {
+        this.id = id;
     }
 
     public Program attach(Shader shader) {
@@ -51,38 +53,48 @@ public class Program {
     }
 
     public Uniformer bind() {
-        if (!equals(bound)) {
+        if(bound == null || bound.id != id) {
             glUseProgram(id);
             bound = this;
         }
         return uniformer;
     }
 
+    public Uniformer forceBind() {
+        glUseProgram(id);
+        bound = this;
+        return uniformer;
+    }
+
     public Program unbind() {
-        if (equals(bound)) {
+        if(bound != null) {
             glUseProgram(0);
             bound = null;
         }
         return this;
     }
 
+    public Program forceUnbind() {
+        glUseProgram(0);
+        bound = null;
+        return this;
+    }
+
+    public boolean isBound() {
+        return bound.id == id;
+    }
+
     public Program destroy() {
-        for (Iterator<Shader> iterator = shaders.iterator(); iterator.hasNext(); ) {
-            Shader shader = iterator.next();
+        for(Shader shader : shaders) {
             strictDetach(shader);
-            iterator.remove();
             shader.destroy();
         }
+        shaders.isEmpty();
         glDeleteProgram(id);
         return this;
     }
 
-    public static Program getBound() {
-        return bound;
-    }
-
-    @Deprecated
-    public static void setBound(Program program) {
-        bound = program;
+    public static Program wrap(int id) {
+        return new Program(id);
     }
 }

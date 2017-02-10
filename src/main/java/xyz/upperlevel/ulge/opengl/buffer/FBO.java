@@ -8,10 +8,10 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class FBO {
 
-    private static FBO bound;
+    public static FBO bound;
 
     @Getter
-    private int id;
+    public final int id;
 
     public static final int MAX_COLOR_ATTACHMENTS = (GL_COLOR_ATTACHMENT31 - GL_COLOR_ATTACHMENT0);
 
@@ -19,11 +19,21 @@ public class FBO {
         id = glGenFramebuffers();
     }
 
+    public FBO(int id) {
+        this.id = id;
+    }
+
     public FBO bind() {
-        if (!equals(bound)) {
+        if (bound == null || id != bound.id) {
             glBindFramebuffer(GL_FRAMEBUFFER, id);
             bound = this;
         }
+        return this;
+    }
+
+    public FBO forceBind() {
+        glBindFramebuffer(GL_FRAMEBUFFER, id);
+        bound = this;
         return this;
     }
 
@@ -33,10 +43,16 @@ public class FBO {
     }
 
     public FBO unbind() {
-        if (equals(bound)) {
+        if (bound != null) {
             bindDefault();
             bound = null;
         }
+        return this;
+    }
+
+    public FBO forceUnbind() {
+        bindDefault();
+        bound = null;
         return this;
     }
 
@@ -120,12 +136,7 @@ public class FBO {
         return new FBO();
     }
 
-    public static FBO getBound() {
-        return bound;
-    }
-
-    @Deprecated
-    public static void setBound(FBO fbo) {
-        bound = fbo;
+    public static FBO wrap(int id) {
+        return new FBO(id);
     }
 }

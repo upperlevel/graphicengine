@@ -3,35 +3,53 @@ package xyz.upperlevel.ulge.opengl.buffer;
 import lombok.Getter;
 import xyz.upperlevel.ulge.opengl.DataType;
 
-import java.nio.*;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.*;
 
 public class EBO {
 
-    private static EBO bound;
+    public static EBO bound;
 
     @Getter
-    private int id;
+    public final int id;
 
     public EBO() {
         id = glGenBuffers();
     }
 
+    public EBO(int id) {
+        this.id = id;
+    }
+
     public EBO bind() {
-        if (!equals(bound)) {
+        if (bound == null || bound.id != id) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
             bound = this;
         }
         return this;
     }
 
+    public EBO forceBind() {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+        bound = this;
+        return this;
+    }
+
     public EBO unbind() {
-        if (equals(bound)) {
+        if (bound != null) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             bound = null;
         }
+        return this;
+    }
+
+    public EBO forceUnbind() {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        bound = null;
         return this;
     }
 
@@ -157,12 +175,7 @@ public class EBO {
         return new EBO();
     }
 
-    public static EBO getBound() {
-        return bound;
-    }
-
-    @Deprecated
-    public static void setBound(EBO ebo) {
-        bound = ebo;
+    public static EBO wrap(int id) {
+        return new EBO(id);
     }
 }

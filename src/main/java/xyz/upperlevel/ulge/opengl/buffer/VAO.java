@@ -9,28 +9,44 @@ import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 
 public class VAO {
 
-    private static VAO bound;
+    public static VAO bound;
 
     @Getter
-    private int id;
+    public final int id;
 
     public VAO() {
         id = glGenBuffers();
     }
 
+    public VAO(int id) {
+        this.id = id;
+    }
+
     public VAO bind() {
-        if (!equals(bound)) {
+        if (bound == null || bound.id != id) {
             glBindVertexArray(id);
             bound = this;
         }
         return this;
     }
 
+    public VAO forceBind() {
+        glBindVertexArray(id);
+        bound = this;
+        return this;
+    }
+
     public VAO unbind() {
-        if (equals(bound)) {
+        if (bound != null) {
             glBindVertexArray(0);
             bound = null;
         }
+        return this;
+    }
+
+    public VAO forceUnbind() {
+        glBindVertexArray(0);
+        bound = null;
         return this;
     }
 
@@ -53,12 +69,7 @@ public class VAO {
         return new VAO();
     }
 
-    public static VAO getBound() {
-        return bound;
-    }
-
-    @Deprecated
-    public static void setBound(VAO vao) {
-        bound = vao;
+    public static VAO wrap(int id) {
+        return new VAO(id);
     }
 }

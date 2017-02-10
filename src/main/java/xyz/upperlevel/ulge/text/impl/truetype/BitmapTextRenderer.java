@@ -96,7 +96,7 @@ public class BitmapTextRenderer extends TextRenderer {
         this.texture = texture;
         this.chars = chars;
 
-        ImageContent content = texture.getImageContent().get();
+        ImageContent content = texture.getImageContent();
 
         width = content.getWidth();
         height = content.getHeight();
