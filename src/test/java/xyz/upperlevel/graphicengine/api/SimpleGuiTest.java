@@ -22,8 +22,8 @@ public class SimpleGuiTest extends SimpleGame {
 
     @Override
     public void postDraw() {
-        DefaultGuiRenderer.INSTANCE.program.bind();
-        gui.draw(DefaultGuiRenderer.INSTANCE);
+        DefaultGuiRenderer.$.getProgram().bind();
+        gui.draw(DefaultGuiRenderer.$);
     }
 
 

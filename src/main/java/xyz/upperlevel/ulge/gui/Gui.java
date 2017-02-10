@@ -8,6 +8,7 @@ import xyz.upperlevel.ulge.gui.events.GuiHoverEvent;
 import xyz.upperlevel.ulge.gui.events.GuiOpenEvent;
 
 public interface Gui {
+
     void init(GuiRenderer r);
 
     void draw(GuiRenderer r);

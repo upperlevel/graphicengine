@@ -1,11 +1,22 @@
 package xyz.upperlevel.ulge.gui;
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import xyz.upperlevel.ulge.events.EventManager;
 import xyz.upperlevel.ulge.events.impl.SimpleEventManager;
 
 public class BaseGui implements Gui {
+
+    @Getter
+    @Setter
+    @NonNull
     private Bounds bounds;
-    private final EventManager eventManager;
+
+    @Getter
+    @Setter
+    @NonNull
+    private EventManager eventManager;
 
     public BaseGui(Bounds bounds, EventManager eventManager) {
         this.bounds = bounds;
@@ -26,21 +37,8 @@ public class BaseGui implements Gui {
 
     @Override
     public void draw(GuiRenderer r) {
+        r.getTexture().bind();
         r.setBounds(bounds);
-    }
-
-    @Override
-    public EventManager getEventManager() {
-        return eventManager;
-    }
-
-    @Override
-    public Bounds getBounds() {
-        return bounds;
-    }
-
-    @Override
-    public void setBounds(Bounds bounds) {
-        this.bounds = bounds;
+        r.fill();
     }
 }
