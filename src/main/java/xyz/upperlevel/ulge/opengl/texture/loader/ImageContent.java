@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class ImageContent {
 
-    private static final ColorModel openglAlphaModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
+    private static final ColorModel OPENGL_ALPHA_MODEL = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
             new int[]{8, 8, 8, 8},
             true,
             false,
@@ -22,6 +22,7 @@ public class ImageContent {
 
     @Getter
     private int width, height;
+
     @Getter
     private ByteBuffer data;
 
@@ -111,7 +112,7 @@ public class ImageContent {
         //System.out.println("W: " + width + "->" + texWidth + ", H:" + height + "->" + texHeight);
 
         WritableRaster raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, texWidth, texHeight, 4, null);
-        BufferedImage texImage = new BufferedImage(openglAlphaModel, raster, false, new Hashtable());
+        BufferedImage texImage = new BufferedImage(OPENGL_ALPHA_MODEL, raster, false, new Hashtable());
 
         // copy the source image into the produced image
         Graphics2D g = (Graphics2D) texImage.getGraphics();
