@@ -24,7 +24,7 @@ public class SimpleGuiTest extends SimpleGame {
     @Override
     public void init() {
         gui = new Button(
-                Bounds.FULL,
+                new Bounds(0.25f, 0.25f, 0.5f, 0.5f),
                 Colors.AQUA,
                 Colors.YELLOW,
                 Colors.RED
@@ -37,6 +37,7 @@ public class SimpleGuiTest extends SimpleGame {
         gui.draw(DefaultGuiRenderer.$);
 
         Vector2f position = cursorPos();
+        position.y = 1f - position.y;
         boolean click = mouse(MouseButton.LEFT);
 
         if (gui.getBounds().isInside(position)) {
@@ -48,6 +49,7 @@ public class SimpleGuiTest extends SimpleGame {
                 gui.onHover(position);
             }
             if (click != oldClick) {
+                System.out.println(position.x + ", " + position.y);
                 if(click)
                     gui.onClickBegin(position);
                 else

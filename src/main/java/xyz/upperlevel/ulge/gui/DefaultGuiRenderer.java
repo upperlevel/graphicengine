@@ -26,7 +26,7 @@ public class DefaultGuiRenderer extends GuiRenderer {
     }
 
     public void setBounds(Bounds bounds) {
-        uBounds.set(bounds.minX, bounds.minY, bounds.maxX, bounds.maxY);
+        uBounds.set(bounds.minX, bounds.minY, bounds.maxX - bounds.minX, bounds.maxY - bounds.minY);
     }
 
     @Override
