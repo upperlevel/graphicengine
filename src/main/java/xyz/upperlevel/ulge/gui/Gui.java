@@ -2,10 +2,7 @@ package xyz.upperlevel.ulge.gui;
 
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.events.EventManager;
-import xyz.upperlevel.ulge.gui.events.GuiClickEvent;
-import xyz.upperlevel.ulge.gui.events.GuiCloseEvent;
-import xyz.upperlevel.ulge.gui.events.GuiHoverEvent;
-import xyz.upperlevel.ulge.gui.events.GuiOpenEvent;
+import xyz.upperlevel.ulge.gui.events.*;
 
 public interface Gui {
 
@@ -29,12 +26,24 @@ public interface Gui {
         return getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.END));
     }
 
+    default boolean onMouseEnter(Vector2f enterPos) {
+        return getEventManager().call(new GuiMouseEnterEvent(this, enterPos));
+    }
+
+    default boolean onMouseExit(Vector2f lastPos) {
+        return getEventManager().call(new GuiMouseExitEvent(this, lastPos));
+    }
+
     default boolean onOpen() {
         return getEventManager().call(new GuiOpenEvent(this));
     }
 
     default boolean onClose() {
         return getEventManager().call(new GuiCloseEvent(this));
+    }
+
+    default boolean onChange(Gui gui) {
+        return getEventManager().call(new GuiChangeEvent(this, gui));
     }
 
     EventManager getEventManager();

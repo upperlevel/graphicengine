@@ -50,21 +50,31 @@ public abstract class GuiRenderer {
     @NonNull
     private Program program;
 
-    @Getter
-    private Texture2D texture = Texture2D.NULL;
-
     public GuiRenderer(Program program) {
         Objects.requireNonNull(program, "program");
         this.program = program;
     }
+    public abstract void setColor(Color color);
+
+    public abstract Bounds getAbsoluteBounds();
+
+    public void resetBounds() {
+        setBounds(getAbsoluteBounds());
+    }
 
     public abstract void setBounds(Bounds bounds);
 
-    public abstract void setColor(Color color);
-
-    public void setTexture(Texture2D texture) {
-        this.texture = texture != null ? texture : Texture2D.NULL;
+    public void pushAndSetBounds(Bounds bounds) {
+        setBounds(pushBounds(bounds));
     }
+
+    public abstract Bounds pushBounds(Bounds bounds);
+
+    public abstract void popBounds();
+
+    public abstract boolean isBoundsStackEmpty();
+
+    public abstract void setTexture(Texture2D texture);
 
     public abstract void setDepth(float depth);
 

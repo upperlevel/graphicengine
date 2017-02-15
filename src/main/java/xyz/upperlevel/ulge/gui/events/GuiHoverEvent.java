@@ -14,4 +14,12 @@ public class GuiHoverEvent extends GuiEvent {
     public Vector2f getPos() {
         return pos == null ? null : new Vector2f(pos);
     }
+
+    public float getX() {
+        return pos.x;
+    }
+
+    public float getY() {
+        return pos.y;
+    }
 }

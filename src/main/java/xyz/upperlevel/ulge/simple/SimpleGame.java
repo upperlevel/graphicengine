@@ -6,6 +6,7 @@ import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.KeyChangeEvent;
 import xyz.upperlevel.ulge.window.event.WindowEventHandler;
 import xyz.upperlevel.ulge.window.event.action.Action;
+import xyz.upperlevel.ulge.window.event.button.MouseButton;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
 import java.util.Arrays;
@@ -179,7 +180,9 @@ public class SimpleGame {
         return window.getCursorPosition();
     }
 
-
+    public boolean mouse(MouseButton button) {
+        return window.getMouseButton(button);
+    }
 
     private void checkPreWindowState() {
         if(window != null)

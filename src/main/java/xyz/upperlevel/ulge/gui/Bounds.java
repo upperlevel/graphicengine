@@ -55,4 +55,16 @@ public class Bounds {
                 maxY + y
         );
     }
+
+    public Bounds shrink(Bounds other) {
+        float dx = maxX - minX;
+        float dy = maxY - minY;
+
+        return new Bounds(
+                dx * other.minX,
+                dy * other.minY,
+                dx * other.maxX,
+                dy * other.maxY
+        );
+    }
 }

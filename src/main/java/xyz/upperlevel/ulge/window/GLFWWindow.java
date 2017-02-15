@@ -5,6 +5,8 @@ import lombok.NonNull;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWVidMode;
+import xyz.upperlevel.ulge.window.event.button.GLFWMouseButton;
+import xyz.upperlevel.ulge.window.event.button.MouseButton;
 import xyz.upperlevel.ulge.window.event.key.GLFWKey;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
@@ -105,6 +107,11 @@ public class GLFWWindow extends GLWindow {
         DoubleBuffer x = BufferUtils.createDoubleBuffer(1), y = BufferUtils.createDoubleBuffer(1);
         glfwGetCursorPos(id, x, y);
         return new Vector2f((float)x.get()/getWidth(), (float)y.get()/getHeight());
+    }
+
+    @Override
+    public boolean getMouseButton(MouseButton button) {
+        return glfwGetMouseButton(id, GLFWMouseButton.toGlfw(button)) == GLFW_PRESS;
     }
 
     @Override

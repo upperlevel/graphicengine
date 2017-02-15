@@ -15,14 +15,14 @@ public class GLFWMouseButton {
     public static int[] toGlfwMapping = new int[MouseButton.length()];
 
     static {
-        register(BUTTON_1, GLFW_MOUSE_BUTTON_1);
-        register(BUTTON_2, GLFW_MOUSE_BUTTON_2);
-        register(BUTTON_3, GLFW_MOUSE_BUTTON_3);
+        //register(BUTTON_1, GLFW_MOUSE_BUTTON_1); LEFT
+        //register(BUTTON_2, GLFW_MOUSE_BUTTON_2); RIGHT
+        //register(BUTTON_3, GLFW_MOUSE_BUTTON_3); MIDDLE
         register(BUTTON_4, GLFW_MOUSE_BUTTON_4);
         register(BUTTON_5, GLFW_MOUSE_BUTTON_5);
         register(BUTTON_6, GLFW_MOUSE_BUTTON_6);
         register(BUTTON_7, GLFW_MOUSE_BUTTON_7);
-        register(BUTTON_8, GLFW_MOUSE_BUTTON_8);
+        //register(BUTTON_8, GLFW_MOUSE_BUTTON_8); LAST
         register(LAST, GLFW_MOUSE_BUTTON_LAST);
         register(LEFT, GLFW_MOUSE_BUTTON_LEFT);
         register(RIGHT, GLFW_MOUSE_BUTTON_RIGHT);

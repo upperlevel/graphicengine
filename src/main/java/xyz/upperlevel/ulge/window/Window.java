@@ -2,6 +2,7 @@ package xyz.upperlevel.ulge.window;
 
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.window.event.WindowEventHandler;
+import xyz.upperlevel.ulge.window.event.button.MouseButton;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
 public interface Window {
@@ -45,6 +46,8 @@ public interface Window {
     boolean isCursorDisabled();
 
     void disableCursor();
+
+    boolean getMouseButton(MouseButton button);
 
     void iconify();
 

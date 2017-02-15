@@ -4,11 +4,17 @@ import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.util.Color;
 
-public class DefaultGuiRenderer extends GuiRenderer {
+import java.util.LinkedList;
+import java.util.Queue;
 
+public class DefaultGuiRenderer extends GuiRenderer {
     public static final DefaultGuiRenderer $ = new DefaultGuiRenderer();
 
     private Uniform uBounds, uColor, uDepth;
+
+    private Queue<Bounds> boundsStack = new LinkedList<>();
+
+    private Bounds current = Bounds.FULL;
 
     public DefaultGuiRenderer() {
         super(createProgram());
@@ -19,7 +25,6 @@ public class DefaultGuiRenderer extends GuiRenderer {
         uDepth  = checkUniform(u.get("depth") , "depth");
     }
 
-    @Override
     public void setBounds(Bounds bounds) {
         uBounds.set(bounds.minX, bounds.minY, bounds.maxX, bounds.maxY);
     }
@@ -27,6 +32,42 @@ public class DefaultGuiRenderer extends GuiRenderer {
     @Override
     public void setColor(Color color) {
         uColor.set(color);
+    }
+
+    @Override
+    public Bounds getAbsoluteBounds() {
+        return current;
+    }
+
+    @Override
+    public Bounds pushBounds(Bounds bounds) {
+        if(boundsStack.isEmpty()) {
+            current = bounds;
+            boundsStack.add(bounds);
+        } else {
+            Bounds abs = bounds.shrink(current.shrink(bounds));
+            boundsStack.add(abs);
+            current = abs;
+        }
+        return current;
+    }
+
+    @Override
+    public void popBounds() {
+        if(boundsStack.poll() == null)
+            throw new IllegalStateException("Trying to pop from an empty bounds stack!");
+        else
+            current = boundsStack.peek();
+    }
+
+    @Override
+    public boolean isBoundsStackEmpty() {
+        return boundsStack.isEmpty();
+    }
+
+    @Override
+    public void setTexture(Texture2D texture) {
+        texture.bind();
     }
 
     @Override

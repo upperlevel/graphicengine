@@ -7,6 +7,7 @@ import org.joml.Vector2f;
 import xyz.upperlevel.ulge.gui.BaseGui;
 import xyz.upperlevel.ulge.gui.Bounds;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
+import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.util.Colors;
 
@@ -16,15 +17,16 @@ public class Button extends BaseGui {
     @Setter
     @NonNull
     private Color
-            color      = Colors.WHITE,
-            hoverColor = Colors.WHITE,
-            clickColor = Colors.WHITE;
+            defColor      = Colors.WHITE,
+            enterColor = Colors.AQUA,
+            hoverColor = Colors.BLUE,
+            clickColor = Colors.BLACK;
 
-    private boolean hover, click;
+    private boolean hover, click, mouse;
 
     public Button(Bounds bounds, Color color, Color hoverColor, Color clickColor) {
         super(bounds);
-        this.color      = color;
+        this.defColor   = color;
         this.hoverColor = hoverColor;
         this.clickColor = clickColor;
     }
@@ -32,8 +34,23 @@ public class Button extends BaseGui {
     @Override
     public boolean onHover(Vector2f pos) {
         if (super.onHover(pos)) {
-            System.out.println("---> " + getBounds().isInside(pos));
-            hover = getBounds().isInside(pos) && pos != null;
+            hover = true;
+            return true;
+        } else return false;
+    }
+
+    @Override
+    public boolean onMouseEnter(Vector2f pos) {
+        if(super.onMouseExit(pos)) {
+            mouse = true;
+            return true;
+        } else return false;
+    }
+
+    @Override
+    public boolean onMouseExit(Vector2f lastPos) {
+        if(super.onMouseExit(lastPos)) {
+            mouse = false;
             return true;
         } else return false;
     }
@@ -55,7 +72,21 @@ public class Button extends BaseGui {
     }
 
     @Override
-    protected void onPreDraw(GuiRenderer renderer) {
-        renderer.setColor(click ? clickColor : (hover ? hoverColor : color));
+    public void render(GuiRenderer renderer) {
+        renderer.setTexture(Texture2D.NULL);
+
+        Color color;
+
+        if(!mouse)
+            color = this.defColor;
+        else if(click)
+            color = this.clickColor;
+        else if(hover)
+            color = this.hoverColor;
+        else
+            color = enterColor;
+
+        renderer.setColor(color);
+        renderer.fill();
     }
 }

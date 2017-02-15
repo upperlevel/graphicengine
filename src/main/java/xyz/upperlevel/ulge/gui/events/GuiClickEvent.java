@@ -20,6 +20,14 @@ public class GuiClickEvent extends GuiEvent {
         return pos == null ? null : new Vector2f(pos);
     }
 
+    public float getX() {
+        return pos.x;
+    }
+
+    public float getY() {
+        return pos.y;
+    }
+
     public enum Type {
         BEGIN, DRAG, END
     }

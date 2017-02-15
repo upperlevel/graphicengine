@@ -35,13 +35,12 @@ public abstract class BaseGui implements Gui {
     public void init(GuiRenderer renderer) {
     }
 
-    protected abstract void onPreDraw(GuiRenderer renderer);
-
     @Override
     public void draw(GuiRenderer renderer) {
-        renderer.getTexture().bind();
-        renderer.setBounds(bounds);
-        onPreDraw(renderer);
-        renderer.fill();
+        renderer.pushAndSetBounds(bounds);
+        render(renderer);
+        renderer.popBounds();
     }
+
+    public abstract void render(GuiRenderer renderer);
 }
