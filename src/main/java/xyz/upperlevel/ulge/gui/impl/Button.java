@@ -17,7 +17,7 @@ public class Button extends BaseGui {
     @Setter
     @NonNull
     private Color
-            defColor      = Colors.WHITE,
+            defColor   = Colors.WHITE,
             enterColor = Colors.AQUA,
             hoverColor = Colors.BLUE,
             clickColor = Colors.BLACK;
@@ -32,8 +32,8 @@ public class Button extends BaseGui {
     }
 
     @Override
-    public boolean onHover(Vector2f pos) {
-        if (super.onHover(pos)) {
+    public boolean onMouseMove(Vector2f pos) {
+        if (super.onMouseMove(pos)) {
             hover = true;
             return true;
         } else return false;
@@ -41,7 +41,7 @@ public class Button extends BaseGui {
 
     @Override
     public boolean onMouseEnter(Vector2f pos) {
-        if(super.onMouseExit(pos)) {
+        if(super.onMouseEnter(pos)) {
             mouse = true;
             return true;
         } else return false;

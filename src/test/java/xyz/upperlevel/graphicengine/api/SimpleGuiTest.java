@@ -5,9 +5,12 @@ import xyz.upperlevel.ulge.gui.Bounds;
 import xyz.upperlevel.ulge.gui.DefaultGuiRenderer;
 import xyz.upperlevel.ulge.gui.Gui;
 import xyz.upperlevel.ulge.gui.impl.Button;
+import xyz.upperlevel.ulge.gui.impl.SingletonContainer;
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.util.Colors;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
+
+import static xyz.upperlevel.ulge.gui.Bounds.isNormal;
 
 public class SimpleGuiTest extends SimpleGame {
 
@@ -16,6 +19,7 @@ public class SimpleGuiTest extends SimpleGame {
     private Vector2f lastPos = null;
     private boolean oldClick;
 
+
     @Override
     public void config() {
         vsync(false);
@@ -23,11 +27,14 @@ public class SimpleGuiTest extends SimpleGame {
 
     @Override
     public void init() {
-        gui = new Button(
-                new Bounds(0.25f, 0.25f, 0.5f, 0.5f),
-                Colors.AQUA,
-                Colors.YELLOW,
-                Colors.RED
+        gui = new SingletonContainer(
+                new Button(
+                        new Bounds(0f, 0f, 0.5f, 0.5f),
+                        Colors.AQUA,
+                        Colors.YELLOW,
+                        Colors.RED
+                ),
+                new Bounds(0.5f, 0.5f, 1f, 1f)
         );
     }
 
@@ -40,20 +47,22 @@ public class SimpleGuiTest extends SimpleGame {
         position.y = 1f - position.y;
         boolean click = mouse(MouseButton.LEFT);
 
-        if (gui.getBounds().isInside(position)) {
-            if(!position.equals(lastPos)) {
-                if(lastPos == null)
-                    gui.onMouseEnter(position);
+        Vector2f rel = gui.getBounds().relative(position, new Vector2f());
 
-                lastPos = position;
-                gui.onHover(position);
+        if (isNormal(rel)) {
+            if(!rel.equals(lastPos)) {
+                if(lastPos == null)
+                    gui.onMouseEnter(rel);
+
+                lastPos = rel;
+                gui.onMouseMove(rel);
             }
             if (click != oldClick) {
                 System.out.println(position.x + ", " + position.y);
                 if(click)
-                    gui.onClickBegin(position);
+                    gui.onClickBegin(rel);
                 else
-                    gui.onClickEnd(position);
+                    gui.onClickEnd(rel);
                 oldClick = click;
             }
         } else {

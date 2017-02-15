@@ -45,7 +45,7 @@ public class DefaultGuiRenderer extends GuiRenderer {
             current = bounds;
             boundsStack.add(bounds);
         } else {
-            Bounds abs = bounds.shrink(current.shrink(bounds));
+            Bounds abs = current.shrink(bounds);
             boundsStack.add(abs);
             current = abs;
         }

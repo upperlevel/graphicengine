@@ -10,16 +10,12 @@ public interface Gui {
 
     void draw(GuiRenderer renderer);
 
-    default boolean onHover(Vector2f position) {
-        return getEventManager().call(new GuiHoverEvent(this, position));
+    default boolean onMouseMove(Vector2f position) {
+        return getEventManager().call(new GuiMouseMoveEvent(this, position));
     }
 
     default boolean onClickBegin(Vector2f position) {
         return getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.BEGIN));
-    }
-
-    default boolean onClickDrag(Vector2f position) {
-        return getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.DRAG));
     }
 
     default boolean onClickEnd(Vector2f position) {
