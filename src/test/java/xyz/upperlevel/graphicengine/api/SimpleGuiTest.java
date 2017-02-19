@@ -58,7 +58,7 @@ public class SimpleGuiTest extends SimpleGame {
                 gui.onMouseMove(rel);
             }
             if (click != oldClick) {
-                System.out.println(position.x + ", " + position.y);
+                //System.out.println(position.x + ", " + position.y);
                 if(click)
                     gui.onClickBegin(rel);
                 else

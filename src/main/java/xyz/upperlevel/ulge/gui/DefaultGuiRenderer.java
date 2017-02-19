@@ -10,7 +10,7 @@ import java.util.Queue;
 public class DefaultGuiRenderer extends GuiRenderer {
     public static final DefaultGuiRenderer $ = new DefaultGuiRenderer();
 
-    private Uniform uBounds, uColor, uDepth;
+    private Uniform uBounds, uColor, uDepth, uSize;
 
     private Queue<Bounds> boundsStack = new LinkedList<>();
 
@@ -21,8 +21,9 @@ public class DefaultGuiRenderer extends GuiRenderer {
 
         Uniformer u = getProgram().uniformer;
         uBounds = checkUniform(u.get("bounds"), "bounds");
-        uColor  = checkUniform(u.get("col")   , "col");
-        uDepth  = checkUniform(u.get("depth") , "depth");
+        uColor  = checkUniform(u.get("col")   , "col"   );
+        uDepth  = checkUniform(u.get("depth") , "depth" );
+        uSize   = checkUniform(u.get("size") ,  "size"  );
     }
 
     public void setBounds(Bounds bounds) {
@@ -73,6 +74,11 @@ public class DefaultGuiRenderer extends GuiRenderer {
     @Override
     public void setDepth(float depth) {
         uDepth.set(depth);
+    }
+
+    @Override
+    public void setSize(float w, float h) {
+        uSize.set(w, h);
     }
 
     private static Program createProgram() {
