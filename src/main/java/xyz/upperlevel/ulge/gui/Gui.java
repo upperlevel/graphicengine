@@ -1,8 +1,8 @@
 package xyz.upperlevel.ulge.gui;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.ulge.events.EventManager;
 import xyz.upperlevel.ulge.gui.events.*;
+import xyz.upperlevel.utils.event.EventManager;
 
 public interface Gui {
 

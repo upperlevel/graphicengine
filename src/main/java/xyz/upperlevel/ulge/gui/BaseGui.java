@@ -3,8 +3,8 @@ package xyz.upperlevel.ulge.gui;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import xyz.upperlevel.ulge.events.EventManager;
-import xyz.upperlevel.ulge.events.impl.SimpleEventManager;
+import xyz.upperlevel.utils.event.EventManager;
+import xyz.upperlevel.utils.event.impl.SimpleEventManager;
 
 public abstract class BaseGui implements Gui {
 

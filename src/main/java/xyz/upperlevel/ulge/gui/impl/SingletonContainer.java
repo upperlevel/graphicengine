@@ -1,10 +1,10 @@
 package xyz.upperlevel.ulge.gui.impl;
 
 import lombok.Getter;
-import xyz.upperlevel.ulge.events.EventManager;
-import xyz.upperlevel.ulge.events.impl.SimpleEventManager;
 import xyz.upperlevel.ulge.gui.Bounds;
 import xyz.upperlevel.ulge.gui.Gui;
+import xyz.upperlevel.utils.event.EventManager;
+import xyz.upperlevel.utils.event.impl.SimpleEventManager;
 
 import java.util.Collections;
 import java.util.Set;
