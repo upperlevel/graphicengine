@@ -3,6 +3,7 @@ package xyz.upperlevel.ulge.gui;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.joml.Vector2f;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.Program;
@@ -77,6 +78,21 @@ public abstract class GuiRenderer {
     public abstract void setTexture(Texture2D texture);
 
     public abstract void setDepth(float depth);
+
+    public void setSize(Vector2f size) {
+        setSize(size.x, size.y);
+    }
+
+    public abstract void setSize(float w, float h);
+
+    public void fill(Vector2f size) {
+        fill(size.x, size.y);
+    }
+
+    public void fill(float x, float y) {
+        setSize(x, y);
+        fill();
+    }
 
     public void fill() {
         fillVao.bind();
