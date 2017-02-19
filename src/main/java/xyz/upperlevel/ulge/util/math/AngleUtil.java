@@ -9,7 +9,7 @@ public class AngleUtil {
     public static final double ROUND_ANGLE_DEG = 360;
     public static final double ROUND_ANGLE_RAD = 2 * Math.PI;
 
-    public static double normalizeDegAngle(double angle) {
+    public static double normalizeDegreesAngle(double angle) {
         return ((angle % ROUND_ANGLE_DEG) + ROUND_ANGLE_DEG) % ROUND_ANGLE_DEG;
     }
 
