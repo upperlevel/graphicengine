@@ -1,13 +1,11 @@
 package xyz.upperlevel.ulge.opengl.buffer;
 
 import lombok.Getter;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL32;
 
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL32.GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS;
 
-public enum FBOStatus {
+public enum FboStatus {
 
     COMPLETE(GL_FRAMEBUFFER_COMPLETE),
     UNDEFINED(GL_FRAMEBUFFER_UNDEFINED),
@@ -23,12 +21,12 @@ public enum FBOStatus {
     @Getter
     private int id;
 
-    FBOStatus(int id) {
+    FboStatus(int id) {
         this.id = id;
     }
 
-    public static FBOStatus getStatus(int id) {
-        for (FBOStatus status : values() )
+    public static FboStatus getStatus(int id) {
+        for (FboStatus status : values() )
             if (status.getId() == id)
                 return status;
         return null;

@@ -10,22 +10,22 @@ import java.nio.ShortBuffer;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.*;
 
-public class EBO {
+public class Ebo {
 
-    public static EBO bound;
+    public static Ebo bound;
 
     @Getter
     public final int id;
 
-    public EBO() {
+    public Ebo() {
         id = glGenBuffers();
     }
 
-    public EBO(int id) {
+    public Ebo(int id) {
         this.id = id;
     }
 
-    public EBO bind() {
+    public Ebo bind() {
         if (bound == null || bound.id != id) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
             bound = this;
@@ -33,13 +33,13 @@ public class EBO {
         return this;
     }
 
-    public EBO forceBind() {
+    public Ebo forceBind() {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
         bound = this;
         return this;
     }
 
-    public EBO unbind() {
+    public Ebo unbind() {
         if (bound != null) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             bound = null;
@@ -47,7 +47,7 @@ public class EBO {
         return this;
     }
 
-    public EBO forceUnbind() {
+    public Ebo forceUnbind() {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         bound = null;
         return this;
@@ -55,22 +55,22 @@ public class EBO {
 
     // loadData(byte)
 
-    public EBO loadData(byte[] elements, EBODataUsage dataUsage) {
+    public Ebo loadData(byte[] elements, EboDataUsage dataUsage) {
         loadData(elements, dataUsage.getId());
         return this;
     }
 
-    public EBO loadData(byte[] elements, int dataUsage) {
+    public Ebo loadData(byte[] elements, int dataUsage) {
         loadData(BufferUtil.createBuffer(elements), dataUsage);
         return this;
     }
 
-    public EBO loadData(ByteBuffer buffer, EBODataUsage dataUsage) {
+    public Ebo loadData(ByteBuffer buffer, EboDataUsage dataUsage) {
         loadData(buffer, dataUsage.getId());
         return this;
     }
 
-    public EBO loadData(ByteBuffer buffer, int dataUsage) {
+    public Ebo loadData(ByteBuffer buffer, int dataUsage) {
         bind();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, dataUsage);
         return this;
@@ -78,22 +78,22 @@ public class EBO {
 
     // loadData(short)
 
-    public EBO loadData(short[] elements, EBODataUsage dataUsage) {
+    public Ebo loadData(short[] elements, EboDataUsage dataUsage) {
         loadData(elements, dataUsage.getId());
         return this;
     }
 
-    public EBO loadData(short[] elements, int dataUsage) {
+    public Ebo loadData(short[] elements, int dataUsage) {
         loadData(BufferUtil.createBuffer(elements), dataUsage);
         return this;
     }
 
-    public EBO loadData(ShortBuffer buffer, EBODataUsage dataUsage) {
+    public Ebo loadData(ShortBuffer buffer, EboDataUsage dataUsage) {
         loadData(buffer, dataUsage.getId());
         return this;
     }
 
-    public EBO loadData(ShortBuffer buffer, int dataUsage) {
+    public Ebo loadData(ShortBuffer buffer, int dataUsage) {
         bind();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, dataUsage);
         return this;
@@ -101,22 +101,22 @@ public class EBO {
 
     // loadData(int)
 
-    public EBO loadData(int[] elements, EBODataUsage dataUsage) {
+    public Ebo loadData(int[] elements, EboDataUsage dataUsage) {
         loadData(elements, dataUsage.getId());
         return this;
     }
 
-    public EBO loadData(int[] elements, int dataUsage) {
+    public Ebo loadData(int[] elements, int dataUsage) {
         loadData(BufferUtil.createBuffer(elements), dataUsage);
         return this;
     }
 
-    public EBO loadData(IntBuffer buffer, EBODataUsage dataUsage) {
+    public Ebo loadData(IntBuffer buffer, EboDataUsage dataUsage) {
         loadData(buffer, dataUsage.getId());
         return this;
     }
 
-    public EBO loadData(IntBuffer buffer, int dataUsage) {
+    public Ebo loadData(IntBuffer buffer, int dataUsage) {
         bind();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, dataUsage);
         return this;
@@ -124,12 +124,12 @@ public class EBO {
 
     // updateData(byte)
 
-    public EBO updateData(int offset, byte[] elements) {
+    public Ebo updateData(int offset, byte[] elements) {
         updateData(offset, BufferUtil.createBuffer(elements));
         return this;
     }
 
-    public EBO updateData(int offset, ByteBuffer buffer) {
+    public Ebo updateData(int offset, ByteBuffer buffer) {
         bind();
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, buffer);
         return this;
@@ -137,12 +137,12 @@ public class EBO {
 
     // updateData(short)
 
-    public EBO updateData(int offset, short[] elements) {
+    public Ebo updateData(int offset, short[] elements) {
         updateData(offset, BufferUtil.createBuffer(elements));
         return this;
     }
 
-    public EBO updateData(int offset, ShortBuffer buffer) {
+    public Ebo updateData(int offset, ShortBuffer buffer) {
         bind();
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, buffer);
         return this;
@@ -150,32 +150,32 @@ public class EBO {
 
     // updateData(int)
 
-    public EBO updateData(int offset, int[] elements) {
+    public Ebo updateData(int offset, int[] elements) {
         updateData(offset, BufferUtil.createBuffer(elements));
         return this;
     }
 
-    public EBO updateData(int offset, IntBuffer buffer) {
+    public Ebo updateData(int offset, IntBuffer buffer) {
         bind();
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, buffer);
         return this;
     }
 
-    public EBO draw(int drawMode, int dataType, long elementsOffset, int elementsCount) {
+    public Ebo draw(int drawMode, int dataType, long elementsOffset, int elementsCount) {
         glDrawElements(drawMode, elementsCount, dataType, elementsOffset);
         return this;
     }
 
-    public EBO draw(DrawMode drawMode, DataType dataType, long elementsOffset, int elementsCount) {
+    public Ebo draw(DrawMode drawMode, DataType dataType, long elementsOffset, int elementsCount) {
         draw(drawMode.getId(), dataType.getId(), elementsOffset, elementsCount);
         return this;
     }
 
-    public static EBO generate() {
-        return new EBO();
+    public static Ebo generate() {
+        return new Ebo();
     }
 
-    public static EBO wrap(int id) {
-        return new EBO(id);
+    public static Ebo wrap(int id) {
+        return new Ebo(id);
     }
 }

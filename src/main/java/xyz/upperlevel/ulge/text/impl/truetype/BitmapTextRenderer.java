@@ -27,8 +27,8 @@ public class BitmapTextRenderer extends TextRenderer {
             1, 2, 3,
     };
 
-    public static final VAO vao;
-    public static final EBO ebo;
+    public static final Vao vao;
+    public static final Ebo ebo;
 
     public static Program standardProgram;
 
@@ -46,16 +46,16 @@ public class BitmapTextRenderer extends TextRenderer {
     protected Uniform charXLoc, charYLoc, charWidthLoc, charHeightLoc;
 
     static {
-        vao = new VAO();
+        vao = new Vao();
         vao.bind();
         {
 
-            ebo = new EBO();
-            ebo.loadData(INDICES, EBODataUsage.STATIC_DRAW);
+            ebo = new Ebo();
+            ebo.loadData(INDICES, EboDataUsage.STATIC_DRAW);
 
-            VBO vbo = new VBO();
+            Vbo vbo = new Vbo();
             vbo.bind();
-            vbo.loadData(VERTICES, VBODataUsage.STATIC_DRAW);
+            vbo.loadData(VERTICES, VboDataUsage.STATIC_DRAW);
             new VertexLinker(DataType.FLOAT)
                     .attrib(0, 2)
                     .setup();

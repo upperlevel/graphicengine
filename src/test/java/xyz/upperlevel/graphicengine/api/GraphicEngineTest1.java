@@ -5,7 +5,6 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
@@ -314,8 +313,8 @@ public class GraphicEngineTest1 {
                 .loadImage(TextureFormat.RGBA, specTexContent);
         TextureParameters.getDefault().setup();
 
-        VBO vbo = new VBO();
-        vbo.loadData(vert, VBODataUsage.STATIC_DRAW);
+        Vbo vbo = new Vbo();
+        vbo.loadData(vert, VboDataUsage.STATIC_DRAW);
         vbo.bind();
         new VertexLinker(FLOAT)
                 .attrib(uniformer.getAttribLocation("position"), 3)

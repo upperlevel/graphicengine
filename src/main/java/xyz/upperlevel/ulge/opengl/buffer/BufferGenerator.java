@@ -5,15 +5,15 @@ public final class BufferGenerator {
     private BufferGenerator() {
     }
 
-    public static VAO generateVAO() {
-        return VAO.generate();
+    public static Vao generateVAO() {
+        return Vao.generate();
     }
 
-    public static VBO generateVBO() {
-        return VBO.generate();
+    public static Vbo generateVBO() {
+        return Vbo.generate();
     }
 
-    public static EBO generateEBO() {
-        return EBO.generate();
+    public static Ebo generateEBO() {
+        return Ebo.generate();
     }
 }

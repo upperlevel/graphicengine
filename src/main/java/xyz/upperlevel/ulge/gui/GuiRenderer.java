@@ -16,20 +16,20 @@ import static org.lwjgl.opengl.GL11.*;
 
 public abstract class GuiRenderer {
 
-    public static final VAO fillVao;
+    public static final Vao fillVao;
 
     static {
-        fillVao = new VAO();
+        fillVao = new Vao();
         fillVao.bind();
         {
 
-            EBO ebo = new EBO();
+            Ebo ebo = new Ebo();
             ebo.loadData(new int[]{
                     0, 1, 2,
                     1, 2, 3
-            }, EBODataUsage.STATIC_DRAW);
+            }, EboDataUsage.STATIC_DRAW);
 
-            VBO vbo = new VBO();
+            Vbo vbo = new Vbo();
             vbo.bind();
             vbo.loadData(new float[]{
                     //Coords (x, y, z)
@@ -37,7 +37,7 @@ public abstract class GuiRenderer {
                     0.0f, 1.0f,
                     1.0f, 0.0f,
                     1.0f, 1.0f,
-            }, VBODataUsage.STATIC_DRAW);
+            }, VboDataUsage.STATIC_DRAW);
             new VertexLinker(DataType.FLOAT)
                     .attrib(0, 2)
                     .setup();
