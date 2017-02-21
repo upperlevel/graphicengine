@@ -3,5 +3,5 @@
 out vec4 display;
 
 void main() {
-    display = vec4(1f,0f,1f,1f);
+    display = vec4(1.0f,0.0f,1.0f,1.0f);
 }

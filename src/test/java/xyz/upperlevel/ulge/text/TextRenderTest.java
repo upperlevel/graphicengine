@@ -1,10 +1,7 @@
-package xyz.upperlevel.graphicengine.api;
+package xyz.upperlevel.ulge.text;
 
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.simple.SimpleGame;
-import xyz.upperlevel.ulge.text.ArraySuperText;
-import xyz.upperlevel.ulge.text.SuperText;
-import xyz.upperlevel.ulge.text.TextPiece;
 import xyz.upperlevel.ulge.text.TextRenderer.TextOrigin;
 import xyz.upperlevel.ulge.text.impl.truetype.BitmapTextRenderer;
 import xyz.upperlevel.ulge.util.Colors;
@@ -98,5 +95,7 @@ public class TextRenderTest extends SimpleGame {
 
     public static void main(String... args) {
         new TextRenderTest().launch();
+        System.out.println("EXIT!");
+        System.exit(0);
     }
 }

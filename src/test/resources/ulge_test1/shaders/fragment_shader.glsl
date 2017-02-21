@@ -102,8 +102,8 @@ void main()
     for (i = 0; i < pointLightsCount; i++)
         result += CalcPointLight(pointLights[i], viewDir);
 
-	float MAX_DIST = 10f;
+	float MAX_DIST = 10.0f;
 	float distance = length(viewPosition - FragmentPosition);
 	
-    gl_FragColor = vec4(result * (max(MAX_DIST - distance, 0.75f) / MAX_DIST), 1f);
+    gl_FragColor = vec4(result * (max(MAX_DIST - distance, 0.75f) / MAX_DIST), 1.0f);
 }

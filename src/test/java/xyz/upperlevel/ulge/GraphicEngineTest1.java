@@ -1,18 +1,17 @@
-package xyz.upperlevel.graphicengine.api;
+package xyz.upperlevel.ulge;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import xyz.upperlevel.ulge.opengl.DataType;
+import xyz.upperlevel.ulge.opengl.BaseOpenGLTest;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
-import xyz.upperlevel.ulge.opengl.texture.loader.ImageLoaderManager;
 import xyz.upperlevel.ulge.util.math.Camera;
 import xyz.upperlevel.ulge.window.GLFW;
 import xyz.upperlevel.ulge.window.Window;
@@ -64,7 +63,7 @@ public class GraphicEngineTest1 {
                     // diffuse
                     "vec3 norm = normalize(Normal);" +
                     "vec3 lightDirection = normalize(lightPosition-FragmentPosition);" +
-                    "float difference = max(dot(norm, lightDirection), 0.0);" +
+                    "float difference = max(dot(norm, lightDirection), 0.0f);" +
                     "vec3 diffuse = (difference * lightColor);" +
                     // specular
                     "float specStrength = 0.5f;" +
@@ -74,7 +73,7 @@ public class GraphicEngineTest1 {
                     "vec3 specular = specStrength * spec * lightColor;" +
                     // result
                     "vec3 result = (specular + diffuse + ambient) * color;" +
-                    "gl_FragColor = vec4(result, 1f);" +
+                    "gl_FragColor = vec4(result, 1.0f);" +
                     "}";
 
     public static final int WIDTH = 500;
@@ -301,10 +300,10 @@ public class GraphicEngineTest1 {
                         .add(0f, 0f, 0f, 0f, -1f, 0f)
                         .add(1f, 0f, 0f, 0f, -1f, 0f);*/
 
-        ImageLoaderManager tlm = ImageLoaderManager.DEFAULT;
         ImageContent diffTexContent, specTexContent;
-        diffTexContent = tlm.load(new File("C:/Users/Lorenzo/Desktop/textures/container2.png"));
-        specTexContent = tlm.load(new File("C:/Users/Lorenzo/Desktop/textures/container2_specular.png"));
+        final String off = "ulge_test1/textures/";
+        diffTexContent = ImageContent.fromResource(off + "container2.png"         , GraphicEngineTest1.class);
+        specTexContent = ImageContent.fromResource(off + "container2_specular.png", GraphicEngineTest1.class);
 
         Texture2D diffTex = new Texture2D()
                 .loadImage(TextureFormat.RGBA, diffTexContent);

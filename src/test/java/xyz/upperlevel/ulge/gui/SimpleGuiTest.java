@@ -1,9 +1,6 @@
-package xyz.upperlevel.graphicengine.api;
+package xyz.upperlevel.ulge.gui;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.ulge.gui.Bounds;
-import xyz.upperlevel.ulge.gui.DefaultGuiRenderer;
-import xyz.upperlevel.ulge.gui.Gui;
 import xyz.upperlevel.ulge.gui.impl.Button;
 import xyz.upperlevel.ulge.gui.impl.SingletonContainer;
 import xyz.upperlevel.ulge.simple.SimpleGame;

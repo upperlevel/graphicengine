@@ -3,9 +3,12 @@ package xyz.upperlevel.ulge.opengl.texture.loader;
 import lombok.Getter;
 import org.lwjgl.BufferUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Hashtable;
 import java.util.Objects;
@@ -129,5 +132,20 @@ public class ImageContent {
         }
         g.dispose();
         return texImage;
+    }
+
+    public static ImageContent fromStream(InputStream in) {
+        try {
+            return new ImageContent(
+                    ImageIO.read(in),
+                    false
+            );
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public static ImageContent fromResource(String path, Class clazz) {
+        return fromStream(clazz.getClassLoader().getResourceAsStream(path));
     }
 }
