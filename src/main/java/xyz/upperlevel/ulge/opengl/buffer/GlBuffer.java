@@ -6,5 +6,9 @@ public interface GlBuffer {
 
     GlBuffer unbind(int type);
 
+    GlBuffer bindCopyRead();
+
+    GlBuffer bindCopyWrite();
+
     void destroy();
 }

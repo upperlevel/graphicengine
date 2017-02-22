@@ -8,6 +8,8 @@ import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL31.GL_COPY_READ_BUFFER;
+import static org.lwjgl.opengl.GL31.GL_COPY_WRITE_BUFFER;
 
 public class Vbo implements GlBuffer {
 
@@ -49,6 +51,18 @@ public class Vbo implements GlBuffer {
     @Override
     public Vbo unbind(int type) {
         glBindBuffer(type, 0);
+        return this;
+    }
+
+    @Override
+    public GlBuffer bindCopyRead() {
+        bind(GL_COPY_READ_BUFFER);
+        return this;
+    }
+
+    @Override
+    public GlBuffer bindCopyWrite() {
+        bind(GL_COPY_WRITE_BUFFER);
         return this;
     }
 

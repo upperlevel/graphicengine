@@ -9,6 +9,8 @@ import java.nio.ShortBuffer;
 
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL31.GL_COPY_READ_BUFFER;
+import static org.lwjgl.opengl.GL31.GL_COPY_WRITE_BUFFER;
 
 public class Ebo implements GlBuffer {
 
@@ -55,6 +57,18 @@ public class Ebo implements GlBuffer {
     @Override
     public Ebo unbind(int type) {
         glBindBuffer(type, 0);
+        return this;
+    }
+
+    @Override
+    public GlBuffer bindCopyRead() {
+        bind(GL_COPY_READ_BUFFER);
+        return this;
+    }
+
+    @Override
+    public GlBuffer bindCopyWrite() {
+        bind(GL_COPY_WRITE_BUFFER);
         return this;
     }
 
