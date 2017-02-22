@@ -30,6 +30,10 @@ public class Vao {
         return this;
     }
 
+    public GlBuffer unbind(int type) {
+        return null;
+    }
+
     public Vao forceBind() {
         glBindVertexArray(id);
         bound = this;
