@@ -9,7 +9,7 @@ import java.nio.FloatBuffer;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.*;
 
-public class Vbo {
+public class Vbo implements GlBuffer {
 
     public static Vbo bound;
 
@@ -24,32 +24,53 @@ public class Vbo {
         this.id = id;
     }
 
+    @Override
+    public Vbo bind(int type) {
+        glBindBuffer(type, id);
+        return this;
+    }
+
+    private void recordBind() {
+        bind(GL_ARRAY_BUFFER);
+        bound = this;
+    }
+
     public Vbo bind() {
-        if (bound == null || bound.id != id) {
-            glBindBuffer(GL_ARRAY_BUFFER, id);
-            bound = this;
-        }
+        if (bound == null || bound.id == id)
+            recordBind();
         return this;
     }
 
     public Vbo forceBind() {
-        glBindBuffer(GL_ARRAY_BUFFER, id);
-        bound = this;
+        recordBind();
         return this;
     }
 
+    @Override
+    public Vbo unbind(int type) {
+        glBindBuffer(type, 0);
+        return this;
+    }
+
+    private void recordUnbind() {
+        unbind(GL_ARRAY_BUFFER);
+        bound = null;
+    }
+
     public Vbo unbind() {
-        if (bound != null) {
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            bound = null;
-        }
+        if (bound != null)
+            recordUnbind();
         return this;
     }
 
     public Vbo forceUnbind() {
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        bound = null;
+        recordUnbind();
         return this;
+    }
+
+    @Override
+    public void destroy() {
+        glDeleteBuffers(id);
     }
 
     // loadData(float)
@@ -132,10 +153,6 @@ public class Vbo {
     public Vbo draw(DrawMode drawMode, int startOffset, int verticesCount) {
         draw(drawMode.getId(), startOffset, verticesCount);
         return this;
-    }
-
-    public void destroy() {
-        GL15.glDeleteBuffers(id);
     }
 
     public static Vbo generate() {

@@ -10,7 +10,7 @@ import java.nio.ShortBuffer;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.*;
 
-public class Ebo {
+public class Ebo implements GlBuffer {
 
     public static Ebo bound;
 
@@ -25,32 +25,53 @@ public class Ebo {
         this.id = id;
     }
 
+    private void recordBind() {
+        bind(GL_ELEMENT_ARRAY_BUFFER);
+        bound = this;
+    }
+
+    @Override
+    public Ebo bind(int type) {
+        glBindBuffer(type, id);
+        return this;
+    }
+
     public Ebo bind() {
-        if (bound == null || bound.id != id) {
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-            bound = this;
-        }
+        if (bound == null || bound.id != id)
+            recordBind();
         return this;
     }
 
     public Ebo forceBind() {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-        bound = this;
+        recordBind();
+        return this;
+    }
+
+    private void recordUnbind() {
+        unbind(GL_ELEMENT_ARRAY_BUFFER);
+        bound = null;
+    }
+
+    @Override
+    public Ebo unbind(int type) {
+        glBindBuffer(type, 0);
         return this;
     }
 
     public Ebo unbind() {
-        if (bound != null) {
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-            bound = null;
-        }
+        if (bound != null && bound.id == id)
+            recordUnbind();
         return this;
     }
 
     public Ebo forceUnbind() {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        bound = null;
+        recordUnbind();
         return this;
+    }
+
+    @Override
+    public void destroy() {
+        glDeleteBuffers(id);
     }
 
     // loadData(byte)

@@ -1,7 +1,6 @@
 package xyz.upperlevel.ulge.opengl;
 
 import xyz.upperlevel.ulge.opengl.buffer.Ebo;
-import xyz.upperlevel.ulge.opengl.buffer.Fbo;
 import xyz.upperlevel.ulge.opengl.buffer.Vao;
 import xyz.upperlevel.ulge.opengl.buffer.Vbo;
 import xyz.upperlevel.ulge.opengl.shader.Program;
@@ -22,10 +21,6 @@ public final class BoundWatcher {
 
     public static Ebo getBoundEBO() {
         return Ebo.bound;
-    }
-
-    public static Fbo getBoundFBO() {
-        return Fbo.bound;
     }
 
     public static Program getBoundProgram() {
