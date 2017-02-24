@@ -3,6 +3,7 @@ package xyz.upperlevel.ulge.opengl.buffer;
 import lombok.Getter;
 import org.lwjgl.opengl.GL15;
 
+import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
@@ -61,8 +62,20 @@ public class Vbo implements GlBuffer {
     }
 
     @Override
+    public GlBuffer unbindCopyRead() {
+        unbind(GL_COPY_READ_BUFFER);
+        return this;
+    }
+
+    @Override
     public GlBuffer bindCopyWrite() {
         bind(GL_COPY_WRITE_BUFFER);
+        return this;
+    }
+
+    @Override
+    public GlBuffer unbindCopyWrite() {
+        unbind(GL_COPY_WRITE_BUFFER);
         return this;
     }
 
@@ -130,6 +143,19 @@ public class Vbo implements GlBuffer {
     public Vbo loadData(DoubleBuffer buffer, int usage) {
         bind();
         glBufferData(GL_ARRAY_BUFFER, buffer, usage);
+        return this;
+    }
+
+    // updateData(byte)
+
+    public Vbo updateData(int offset, byte[] vertices) {
+        updateData(offset, BufferUtil.createBuffer(vertices));
+        return this;
+    }
+
+    public Vbo updateData(int offset, ByteBuffer buffer) {
+        bind();
+        glBufferSubData(GL_ARRAY_BUFFER, offset, buffer);
         return this;
     }
 

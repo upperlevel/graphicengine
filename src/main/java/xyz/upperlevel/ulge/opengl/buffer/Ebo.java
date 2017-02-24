@@ -67,8 +67,20 @@ public class Ebo implements GlBuffer {
     }
 
     @Override
+    public GlBuffer unbindCopyRead() {
+        unbind(GL_COPY_READ_BUFFER);
+        return this;
+    }
+
+    @Override
     public GlBuffer bindCopyWrite() {
         bind(GL_COPY_WRITE_BUFFER);
+        return this;
+    }
+
+    @Override
+    public GlBuffer unbindCopyWrite() {
+        unbind(GL_COPY_WRITE_BUFFER);
         return this;
     }
 
