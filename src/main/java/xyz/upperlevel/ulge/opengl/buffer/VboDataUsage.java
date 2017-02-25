@@ -5,7 +5,7 @@ import lombok.Getter;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
-public enum EBODataUsage {
+public enum VboDataUsage {
 
     STATIC_DRAW (GL_STATIC_DRAW),
     DYNAMIC_DRAW(GL_DYNAMIC_DRAW);
@@ -13,7 +13,7 @@ public enum EBODataUsage {
     @Getter
     private int id;
 
-    EBODataUsage(int id) {
+    VboDataUsage(int id) {
         this.id = id;
     }
 }

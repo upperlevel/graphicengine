@@ -3,9 +3,9 @@ package xyz.upperlevel.ulge.simple.shapes;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.opengl.DataType;
-import xyz.upperlevel.ulge.opengl.buffer.VAO;
-import xyz.upperlevel.ulge.opengl.buffer.VBO;
-import xyz.upperlevel.ulge.opengl.buffer.VBODataUsage;
+import xyz.upperlevel.ulge.opengl.buffer.Vao;
+import xyz.upperlevel.ulge.opengl.buffer.Vbo;
+import xyz.upperlevel.ulge.opengl.buffer.VboDataUsage;
 import xyz.upperlevel.ulge.opengl.buffer.VertexLinker;
 import xyz.upperlevel.ulge.opengl.shader.Uniform;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 
 public class Circle extends SimpleRenderable{
-    public VAO vao;
+    public Vao vao;
 
 
     public Vector2f pos;
@@ -44,12 +44,12 @@ public class Circle extends SimpleRenderable{
     }
 
     private void initVerts(int segments) {
-        vao = new VAO();
+        vao = new Vao();
         vao.bind();
         {
-            VBO vbo = new VBO();
+            Vbo vbo = new Vbo();
             vbo.bind();
-            vbo.loadData(genVertices(segments), VBODataUsage.STATIC_DRAW);
+            vbo.loadData(genVertices(segments), VboDataUsage.STATIC_DRAW);
             new VertexLinker(DataType.FLOAT)
                     .attrib(0, 2)
                     .attrib(1, 2)
