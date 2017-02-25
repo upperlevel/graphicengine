@@ -4,6 +4,8 @@ import xyz.upperlevel.ulge.gui.impl.Button;
 import xyz.upperlevel.ulge.gui.impl.SingletonContainer;
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.util.Colors;
+import xyz.upperlevel.ulge.window.event.action.Action;
+import xyz.upperlevel.ulge.window.event.button.MouseButton;
 
 public class SimpleGuiTest extends SimpleGame {
 
@@ -28,6 +30,7 @@ public class SimpleGuiTest extends SimpleGame {
                 ),
                 new Bounds(0.5f, 0.5f, 1f, 1f)
         );
+        wrapper = new SimpleGuiWrapper(gui);
     }
 
     @Override
@@ -36,6 +39,16 @@ public class SimpleGuiTest extends SimpleGame {
         gui.draw(DefaultGuiRenderer.$);
 
         wrapper.move(cursorPos());
+    }
+
+    @Override
+    public void mouseChange(MouseButton button, Action action) {
+        if(button == MouseButton.LEFT) {
+            if(action == Action.PRESS)
+                wrapper.clickBegin(cursorPos());
+            else
+                wrapper.clickEnd(cursorPos());
+        }
     }
 
     public static void main(String... args) {
