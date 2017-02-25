@@ -7,22 +7,22 @@ import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 
-public class VAO {
+public class Vao {
 
-    public static VAO bound;
+    public static Vao bound;
 
     @Getter
     public final int id;
 
-    public VAO() {
+    public Vao() {
         id = glGenBuffers();
     }
 
-    public VAO(int id) {
+    public Vao(int id) {
         this.id = id;
     }
 
-    public VAO bind() {
+    public Vao bind() {
         if (bound == null || bound.id != id) {
             glBindVertexArray(id);
             bound = this;
@@ -30,13 +30,13 @@ public class VAO {
         return this;
     }
 
-    public VAO forceBind() {
+    public Vao forceBind() {
         glBindVertexArray(id);
         bound = this;
         return this;
     }
 
-    public VAO unbind() {
+    public Vao unbind() {
         if (bound != null) {
             glBindVertexArray(0);
             bound = null;
@@ -44,32 +44,32 @@ public class VAO {
         return this;
     }
 
-    public VAO forceUnbind() {
+    public Vao forceUnbind() {
         glBindVertexArray(0);
         bound = null;
         return this;
     }
 
-    public VAO destroy() {
+    public Vao destroy() {
         glDeleteVertexArrays(id);
         return this;
     }
 
-    public VAO draw(int drawMode, int startOffset, int verticesCount) {
+    public Vao draw(int drawMode, int startOffset, int verticesCount) {
         glDrawArrays(drawMode, startOffset, verticesCount);
         return this;
     }
 
-    public VAO draw(DrawMode drawMode, int startOffset, int verticesCount) {
+    public Vao draw(DrawMode drawMode, int startOffset, int verticesCount) {
         draw(drawMode.getId(), startOffset, verticesCount);
         return this;
     }
 
-    public static VAO generate() {
-        return new VAO();
+    public static Vao generate() {
+        return new Vao();
     }
 
-    public static VAO wrap(int id) {
-        return new VAO(id);
+    public static Vao wrap(int id) {
+        return new Vao(id);
     }
 }

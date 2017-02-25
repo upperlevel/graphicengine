@@ -1,4 +1,4 @@
-package xyz.upperlevel.graphicengine.api;
+package xyz.upperlevel.ulge.opengl;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;

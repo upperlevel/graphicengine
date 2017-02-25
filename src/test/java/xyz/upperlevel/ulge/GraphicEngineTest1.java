@@ -1,4 +1,4 @@
-package xyz.upperlevel.graphicengine.api;
+package xyz.upperlevel.ulge;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -160,7 +160,7 @@ public class GraphicEngineTest1 {
 
         // defines the standardProgram, attaches the shaders to him and enables it
         Program program = new Program();
-        ClassLoader res = BaseOpenGLTest.class.getClassLoader();
+        ClassLoader res = GraphicEngineTest1.class.getClassLoader();
         program.attach(ShaderUtil.load(ShaderType.VERTEX, res.getResourceAsStream("ulge_test1/shaders/vertex_shader.glsl")));
         program.attach(ShaderUtil.load(ShaderType.FRAGMENT, res.getResourceAsStream("ulge_test1/shaders/fragment_shader.glsl")));
         program.link();
@@ -314,8 +314,8 @@ public class GraphicEngineTest1 {
                 .loadImage(TextureFormat.RGBA, specTexContent);
         TextureParameters.getDefault().setup();
 
-        VBO vbo = new VBO();
-        vbo.loadData(vert, VBODataUsage.STATIC_DRAW);
+        Vbo vbo = new Vbo();
+        vbo.loadData(vert, VboDataUsage.STATIC_DRAW);
         vbo.bind();
         new VertexLinker(FLOAT)
                 .attrib(uniformer.getAttribLocation("position"), 3)

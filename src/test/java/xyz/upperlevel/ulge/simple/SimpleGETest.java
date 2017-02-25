@@ -1,6 +1,7 @@
-package xyz.upperlevel.graphicengine.api;
+package xyz.upperlevel.ulge.simple;
 
 import org.joml.Vector2f;
+import sun.java2d.pipe.SpanShapeRenderer;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
@@ -42,8 +43,7 @@ public class SimpleGETest {
                 SimpleColor.RED
         );*/
 
-        ImageContent c = UniversalImageLoader.INSTANCE.load(new File("cat.jpg"));
-
+        ImageContent c = ImageContent.fromResource("simple/cat.jpg", SimpleGETest.class);
         Texture2D tex = new Texture2D()
                 .loadImage(TextureFormat.RGBA, c);
         TextureParameters.getDefault().setup();

@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Square extends SimpleRenderable {
 
-    public static final VAO vao;
+    public static final Vao vao;
 
     public static final float vertices[] = {
             //Coords (x, y, z)     //TexCoords
@@ -30,16 +30,16 @@ public class Square extends SimpleRenderable {
     };
 
     static {
-        vao = new VAO();
+        vao = new Vao();
         vao.bind();
         {
 
-            EBO ebo = new EBO();
-            ebo.loadData(indices, EBODataUsage.STATIC_DRAW);
+            Ebo ebo = new Ebo();
+            ebo.loadData(indices, EboDataUsage.STATIC_DRAW);
 
-            VBO vbo = new VBO();
+            Vbo vbo = new Vbo();
             vbo.bind();
-            vbo.loadData(vertices, VBODataUsage.STATIC_DRAW);
+            vbo.loadData(vertices, VboDataUsage.STATIC_DRAW);
             new VertexLinker(DataType.FLOAT)
                     .attrib(0, 2)
                     .attrib(1, 2)
