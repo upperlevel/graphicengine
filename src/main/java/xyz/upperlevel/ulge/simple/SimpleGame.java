@@ -4,6 +4,7 @@ import org.joml.Vector2f;
 import xyz.upperlevel.ulge.window.GLFW;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.KeyChangeEvent;
+import xyz.upperlevel.ulge.window.event.MouseButtonChangeEvent;
 import xyz.upperlevel.ulge.window.event.WindowEventHandler;
 import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
@@ -41,6 +42,10 @@ public class SimpleGame {
         WindowEventHandler<KeyChangeEvent> keyChange = GLFW.events().KEY_CHANGE.inst();
         keyChange.register((window, key, action) -> keyChange(key, action));
         keyChange.apply(window);
+
+        WindowEventHandler<MouseButtonChangeEvent> mouseChange = GLFW.events().MOUSE_BUTTON_CHANGE.inst();
+        mouseChange.register((window, key, action) -> mouseChange(key, action));
+        mouseChange.apply(window);
 
         engine = new SimpleGraphicEngine(width, height);
 
@@ -194,6 +199,8 @@ public class SimpleGame {
     public void init(){}
 
     public void update(double delta){}
+
+    public void mouseChange(MouseButton button, Action action) {}
 
     public void keyChange(Key key, Action action) {
         if(key == Key.ESCAPE)

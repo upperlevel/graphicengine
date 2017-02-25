@@ -4,20 +4,19 @@ import org.joml.Vector2f;
 import xyz.upperlevel.ulge.gui.Bounds;
 import xyz.upperlevel.ulge.gui.DefaultGuiRenderer;
 import xyz.upperlevel.ulge.gui.Gui;
+import xyz.upperlevel.ulge.gui.SimpleGuiWrapper;
 import xyz.upperlevel.ulge.gui.impl.Button;
 import xyz.upperlevel.ulge.gui.impl.SingletonContainer;
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.util.Colors;
+import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
-
-import static xyz.upperlevel.ulge.gui.Bounds.isNormal;
 
 public class SimpleGuiTest extends SimpleGame {
 
     private Gui gui;
 
-    private Vector2f lastPos = null;
-    private boolean oldClick;
+    private SimpleGuiWrapper wrapper;
 
 
     @Override
@@ -36,20 +35,37 @@ public class SimpleGuiTest extends SimpleGame {
                 ),
                 new Bounds(0.5f, 0.5f, 1f, 1f)
         );
+        wrapper = new SimpleGuiWrapper(gui);
     }
+
+    @Override
+    public void mouseChange(MouseButton b, Action action) {
+        if(b == MouseButton.LEFT) {
+            if(action == Action.PRESS)
+                wrapper.clickBegin(cursorPos());
+            else
+                wrapper.clickEnd(cursorPos());
+        }
+    }
+
+    @Override
+    public Vector2f cursorPos() {
+        Vector2f pos = super.cursorPos();
+        pos.y = 1f - pos.y;
+        return pos;
+    }
+
 
     @Override
     public void postDraw() {
         DefaultGuiRenderer.$.getProgram().bind();
         gui.draw(DefaultGuiRenderer.$);
 
-        Vector2f position = cursorPos();
-        position.y = 1f - position.y;
-        boolean click = mouse(MouseButton.LEFT);
+        wrapper.move(cursorPos());
 
-        Vector2f rel = gui.getBounds().relative(position, new Vector2f());
 
-        if (isNormal(rel)) {
+
+        /*if (isNormal(rel)) {
             if(!rel.equals(lastPos)) {
                 if(lastPos == null)
                     gui.onMouseEnter(rel);
@@ -70,7 +86,7 @@ public class SimpleGuiTest extends SimpleGame {
                 gui.onMouseExit(lastPos);
                 lastPos = null;
             }
-        }
+        }*/
     }
 
     public static void main(String... args) {

@@ -1,6 +1,7 @@
 package xyz.upperlevel.ulge.gui.events;
 
 import lombok.Getter;
+import lombok.NonNull;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.gui.Gui;
 
@@ -10,14 +11,14 @@ public class GuiClickEvent extends GuiEvent {
     private final Type type;
 
 
-    public GuiClickEvent(Gui gui, Vector2f pos, Type type) {
+    public GuiClickEvent(Gui gui, @NonNull Vector2f pos, @NonNull Type type) {
         super(gui);
         this.pos = pos;
         this.type = type;
     }
 
     public Vector2f getPos() {
-        return pos == null ? null : new Vector2f(pos);
+        return new Vector2f(pos);
     }
 
     public float getX() {
@@ -29,6 +30,6 @@ public class GuiClickEvent extends GuiEvent {
     }
 
     public enum Type {
-        BEGIN, DRAG, END
+        BEGIN, END
     }
 }

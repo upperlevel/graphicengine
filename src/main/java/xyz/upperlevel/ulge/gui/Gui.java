@@ -10,8 +10,8 @@ public interface Gui {
 
     void draw(GuiRenderer renderer);
 
-    default boolean onMouseMove(Vector2f position) {
-        return getEventManager().call(new GuiMouseMoveEvent(this, position));
+    default boolean onMouseMove(Vector2f lastPos, Vector2f pos) {
+        return getEventManager().call(new GuiMouseMoveEvent(this, lastPos, pos));
     }
 
     default boolean onClickBegin(Vector2f position) {
@@ -40,6 +40,10 @@ public interface Gui {
 
     default boolean onChange(Gui gui) {
         return getEventManager().call(new GuiChangeEvent(this, gui));
+    }
+
+    default boolean onDrag(Vector2f lastPos, Vector2f newPos) {
+        return getEventManager().call(new GuiDragEvent(this, lastPos, newPos));
     }
 
     EventManager getEventManager();

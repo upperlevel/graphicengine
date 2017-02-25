@@ -32,8 +32,8 @@ public class Button extends BaseGui {
     }
 
     @Override
-    public boolean onMouseMove(Vector2f pos) {
-        if (super.onMouseMove(pos)) {
+    public boolean onMouseMove(Vector2f lastPos, Vector2f pos) {
+        if (super.onMouseMove(lastPos, pos)) {
             hover = true;
             return true;
         } else return false;

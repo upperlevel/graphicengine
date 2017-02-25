@@ -36,16 +36,16 @@ public abstract class Container extends BaseGui {
 
 
     @Override
-    public boolean onMouseMove(Vector2f position) {
-        if(!super.onMouseMove(position))
+    public boolean onMouseMove(Vector2f lastPos, Vector2f pos) {
+        if(!super.onMouseMove(lastPos, pos))
             return false;
         for(GuiData gui : guis()) {
-            Vector2f rel = gui.rel(position);
+            Vector2f rel = gui.rel(pos);
             if(isNormal(rel)) {
                 if(gui.lasPos == null)
                     if(!gui.handle.onMouseEnter(rel))
                         return false;
-                if(!gui.handle.onMouseMove(rel))
+                if(!gui.handle.onMouseMove(lastPos, pos))
                     return false;
                 gui.lasPos = rel;
             } else if(gui.lasPos != null) {
