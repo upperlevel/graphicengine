@@ -31,7 +31,7 @@ public class SimpleGuiTest extends SimpleGame {
                         Colors.YELLOW,
                         Colors.RED
                 ),
-                new Bounds(0.5f, 0.5f, 1f, 1f)
+                new Bounds(0f, 0f, 0.5f, 0.5f)
         );
     }
 
@@ -41,7 +41,6 @@ public class SimpleGuiTest extends SimpleGame {
         gui.draw(DefaultGuiRenderer.$);
 
         Vector2f position = cursorPos();
-        position.y = 1f - position.y;
         boolean click = mouse(MouseButton.LEFT);
 
         Vector2f rel = gui.getBounds().relative(position, new Vector2f());
