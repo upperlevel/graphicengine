@@ -1,20 +1,14 @@
 package xyz.upperlevel.ulge.simple;
 
 import org.joml.Vector2f;
-import sun.java2d.pipe.SpanShapeRenderer;
-import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
-import xyz.upperlevel.ulge.opengl.texture.loader.UniversalImageLoader;
-import xyz.upperlevel.ulge.simple.SimpleGraphicEngine;
 import xyz.upperlevel.ulge.simple.shapes.Circle;
 import xyz.upperlevel.ulge.window.GLFW;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.key.Key;
-
-import java.io.File;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.opengl.GL11.GL_ALPHA;

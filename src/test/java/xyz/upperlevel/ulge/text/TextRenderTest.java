@@ -96,6 +96,5 @@ public class TextRenderTest extends SimpleGame {
     public static void main(String... args) {
         new TextRenderTest().launch();
         System.out.println("EXIT!");
-        System.exit(0);
     }
 }

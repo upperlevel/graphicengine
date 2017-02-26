@@ -80,6 +80,7 @@ public class Square extends SimpleRenderable {
 
     @Override
     public void init(Uniformer uniformer) {
+        super.init(uniformer);
         uTransform = uniformer.get("transform");
     }
 

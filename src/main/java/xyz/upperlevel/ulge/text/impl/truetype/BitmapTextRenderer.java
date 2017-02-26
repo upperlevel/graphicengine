@@ -33,7 +33,7 @@ public class BitmapTextRenderer extends TextRenderer {
     public static Program standardProgram;
 
 
-
+    @Getter
     protected final Texture2D texture;
     protected final Program program;
 

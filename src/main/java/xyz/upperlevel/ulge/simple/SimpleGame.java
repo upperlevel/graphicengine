@@ -18,7 +18,7 @@ import static org.lwjgl.glfw.GLFW.glfwGetTime;
 public class SimpleGame {
 
     private int width = 800, height = 500;
-    private String title = "ULGE";
+    private String title;
     private boolean vsync = true;
     private Window window;
 
@@ -28,6 +28,14 @@ public class SimpleGame {
     private double lastFrame = -1;
 
     private SimpleGraphicEngine engine;
+
+    public SimpleGame(String title) {
+        this.title = title;
+    }
+
+    public SimpleGame() {
+        this("ULGE");
+    }
 
 
 
