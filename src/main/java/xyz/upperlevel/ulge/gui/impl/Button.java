@@ -9,7 +9,6 @@ import xyz.upperlevel.ulge.gui.Bounds;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.util.Color;
-import xyz.upperlevel.ulge.util.Colors;
 
 public class Button extends BaseGui {
 
@@ -17,10 +16,10 @@ public class Button extends BaseGui {
     @Setter
     @NonNull
     private Color
-            defColor   = Colors.WHITE,
-            enterColor = Colors.AQUA,
-            hoverColor = Colors.BLUE,
-            clickColor = Colors.BLACK;
+            defColor   = Color.WHITE,
+            enterColor = Color.AQUA,
+            hoverColor = Color.BLUE,
+            clickColor = Color.BLACK;
 
     private boolean hover, click, mouse;
 

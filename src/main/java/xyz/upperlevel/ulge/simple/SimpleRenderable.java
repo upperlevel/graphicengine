@@ -4,7 +4,6 @@ import xyz.upperlevel.ulge.opengl.shader.Uniform;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.util.Color;
-import xyz.upperlevel.ulge.util.Colors;
 
 public abstract class SimpleRenderable implements Renderable {
     protected final Texture2D tex;
@@ -19,7 +18,7 @@ public abstract class SimpleRenderable implements Renderable {
 
     protected SimpleRenderable(Texture2D tex) {
         this.tex = tex;
-        this.color = Colors.WHITE;
+        this.color = Color.WHITE;
     }
 
     @Override

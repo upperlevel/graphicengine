@@ -4,7 +4,7 @@ import org.joml.Vector2f;
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.text.TextRenderer.TextOrigin;
 import xyz.upperlevel.ulge.text.impl.truetype.BitmapTextRenderer;
-import xyz.upperlevel.ulge.util.Colors;
+import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.util.FontUtil;
 import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.key.Key;
@@ -20,19 +20,19 @@ public class TextRenderTest extends SimpleGame {
     private long sum = 0, samples = 0;
 
     private SuperText text = new ArraySuperText(
-            new TextPiece("How").color(Colors.AQUA),
-            new TextPiece(" 'r").color(Colors.BLUE),
-            new TextPiece(" u").color(Colors.DARK_AQUA),
-            new TextPiece(" doing").color(Colors.YELLOW),
-            new TextPiece("?").color(Colors.DARK_PURPLE),
+            new TextPiece("How").color(Color.AQUA),
+            new TextPiece(" 'r").color(Color.BLUE),
+            new TextPiece(" u").color(Color.DARK_AQUA),
+            new TextPiece(" doing").color(Color.YELLOW),
+            new TextPiece("?").color(Color.DARK_PURPLE),
 
             new TextPiece("\n"),
 
-            new TextPiece("I'm fine thks").color(Colors.YELLOW),
+            new TextPiece("I'm fine thks").color(Color.YELLOW),
 
             new TextPiece("\n"),
 
-            new TextPiece("Third line!").color(Colors.RED)
+            new TextPiece("Third line!").color(Color.RED)
     );
 
     @Override

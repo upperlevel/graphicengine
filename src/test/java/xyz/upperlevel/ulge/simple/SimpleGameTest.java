@@ -2,7 +2,7 @@ package xyz.upperlevel.ulge.simple;
 
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.simple.shapes.Circle;
-import xyz.upperlevel.ulge.util.Colors;
+import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
 public class SimpleGameTest extends SimpleGame {
@@ -16,7 +16,7 @@ public class SimpleGameTest extends SimpleGame {
         circle = new Circle(
                 new Vector2f(10f, 10f),
                 new Vector2f(20f, 20f),
-                Colors.BLUE,
+                Color.BLUE,
                 20
         );
         register(circle);

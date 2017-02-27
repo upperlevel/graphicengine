@@ -3,7 +3,7 @@ package xyz.upperlevel.ulge.gui;
 import xyz.upperlevel.ulge.gui.impl.Button;
 import xyz.upperlevel.ulge.gui.impl.SingletonContainer;
 import xyz.upperlevel.ulge.simple.SimpleGame;
-import xyz.upperlevel.ulge.util.Colors;
+import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
 
@@ -24,9 +24,9 @@ public class SimpleGuiTest extends SimpleGame {
         gui = new SingletonContainer(
                 new Button(
                         new Bounds(0f, 0f, 0.5f, 0.5f),
-                        Colors.AQUA,
-                        Colors.YELLOW,
-                        Colors.RED
+                        Color.AQUA,
+                        Color.YELLOW,
+                        Color.RED
                 ),
                 new Bounds(0.5f, 0.5f, 1f, 1f)
         );
