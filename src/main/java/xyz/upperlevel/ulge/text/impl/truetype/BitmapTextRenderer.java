@@ -144,6 +144,8 @@ public class BitmapTextRenderer extends TextRenderer {
                 lineWidth += ch.ratio * scale;
             }
         }
+        if(size.x < lineWidth)
+            size.x = lineWidth;
         return size;
     }
 
@@ -151,7 +153,7 @@ public class BitmapTextRenderer extends TextRenderer {
     public Vector2f getSize(SuperText text, float scale) {
         Vector2f size = new Vector2f(0.0f, scale);
         float lineWidth = 0.0f;
-        for(TextPiece piece : text.asList()) {
+        for(TextPiece piece : text) {
             final int length = piece.text.length();
             for (int i = 0; i < length; i++) {
                 char c = piece.text.charAt(i);
@@ -168,11 +170,14 @@ public class BitmapTextRenderer extends TextRenderer {
                 }
             }
         }
+        if(size.x < lineWidth)
+            size.x = lineWidth;
 
         return size;
     }
 
-    public void drawText2D0(SuperText text, Vector2f pos, float distance, float scale) {
+    @Override
+    public void drawText2D(SuperText text, Vector2f pos, float distance, float scale) {
         program.bind();
         texture.bind();
 

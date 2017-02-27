@@ -13,26 +13,30 @@ import static java.awt.Font.SERIF;
 import static java.awt.Font.getFont;
 
 public class TextRenderTest extends SimpleGame {
+    public static final float scale = 0.2f;
+
     private BitmapTextRenderer renderer;
+
+    private CompiledText compiled;
 
     private TextOrigin origin = TextOrigin.CENTER;
 
     private long sum = 0, samples = 0;
 
-    private SuperText text = new ArraySuperText(
-            new TextPiece("How").color(Color.AQUA),
-            new TextPiece(" 'r").color(Color.BLUE),
-            new TextPiece(" u").color(Color.DARK_AQUA),
-            new TextPiece(" doing").color(Color.YELLOW),
-            new TextPiece("?").color(Color.DARK_PURPLE),
+    private SuperText text = SuperText.of(
+            TextPiece.of("How", Color.AQUA),
+            TextPiece.of(" 'r", Color.AQUA),
+            TextPiece.of(" u", Color.DARK_AQUA),
+            TextPiece.of(" doing", Color.YELLOW),
+            TextPiece.of("?", Color.DARK_PURPLE),
 
-            new TextPiece("\n"),
+            TextPiece.of("\n"),
 
-            new TextPiece("I'm fine thks").color(Color.YELLOW),
+            TextPiece.of("I'm fine thks", Color.YELLOW),
 
-            new TextPiece("\n"),
+            TextPiece.of("\n"),
 
-            new TextPiece("Third line!").color(Color.RED)
+            TextPiece.of("Third line!", Color.RED)
     );
 
     @Override
@@ -47,6 +51,9 @@ public class TextRenderTest extends SimpleGame {
         long init = System.nanoTime();
         renderer = FontUtil.textRenderer(getFont(SERIF));
         renderer.init();
+
+        compiled = renderer.compile(text, scale);
+
         long end = System.nanoTime();
 
         System.out.println("size: " + renderer.getSize(text, 0.2f) + ", time:" + (end - init));
@@ -95,7 +102,7 @@ public class TextRenderTest extends SimpleGame {
     public void postDraw() {
         Vector2f vec = new Vector2f(cursorPos()).mul(1, -1).mul(2).sub(1f, -1f);
         long init = System.nanoTime();
-        renderer.drawText2D(text, vec, origin, 0f, 0.2f);
+        renderer.drawText2D(compiled, vec, origin, 0f, scale);
         long end = System.nanoTime();
         sum += (end - init);
         samples++;
