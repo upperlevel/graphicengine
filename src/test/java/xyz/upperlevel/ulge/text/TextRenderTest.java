@@ -17,6 +17,8 @@ public class TextRenderTest extends SimpleGame {
 
     private TextOrigin origin = TextOrigin.CENTER;
 
+    private long sum = 0, samples = 0;
+
     private SuperText text = new ArraySuperText(
             new TextPiece("How").color(Colors.AQUA),
             new TextPiece(" 'r").color(Colors.BLUE),
@@ -42,10 +44,12 @@ public class TextRenderTest extends SimpleGame {
 
     @Override
     public void init() {
+        long init = System.nanoTime();
         renderer = FontUtil.textRenderer(getFont(SERIF));
         renderer.init();
+        long end = System.nanoTime();
 
-        System.out.println("size: " + renderer.getSize(text, 0.2f));
+        System.out.println("size: " + renderer.getSize(text, 0.2f) + ", time:" + (end - init));
     }
 
     @Override
@@ -90,7 +94,19 @@ public class TextRenderTest extends SimpleGame {
     @Override
     public void postDraw() {
         Vector2f vec = new Vector2f(cursorPos()).mul(1, -1).mul(2).sub(1f, -1f);
+        long init = System.nanoTime();
         renderer.drawText2D(text, vec, origin, 0f, 0.2f);
+        long end = System.nanoTime();
+        sum += (end - init);
+        samples++;
+    }
+
+    @Override
+    public void showFPS(float value) {
+        super.showFPS(value);
+        System.out.println("Draw time:" + (sum / ((double)samples)));
+        sum = 0;
+        samples = 0;
     }
 
     public static void main(String... args) {
