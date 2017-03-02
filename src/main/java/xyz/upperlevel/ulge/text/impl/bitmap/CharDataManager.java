@@ -1,4 +1,4 @@
-package xyz.upperlevel.ulge.text.impl.truetype;
+package xyz.upperlevel.ulge.text.impl.bitmap;
 
 import java.util.Iterator;
 import java.util.stream.StreamSupport;

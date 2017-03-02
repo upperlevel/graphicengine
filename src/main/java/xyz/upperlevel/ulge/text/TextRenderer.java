@@ -25,24 +25,9 @@ public abstract class TextRenderer {
 
     protected abstract void drawText2D(SuperText text, Vector2f screenCoords, float distance, float scale);
 
-    public void drawText2D(CompiledText text, Vector2f screenCords, TextOrigin pos, float distance, float scale) {
-        pos.translate(screenCords, scale,text.size);
-        drawText2D(text, screenCords, distance, scale);
-    }
-
-    protected void drawText2D(CompiledText text, Vector2f screenCords, float distance, float scale) {
-        drawText2D(text.text, screenCords, distance, scale);
-    }
-
     public abstract void drawText(SuperText text, Matrix4f position);
 
-    public CompiledText compile(SuperText text, float scale) {
-        return new CompiledText(
-                text,
-                scale,
-                getSize(text, scale)
-        );
-    }
+    public abstract CompiledText compile(SuperText text, float scale);
 
     public abstract void destroy();
 

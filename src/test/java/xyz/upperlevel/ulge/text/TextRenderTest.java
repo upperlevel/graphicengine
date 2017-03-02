@@ -3,7 +3,7 @@ package xyz.upperlevel.ulge.text;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.text.TextRenderer.TextOrigin;
-import xyz.upperlevel.ulge.text.impl.truetype.BitmapTextRenderer;
+import xyz.upperlevel.ulge.text.impl.bitmap.BitmapTextRenderer;
 import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.util.FontUtil;
 import xyz.upperlevel.ulge.window.event.action.Action;
@@ -57,6 +57,8 @@ public class TextRenderTest extends SimpleGame {
         long end = System.nanoTime();
 
         System.out.println("size: " + renderer.getSize(text, 0.2f) + ", time:" + (end - init));
+
+        System.out.println(compiled);
     }
 
     @Override
@@ -102,7 +104,8 @@ public class TextRenderTest extends SimpleGame {
     public void postDraw() {
         Vector2f vec = new Vector2f(cursorPos()).mul(1, -1).mul(2).sub(1f, -1f);
         long init = System.nanoTime();
-        renderer.drawText2D(compiled, vec, origin, 0f, scale);
+        renderer.drawText2D(compiled.text, vec, origin, 0f, scale);
+        //compiled.render(vec, 0f);
         long end = System.nanoTime();
         sum += (end - init);
         samples++;

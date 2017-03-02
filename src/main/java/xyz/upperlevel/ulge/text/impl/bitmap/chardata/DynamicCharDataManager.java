@@ -1,7 +1,7 @@
-package xyz.upperlevel.ulge.text.impl.truetype.chardata;
+package xyz.upperlevel.ulge.text.impl.bitmap.chardata;
 
-import xyz.upperlevel.ulge.text.impl.truetype.CharData;
-import xyz.upperlevel.ulge.text.impl.truetype.CharDataManager;
+import xyz.upperlevel.ulge.text.impl.bitmap.CharData;
+import xyz.upperlevel.ulge.text.impl.bitmap.CharDataManager;
 
 import java.util.Collection;
 import java.util.HashMap;

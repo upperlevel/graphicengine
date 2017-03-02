@@ -18,11 +18,16 @@ public class SimpleGraphicEngine {
     private float width, height;
 
     private Matrix4f projection = null;
+
+    private Uniform iProj;
+
     private float[] buffer = new float[4*4];
 
     public SimpleGraphicEngine(float width, float height) {
         this.width = width;
         this.height = height;
+
+        iProj = program.bind().get("projection");
     }
 
     protected Program createProgram() {
@@ -103,7 +108,7 @@ public class SimpleGraphicEngine {
             projection.get(buffer);
         }
 
-        uniformer.setUniformMatrix4("projection", buffer);
+        iProj.set(projection);
 
         objects.forEach(r -> r.draw(uniformer));
         program.unbind();

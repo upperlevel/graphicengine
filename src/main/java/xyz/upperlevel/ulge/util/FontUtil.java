@@ -5,10 +5,10 @@ import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameter;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
-import xyz.upperlevel.ulge.text.impl.truetype.BitmapTextRenderer;
-import xyz.upperlevel.ulge.text.impl.truetype.CharData;
-import xyz.upperlevel.ulge.text.impl.truetype.CharDataManager;
-import xyz.upperlevel.ulge.text.impl.truetype.chardata.StandardCharDataManager;
+import xyz.upperlevel.ulge.text.impl.bitmap.BitmapTextRenderer;
+import xyz.upperlevel.ulge.text.impl.bitmap.CharData;
+import xyz.upperlevel.ulge.text.impl.bitmap.CharDataManager;
+import xyz.upperlevel.ulge.text.impl.bitmap.chardata.StandardCharDataManager;
 
 import java.awt.Color;
 import java.awt.*;

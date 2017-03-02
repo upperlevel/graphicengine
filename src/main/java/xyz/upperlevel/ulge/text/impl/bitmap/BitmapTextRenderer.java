@@ -1,6 +1,8 @@
-package xyz.upperlevel.ulge.text.impl.truetype;
+package xyz.upperlevel.ulge.text.impl.bitmap;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -9,9 +11,14 @@ import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
+import xyz.upperlevel.ulge.text.CompiledText;
 import xyz.upperlevel.ulge.text.SuperText;
 import xyz.upperlevel.ulge.text.TextPiece;
 import xyz.upperlevel.ulge.text.TextRenderer;
+import xyz.upperlevel.ulge.util.Color;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BitmapTextRenderer extends TextRenderer {
 
@@ -238,7 +245,126 @@ public class BitmapTextRenderer extends TextRenderer {
     }
 
     @Override
+    public CompiledText<BitmapTextRenderer>  compile(SuperText text, float scale) {
+        List<BitmapCompiledString[]> lines = new ArrayList<>();
+        List<BitmapCompiledString> line = new ArrayList<>();
+
+        for (TextPiece piece : text) {
+
+            String t = piece.text;
+            final int length = t.length();
+            List<CharData> chars = new ArrayList<>(length);
+
+            for (int i = 0; i < length; i++) {
+                char c = t.charAt(i);
+                if (c == '\n') {
+                    if(!chars.isEmpty()) {
+                        line.add(
+                                new BitmapCompiledString(
+                                        chars.toArray(new CharData[0]),
+                                        piece.color,
+                                        piece.italic,
+                                        piece.bold,
+                                        piece.strikeThrough
+                                )
+                        );
+                        chars.clear();
+                    }
+                    if(!line.isEmpty()) {
+                        lines.add(line.toArray(new BitmapCompiledString[0]));
+                        line.clear();
+                    }
+                } else
+                    chars.add(get(c));
+            }
+
+            if(!chars.isEmpty()) {
+                line.add(
+                        new BitmapCompiledString(
+                                chars.toArray(new CharData[0]),
+                                piece.color,
+                                piece.italic,
+                                piece.bold,
+                                piece.strikeThrough
+                        )
+                );
+                chars.clear();
+            }
+        }
+
+        if(!line.isEmpty())
+            lines.add(line.toArray(new BitmapCompiledString[0]));
+
+        return new BitmapCompiledText(
+                text,
+                this,
+                lines.toArray(new BitmapCompiledString[0][]),
+                scale
+        );
+    }
+
+    @Override
     public void destroy() {
         program.destroy();
+    }
+
+    @ToString
+    public class BitmapCompiledText extends CompiledText<BitmapTextRenderer> {
+
+        private final BitmapCompiledString[][] lines;
+        public float scale;
+
+        public BitmapCompiledText(SuperText text, BitmapTextRenderer renderer, BitmapCompiledString[][] compiled, float scale) {
+            super(text, renderer);
+            this.lines = compiled;
+            this.scale = scale;
+        }
+
+        @Override
+        public void render(Vector2f pos, float distance) {
+            program.bind();
+            texture.bind();
+
+            Color lastColor = null;
+
+            final float initX = pos.x;
+
+            for (BitmapCompiledString[] line : lines) {
+                for (BitmapCompiledString piece : line) {
+                    if(lastColor != piece.color) {
+                        lastColor = piece.color;
+                        colorLoc.set(lastColor);
+                    }
+
+
+                    for (CharData data : piece.chars) {
+                        if (data == null)
+                            continue;
+
+                        final float widthScale = scale * data.ratio;
+
+                        projectionLoc.set(new Matrix4f().translate(pos.x, pos.y, distance).scale(widthScale, scale, 1.0f));
+
+                        pos.x += widthScale;
+
+                        uniform2d(data);
+
+                        ebo.draw(DrawMode.TRIANGLES, DataType.UNSIGNED_INT, 0, 6);
+                    }
+                }
+                pos.y -= scale;
+                pos.x = initX;
+            }
+
+            program.unbind();
+        }
+    }
+
+    @AllArgsConstructor
+    @ToString
+    public static class BitmapCompiledString {
+        public final CharData[] chars;
+        public final Color color;
+        public final boolean italic, bold, strikeThrough;
     }
 }
