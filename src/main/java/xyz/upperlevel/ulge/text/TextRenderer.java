@@ -7,6 +7,9 @@ import org.joml.Vector2f;
 import java.nio.CharBuffer;
 
 public abstract class TextRenderer {
+    public static final float DEF_MAX_WIDTH = Float.POSITIVE_INFINITY;
+
+
     public abstract void init();
 
     public abstract Vector2f getSize(SuperText text, float size);
@@ -27,7 +30,11 @@ public abstract class TextRenderer {
 
     public abstract void drawText(SuperText text, Matrix4f position);
 
-    public abstract CompiledText compile(SuperText text, float scale);
+    public CompiledText compile(SuperText text, float scale) {
+        return compile(text, scale, DEF_MAX_WIDTH);
+    }
+
+    public abstract CompiledText compile(SuperText text, float scale, float maxWidth);
 
     public abstract void destroy();
 

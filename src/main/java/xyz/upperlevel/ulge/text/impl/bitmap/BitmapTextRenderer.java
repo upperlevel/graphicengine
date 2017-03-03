@@ -245,9 +245,13 @@ public class BitmapTextRenderer extends TextRenderer {
     }
 
     @Override
-    public CompiledText<BitmapTextRenderer>  compile(SuperText text, float scale) {
+    public CompiledText<BitmapTextRenderer>  compile(SuperText text, float scale, float maxWidth) {
         List<BitmapCompiledString[]> lines = new ArrayList<>();
         List<BitmapCompiledString> line = new ArrayList<>();
+
+        maxWidth *= 2f; //opengl's windows goes from -1 to 1 (so it has 2 of width) but our scale only has 1 of width
+
+        float width = 0f;
 
         for (TextPiece piece : text) {
 
@@ -257,7 +261,10 @@ public class BitmapTextRenderer extends TextRenderer {
 
             for (int i = 0; i < length; i++) {
                 char c = t.charAt(i);
-                if (c == '\n') {
+                CharData data = get(c);
+                float w = scale * data.ratio;
+                if (c == '\n' || (width + w) > maxWidth) {
+                    width = 0;
                     if(!chars.isEmpty()) {
                         line.add(
                                 new BitmapCompiledString(
@@ -274,8 +281,11 @@ public class BitmapTextRenderer extends TextRenderer {
                         lines.add(line.toArray(new BitmapCompiledString[0]));
                         line.clear();
                     }
-                } else
-                    chars.add(get(c));
+                }
+                if(c != '\n') {
+                    chars.add(data);
+                    width += w;
+                }
             }
 
             if(!chars.isEmpty()) {
@@ -315,15 +325,17 @@ public class BitmapTextRenderer extends TextRenderer {
         public float scale;
 
         public BitmapCompiledText(SuperText text, BitmapTextRenderer renderer, BitmapCompiledString[][] compiled, float scale) {
-            super(text, renderer);
+            super(text, renderer, scale);
             this.lines = compiled;
             this.scale = scale;
         }
 
         @Override
-        public void render(Vector2f pos, float distance) {
+        public void render(Vector2f pos, TextOrigin origin, float distance) {
             program.bind();
             texture.bind();
+
+            origin.translate(pos, scale, size);
 
             Color lastColor = null;
 

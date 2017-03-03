@@ -23,6 +23,8 @@ public class TextRenderTest extends SimpleGame {
 
     private long sum = 0, samples = 0;
 
+    //private SuperText text = SuperText.of(TextPiece.of("Test", Color.AQUA));
+
     private SuperText text = SuperText.of(
             TextPiece.of("How", Color.AQUA),
             TextPiece.of(" 'r", Color.AQUA),
@@ -52,11 +54,11 @@ public class TextRenderTest extends SimpleGame {
         renderer = FontUtil.textRenderer(getFont(SERIF));
         renderer.init();
 
-        compiled = renderer.compile(text, scale);
+        compiled = renderer.compile(text, scale, 0.4f);
 
         long end = System.nanoTime();
 
-        System.out.println("size: " + renderer.getSize(text, 0.2f) + ", time:" + (end - init));
+        System.out.println("size: " + compiled.size + ", time:" + (end - init));
 
         System.out.println(compiled);
     }
@@ -104,8 +106,9 @@ public class TextRenderTest extends SimpleGame {
     public void postDraw() {
         Vector2f vec = new Vector2f(cursorPos()).mul(1, -1).mul(2).sub(1f, -1f);
         long init = System.nanoTime();
-        renderer.drawText2D(compiled.text, vec, origin, 0f, scale);
-        //compiled.render(vec, 0f);
+        //renderer.drawText2D(compiled.text, vec, origin, 0f, scale);
+        //origin.translate(vec, scale, compiled.size);
+        compiled.render(vec, origin, 0f);
         long end = System.nanoTime();
         sum += (end - init);
         samples++;
