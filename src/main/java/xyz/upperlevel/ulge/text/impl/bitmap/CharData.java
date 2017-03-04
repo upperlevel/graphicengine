@@ -4,8 +4,10 @@ import lombok.Data;
 
 @Data
 public class CharData {
+
     public final float x, y, w, h;
     public float rx, ry, rw, rh;
+
 
     public final float ratio;
 
