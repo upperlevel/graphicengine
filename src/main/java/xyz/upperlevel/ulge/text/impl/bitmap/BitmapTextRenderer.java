@@ -249,6 +249,8 @@ public class BitmapTextRenderer extends TextRenderer {
         List<BitmapCompiledString[]> lines = new ArrayList<>();
         List<BitmapCompiledString> line = new ArrayList<>();
 
+        float x = 0.0f, y = 0.0f;
+
         maxWidth *= 2f; //opengl's windows goes from -1 to 1 (so it has 2 of width) but our scale only has 1 of width
 
         float width = 0f;
@@ -264,7 +266,6 @@ public class BitmapTextRenderer extends TextRenderer {
                 CharData data = get(c);
                 float w = scale * data.ratio;
                 if (c == '\n' || (width + w) > maxWidth) {
-                    width = 0;
                     if(!chars.isEmpty()) {
                         line.add(
                                 new BitmapCompiledString(
@@ -280,6 +281,10 @@ public class BitmapTextRenderer extends TextRenderer {
                     if(!line.isEmpty()) {
                         lines.add(line.toArray(new BitmapCompiledString[0]));
                         line.clear();
+                        if(width > x)
+                            x = width;
+                        y += scale;
+                        width = 0;
                     }
                 }
                 if(c != '\n') {
@@ -302,13 +307,16 @@ public class BitmapTextRenderer extends TextRenderer {
             }
         }
 
-        if(!line.isEmpty())
+        if(!line.isEmpty()) {
             lines.add(line.toArray(new BitmapCompiledString[0]));
+            y += scale;
+        }
 
         return new BitmapCompiledText(
                 text,
                 this,
                 lines.toArray(new BitmapCompiledString[0][]),
+                new Vector2f(x, y),
                 scale
         );
     }
@@ -324,8 +332,8 @@ public class BitmapTextRenderer extends TextRenderer {
         private final BitmapCompiledString[][] lines;
         public float scale;
 
-        public BitmapCompiledText(SuperText text, BitmapTextRenderer renderer, BitmapCompiledString[][] compiled, float scale) {
-            super(text, renderer, scale);
+        public BitmapCompiledText(SuperText text, BitmapTextRenderer renderer, BitmapCompiledString[][] compiled, Vector2f size, float scale) {
+            super(text, renderer, size);
             this.lines = compiled;
             this.scale = scale;
         }

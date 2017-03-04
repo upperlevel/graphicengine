@@ -69,30 +69,39 @@ public class TextRenderTest extends SimpleGame {
 
         switch (key) {
             case KEY_1:
+            case KP_7:
                 origin = TextOrigin.UPPER_LEFT;
                 break;
             case KEY_2:
+            case KP_8:
                 origin = TextOrigin.UPPER_CENTER;
                 break;
             case KEY_3:
+            case KP_9:
                 origin = TextOrigin.UPPER_RIGHT;
                 break;
             case KEY_4:
+            case KP_4:
                 origin = TextOrigin.CENTER_LEFT;
                 break;
             case KEY_5:
+            case KP_5:
                 origin = TextOrigin.CENTER;
                 break;
             case KEY_6:
+            case KP_6:
                 origin = TextOrigin.CENTER_RIGHT;
                 break;
             case KEY_7:
+            case KP_1:
                 origin = TextOrigin.BOTTOM_LEFT;
                 break;
             case KEY_8:
+            case KP_2:
                 origin = TextOrigin.BOTTOM_CENTER;
                 break;
             case KEY_9:
+            case KP_3:
                 origin = TextOrigin.BOTTOM_RIGHT;
                 break;
         }

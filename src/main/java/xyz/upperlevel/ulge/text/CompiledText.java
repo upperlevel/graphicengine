@@ -1,16 +1,17 @@
 package xyz.upperlevel.ulge.text;
 
 import org.joml.Vector2f;
+import xyz.upperlevel.ulge.util.math.Vec;
 
 public abstract class CompiledText<R extends TextRenderer> {
     public final SuperText text;
     public final Vector2f size;
     private final R renderer;
 
-    public CompiledText(SuperText text, R renderer, float scale) {
+    public CompiledText(SuperText text, R renderer, Vector2f size) {
         this.text = text;
         this.renderer = renderer;
-        this.size = renderer.getSize(text, scale);
+        this.size = size;
     }
 
     public abstract void render(Vector2f pos, TextRenderer.TextOrigin origin, float distance);
