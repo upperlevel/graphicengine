@@ -16,6 +16,8 @@ public class DefaultGuiRenderer extends GuiRenderer {
 
     private Bounds current = Bounds.FULL;
 
+    private float depth = 0f;
+
     public DefaultGuiRenderer() {
         super(createProgram());
 
@@ -23,7 +25,7 @@ public class DefaultGuiRenderer extends GuiRenderer {
         uBounds = checkUniform(u.get("bounds"), "bounds");
         uColor  = checkUniform(u.get("col")   , "col"   );
         uDepth  = checkUniform(u.get("depth") , "depth" );
-        uSize   = checkUniform(u.get("size") ,  "size"  );
+        uSize   = checkUniform(u.get("size")  , "size"  );
     }
 
     public void setBounds(Bounds bounds) {
@@ -74,6 +76,12 @@ public class DefaultGuiRenderer extends GuiRenderer {
     @Override
     public void setDepth(float depth) {
         uDepth.set(depth);
+        this.depth = depth;
+    }
+
+    @Override
+    public float getDepth() {
+        return depth;
     }
 
     @Override

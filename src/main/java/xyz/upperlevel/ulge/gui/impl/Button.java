@@ -6,24 +6,26 @@ import lombok.Setter;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.gui.BaseGui;
 import xyz.upperlevel.ulge.gui.Bounds;
+import xyz.upperlevel.ulge.gui.GuiBackground;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.util.Color;
+
+import static xyz.upperlevel.ulge.gui.GuiBackground.color;
 
 public class Button extends BaseGui {
 
     @Getter
     @Setter
     @NonNull
-    private Color
-            defColor   = Color.WHITE,
-            enterColor = Color.AQUA,
-            hoverColor = Color.BLUE,
-            clickColor = Color.BLACK;
+    private GuiBackground
+            defColor   = color(Color.WHITE),
+            enterColor = color(Color.AQUA),
+            hoverColor = color(Color.BLUE),
+            clickColor = color(Color.BLACK);
 
     private boolean hover, click, mouse;
 
-    public Button(Bounds bounds, Color color, Color hoverColor, Color clickColor) {
+    public Button(Bounds bounds, GuiBackground color, GuiBackground hoverColor, GuiBackground clickColor) {
         super(bounds);
         this.defColor   = color;
         this.hoverColor = hoverColor;
@@ -72,20 +74,18 @@ public class Button extends BaseGui {
 
     @Override
     public void render(GuiRenderer renderer) {
-        renderer.setTexture(Texture2D.NULL);
-
-        Color color;
+        GuiBackground bkg;
 
         if(!mouse)
-            color = this.defColor;
+            bkg = this.defColor;
         else if(click)
-            color = this.clickColor;
+            bkg = this.clickColor;
         else if(hover)
-            color = this.hoverColor;
+            bkg = this.hoverColor;
         else
-            color = enterColor;
+            bkg = enterColor;
 
-        renderer.setColor(color);
+        bkg.apply(renderer);
         renderer.fill();
     }
 }

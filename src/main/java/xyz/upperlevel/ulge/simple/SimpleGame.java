@@ -2,6 +2,7 @@ package xyz.upperlevel.ulge.simple;
 
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.window.Glfw;
+import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.KeyChangeEvent;
 import xyz.upperlevel.ulge.window.event.MouseButtonChangeEvent;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
+import static org.lwjgl.opengl.GL11.*;
 
 public class SimpleGame {
 
@@ -27,6 +29,8 @@ public class SimpleGame {
     private double fps_lastTime;
     private double lastFrame = -1;
 
+    private Color background = Color.BLACK;
+
     private SimpleGraphicEngine engine;
 
     public SimpleGame(String title) {
@@ -36,7 +40,6 @@ public class SimpleGame {
     public SimpleGame() {
         this("ULGE");
     }
-
 
 
     public void launch() {
@@ -55,7 +58,7 @@ public class SimpleGame {
         mouseChange.register((window, key, action) -> mouseChange(key, action));
         mouseChange.apply(window);
 
-        engine = new SimpleGraphicEngine(width, height);
+        engine = new SimpleGraphicEngine(width, height, background);
 
         init();
 
@@ -75,6 +78,11 @@ public class SimpleGame {
     protected void postDraw() {
     }
 
+
+    public void simpleAlpha() {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
 
     public int width() {
         return width;
@@ -120,6 +128,15 @@ public class SimpleGame {
         this.title = title;
     }
 
+    public Color background() {
+        return background;
+    }
+
+    public void background(Color color) {
+        checkPreWindowState();
+        this.background = color;
+    }
+
 
     public boolean isStopped() {
         return window.isClosed();
@@ -156,13 +173,13 @@ public class SimpleGame {
 
     private double updateTime() {
         double currentTime = glfwGetTime();
-        if(lastFrame == -1) {
+        if (lastFrame == -1) {
             lastFrame = currentTime;
             return 0;
         }
 
-        if(fps) {
-            if(fps_lastTime == -1) {
+        if (fps) {
+            if (fps_lastTime == -1) {
                 fps_lastTime = currentTime;
             } else {
                 fps_frames++;
@@ -198,22 +215,27 @@ public class SimpleGame {
     }
 
     private void checkPreWindowState() {
-        if(window != null)
+        if (window != null)
             throw new IllegalStateException("Cannot call this after window creation!");
     }
 
-    public void config(){}
+    public void config() {
+    }
 
-    public void init(){}
+    public void init() {
+    }
 
-    public void update(double delta){}
+    public void update(double delta) {
+    }
 
-    public void mouseChange(MouseButton button, Action action) {}
+    public void mouseChange(MouseButton button, Action action) {
+    }
 
     public void keyChange(Key key, Action action) {
-        if(key == Key.ESCAPE)
+        if (key == Key.ESCAPE)
             window.close();
     }
 
-    public void destroy(){}
+    public void destroy() {
+    }
 }

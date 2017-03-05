@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import xyz.upperlevel.ulge.opengl.shader.*;
+import xyz.upperlevel.ulge.util.Color;
 
 import java.util.*;
 
@@ -17,12 +18,25 @@ public class SimpleGraphicEngine {
     @Getter
     private float width, height;
 
+    @Getter
+    private final Color background;
+
     private Matrix4f projection = null;
+
+    private Uniform iProj;
+
     private float[] buffer = new float[4*4];
 
-    public SimpleGraphicEngine(float width, float height) {
+    public SimpleGraphicEngine(float width, float height, Color background) {
         this.width = width;
         this.height = height;
+        this.background = background;
+
+        iProj = program.bind().get("projection");
+    }
+
+    public SimpleGraphicEngine(float width, float height) {
+        this(width, height, Color.BLACK);
     }
 
     protected Program createProgram() {
@@ -87,7 +101,7 @@ public class SimpleGraphicEngine {
     }
 
     public void draw() {
-        GL11.glClearColor(0f, 0f, 0f, 0f);
+        GL11.glClearColor(background.r, background.g, background.b, background.a);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
         final Uniformer uniformer = program.bind();
@@ -103,7 +117,7 @@ public class SimpleGraphicEngine {
             projection.get(buffer);
         }
 
-        uniformer.setUniformMatrix4("projection", buffer);
+        iProj.set(projection);
 
         objects.forEach(r -> r.draw(uniformer));
         program.unbind();

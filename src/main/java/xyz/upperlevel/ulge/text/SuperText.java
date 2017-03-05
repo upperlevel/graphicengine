@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class SuperText implements Iterable<TextPiece>{
+    public static final SuperText EMPTY = of("");
+
     private final TextPiece[] pieces;
     private List<TextPiece> view;
 

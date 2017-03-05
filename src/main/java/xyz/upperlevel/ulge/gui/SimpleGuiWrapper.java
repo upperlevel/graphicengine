@@ -53,11 +53,12 @@ public class SimpleGuiWrapper {
 
         if(pos == null)
             gui.onMouseEnter(newPos);
-        else
+        else {
             gui.onMouseMove(pos, lastPos);
 
-        if(clicked)
-            gui.onDrag(pos, lastPos);
+            if (clicked)
+                gui.onDrag(pos, lastPos);
+        }
 
         if(!isInside) {
             gui.onMouseExit(pos);

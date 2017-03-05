@@ -2,9 +2,7 @@ package xyz.upperlevel.ulge.opengl.shader;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.lwjgl.opengl.GL20.*;
 
@@ -18,6 +16,8 @@ public class Program {
     public final List<Shader> shaders = new ArrayList<>();
 
     public final Uniformer uniformer = new Uniformer(this);
+
+    public static Queue<Program> programs = new LinkedList<>();
 
     public Program() {
         id = glCreateProgram();
@@ -66,6 +66,12 @@ public class Program {
         return uniformer;
     }
 
+    public Uniformer push() {
+        programs.add(bound);
+        bind();
+        return uniformer;
+    }
+
     public Program unbind() {
         if(bound != null) {
             glUseProgram(0);
@@ -77,6 +83,17 @@ public class Program {
     public Program forceUnbind() {
         glUseProgram(0);
         bound = null;
+        return this;
+    }
+
+    public Program pop() {
+        if(programs.isEmpty())
+            throw new IllegalStateException("Cannot pop: program queue is empty");
+        Program last = programs.remove();
+        if(last == null)
+            unbind();
+        else
+            last.bind();
         return this;
     }
 

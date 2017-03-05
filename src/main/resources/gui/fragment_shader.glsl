@@ -10,5 +10,5 @@ uniform vec2 size = vec2(1);
 
 void main()
 {
-    color = texture(tex, texCoord * size) * col;
+    color = col * texture(tex, texCoord * size);
 }

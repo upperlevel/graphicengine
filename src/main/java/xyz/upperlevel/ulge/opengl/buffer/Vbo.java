@@ -1,7 +1,6 @@
 package xyz.upperlevel.ulge.opengl.buffer;
 
 import lombok.Getter;
-import org.lwjgl.opengl.GL15;
 
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
@@ -101,7 +100,6 @@ public class Vbo implements GlBuffer {
     }
 
     // loadData(byte)
-    
     public Vbo loadData(byte[] vertices, VboDataUsage usage) {
         loadData(vertices, usage.getId());
         return this;

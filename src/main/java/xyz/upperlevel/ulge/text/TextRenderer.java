@@ -7,42 +7,38 @@ import org.joml.Vector2f;
 import java.nio.CharBuffer;
 
 public abstract class TextRenderer {
+    public static final float DEF_MAX_WIDTH = Float.POSITIVE_INFINITY;
+
+
     public abstract void init();
 
-    public abstract Vector2f getSize(SuperText text, float size);
+    public abstract Vector2f getSize(SuperText text, float size, float maxWidth);
 
-    public abstract Vector2f getSize(CharSequence str, float size);
+    public abstract Vector2f getSize(CharSequence str, float size, float maxWidth);
 
-    public Vector2f getSize(char[] str, float size) {
-        return getSize(CharBuffer.wrap(str), size);
+    public Vector2f getSize(char[] str, float size, float maxWidth) {
+        return getSize(CharBuffer.wrap(str), size, maxWidth);
     }
 
-    public void drawText2D(SuperText text, Vector2f screenCoords, TextOrigin pos, float distance, float scale) {
-        pos.translate(screenCoords, scale, pos.needsSize ? getSize(text, scale) : null);
-        drawText2D(text, screenCoords, distance, scale);
+    public void drawText2D(SuperText text, Vector2f screenCords, TextOrigin pos, float distance, float scale) {
+        drawText2D(text, screenCords, pos, distance, scale, DEF_MAX_WIDTH);
+    }
+
+    public void drawText2D(SuperText text, Vector2f screenCoords, TextOrigin pos, float distance, float scale, float maxWidth) {
+        pos.translate(screenCoords, scale, pos.needsSize ? getSize(text, scale, maxWidth) : null);
+        drawText2D0(text, screenCoords, distance, scale, maxWidth);
     }
 
 
-    protected abstract void drawText2D(SuperText text, Vector2f screenCoords, float distance, float scale);
-
-    public void drawText2D(CompiledText text, Vector2f screenCords, TextOrigin pos, float distance, float scale) {
-        pos.translate(screenCords, scale,text.size);
-        drawText2D(text, screenCords, distance, scale);
-    }
-
-    protected void drawText2D(CompiledText text, Vector2f screenCords, float distance, float scale) {
-        drawText2D(text.text, screenCords, distance, scale);
-    }
+    protected abstract void drawText2D0(SuperText text, Vector2f screenCoords, float distance, float scale, float maxWidth);
 
     public abstract void drawText(SuperText text, Matrix4f position);
 
     public CompiledText compile(SuperText text, float scale) {
-        return new CompiledText(
-                text,
-                scale,
-                getSize(text, scale)
-        );
+        return compile(text, scale, DEF_MAX_WIDTH);
     }
+
+    public abstract CompiledText compile(SuperText text, float scale, float maxWidth);
 
     public abstract void destroy();
 
