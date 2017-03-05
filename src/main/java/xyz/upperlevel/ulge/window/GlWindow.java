@@ -3,7 +3,7 @@ package xyz.upperlevel.ulge.window;
 import org.lwjgl.opengl.GL;
 
 @SuppressWarnings("deprecation")
-public abstract class GLWindow implements Window {
+public abstract class GlWindow implements Window {
 
     protected abstract void makeContext();
 

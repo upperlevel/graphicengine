@@ -4,7 +4,7 @@ import xyz.upperlevel.ulge.window.Window;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 
-public class GLFWCursorMoveEventHandler extends AbstractGLFWEventHandler<CursorMoveEvent> {
+public class GlfwCursorMoveEventHandler extends AbstractGlfwEventHandler<CursorMoveEvent> {
 
     @Override
     public void apply(Window window) {

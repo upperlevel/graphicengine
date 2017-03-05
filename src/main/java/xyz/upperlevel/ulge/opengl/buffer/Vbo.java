@@ -100,6 +100,29 @@ public class Vbo implements GlBuffer {
         glDeleteBuffers(id);
     }
 
+    // loadData(byte)
+    
+    public Vbo loadData(byte[] vertices, VboDataUsage usage) {
+        loadData(vertices, usage.getId());
+        return this;
+    }
+
+    public Vbo loadData(byte[] vertices, int usage) {
+        loadData(BufferUtil.createBuffer(vertices), usage);
+        return this;
+    }
+
+    public Vbo loadData(ByteBuffer buffer, VboDataUsage usage) {
+        loadData(buffer, usage.getId());
+        return this;
+    }
+
+    public Vbo loadData(ByteBuffer buffer, int usage) {
+        bind();
+        glBufferData(GL_ARRAY_BUFFER, buffer, usage);
+        return this;
+    }
+    
     // loadData(float)
 
     public Vbo loadData(float[] vertices, VboDataUsage usage) {
@@ -186,6 +209,7 @@ public class Vbo implements GlBuffer {
     }
 
     public Vbo draw(int drawMode, int startOffset, int verticesCount) {
+        bind();
         glDrawArrays(drawMode, startOffset, verticesCount);
         return this;
     }

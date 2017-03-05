@@ -5,7 +5,6 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
@@ -14,7 +13,7 @@ import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageLoaderManager;
 import xyz.upperlevel.ulge.util.math.Camera;
-import xyz.upperlevel.ulge.window.GLFW;
+import xyz.upperlevel.ulge.window.Glfw;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.CursorMoveEvent;
 import xyz.upperlevel.ulge.window.event.MouseScrollEvent;
@@ -115,9 +114,9 @@ public class GraphicEngineTest1 {
 
         //--------------------------------
         // defines window
-        Window win = GLFW.createWindow(WIDTH, HEIGHT, "ciao", false);
+        Window win = Glfw.createWindow(WIDTH, HEIGHT, "ciao", false);
         // scroll
-        WindowEventHandler<MouseScrollEvent> scroll = GLFW.events().MOUSE_SCROLL.inst();
+        WindowEventHandler<MouseScrollEvent> scroll = Glfw.events().MOUSE_SCROLL.create();
         scroll.register((window, x, y) -> {
             camera_fov -= y;
             camera.setFov(Math.toRadians(camera_fov));
@@ -127,7 +126,7 @@ public class GraphicEngineTest1 {
         win.disableCursor();
         win.setCursorPosition(0, 0);
         // mouse move
-        WindowEventHandler<CursorMoveEvent> cursorMove = GLFW.events().CURSOR_MOVE.inst();
+        WindowEventHandler<CursorMoveEvent> cursorMove = Glfw.events().CURSOR_MOVE.create();
         cursorMove.register(new CursorMoveEvent() {
             private double last_x = 0, last_y = 0;
 

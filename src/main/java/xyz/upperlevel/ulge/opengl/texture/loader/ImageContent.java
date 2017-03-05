@@ -1,13 +1,21 @@
 package xyz.upperlevel.ulge.opengl.texture.loader;
 
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import org.lwjgl.BufferUtils;
+import xyz.upperlevel.ulge.opengl.buffer.BufferUtil;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.image.*;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 import java.util.Hashtable;
 import java.util.Objects;
 
@@ -25,6 +33,8 @@ public class ImageContent {
     private int width, height;
 
     @Getter
+    @Setter
+    @NonNull
     private ByteBuffer data;
 
     public ImageContent(int width, int height, ByteBuffer data) {
@@ -33,60 +43,43 @@ public class ImageContent {
         setData(data);
     }
 
-    public ImageContent(BufferedImage image, boolean flip) {
+    public ImageContent(BufferedImage image) {
         this(
                 image.getWidth(),
                 image.getHeight(),
-                imageToByteBuffer(image, flip)
+                imageToByteBuffer(image)
         );
     }
 
-    public void setWidth(int width) {
+    public ImageContent setWidth(int width) {
         if (width < 0)
             throw new IllegalArgumentException("Width cannot be negative.");
         this.width = width;
+        return this;
     }
 
-    public void setHeight(int height) {
+    public ImageContent setHeight(int height) {
         if (height < 0)
             throw new IllegalArgumentException("Height cannot be negative.");
         this.height = height;
+        return this;
     }
 
-    public void setData(ByteBuffer data) {
-        Objects.requireNonNull(data, "Data cannot be null.");
-        this.data = data;
-    }
-
-    public static ByteBuffer imageToByteBuffer(BufferedImage image, boolean flip) {
-        BufferedImage texImage = createNormalizedImage(image, flip);
-
-        // build a byte buffer from the temporary image
-        // that be used by OpenGL to produce a texture.
-        /*
-        byte[] data = ((DataBufferByte) texImage.getRaster().getDataBuffer()).getData();
-
-        ByteBuffer imageBuffer = ByteBuffer.allocateDirect(data.length);
-        imageBuffer.order(ByteOrder.nativeOrder());
-        imageBuffer.put(data, 0, data.length);
-        imageBuffer.flip();
-        */
-
-        // todo LOADS ONLY RGBA IMAGES!
+    public static ByteBuffer imageToByteBuffer(BufferedImage image) {
         final int BYTES_PER_PIXELS = 4;
 
-        int w = texImage.getWidth();
-        int h = texImage.getHeight();
+        int w = image.getWidth();
+        int h = image.getHeight();
 
         int[] pixels = new int[w * h];
-        texImage.getRGB(0, 0, w, h, pixels, 0, w);
+        image.getRGB(0, 0, w, h, pixels, 0, w);
         ByteBuffer buffer = BufferUtils.createByteBuffer(w * h * BYTES_PER_PIXELS);
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
-                int pixel = pixels[y * texImage.getWidth() + x];
+                int pixel = pixels[y * image.getWidth() + x];
                 buffer.put((byte) ((pixel >> 16) & 0xFF));    // red component
-                buffer.put((byte) ((pixel >> 8) & 0xFF));     // green component
-                buffer.put((byte) (pixel & 0xFF));            // blue component
+                buffer.put((byte) ((pixel >> 8)  & 0xFF));    // green component
+                buffer.put((byte) (pixel         & 0xFF));    // blue component
                 buffer.put((byte) ((pixel >> 24) & 0xFF));    // alpha component
             }
         }
@@ -94,45 +87,7 @@ public class ImageContent {
         return buffer;
     }
 
-    public static BufferedImage createNormalizedImage(BufferedImage image, boolean flip) {
-        int texWidth = 2;
-        int texHeight = 2;
-
-        // find the closest power of 2 for the rw and rh
-        // of the produced texture
-
-        int width = image.getWidth();
-        int height = image.getHeight();
-
-        while (texWidth < width)
-            texWidth *= 2;
-
-        while (texHeight < height)
-            texHeight *= 2;
-
-        //System.out.println("W: " + width + "->" + texWidth + ", H:" + height + "->" + texHeight);
-
-        WritableRaster raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, texWidth, texHeight, 4, null);
-        BufferedImage texImage = new BufferedImage(OPENGL_ALPHA_MODEL, raster, false, new Hashtable());
-
-        // copy the source image into the produced image
-        Graphics2D g = (Graphics2D) texImage.getGraphics();
-
-        // only need to blank the image for mac compatibility if we're using alpha
-        g.setColor(new Color(0f, 0f, 0f, 0f));
-        g.fillRect(0, 0, texWidth, texHeight);
-
-        if (flip) {
-            g.scale(1, -1);
-            g.drawImage(image, 0, -height, null);
-        } else {
-            g.drawImage(image, 0, 0, null);
-        }
-        g.dispose();
-        return texImage;
-    }
-
-    public static ImageContent fromResource(String path, Class clazz) {
+    public static ImageContent fromResource(String path, Class<?> clazz) {
         return UniversalImageLoader.INSTANCE.load(new File(clazz.getClassLoader().getResource(path).getFile()));
     }
 }

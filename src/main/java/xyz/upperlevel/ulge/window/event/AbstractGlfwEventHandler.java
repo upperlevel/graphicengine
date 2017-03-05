@@ -1,17 +1,15 @@
 package xyz.upperlevel.ulge.window.event;
 
+import lombok.Getter;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class AbstractGLFWEventHandler<E extends WindowEvent> implements WindowEventHandler<E> {
+public abstract class AbstractGlfwEventHandler<E extends WindowEvent> implements WindowEventHandler<E> {
 
-    protected final List<E> events = Collections.synchronizedList(new LinkedList<>());
-
-    @Override
-    public List<E> getEvents() {
-        return events;
-    }
+    @Getter
+    protected List<E> events = Collections.synchronizedList(new LinkedList<>());
 
     @Override
     public void register(E event) {

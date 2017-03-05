@@ -16,24 +16,27 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class GLFWWindow extends GLWindow {
+public class GlfwWindow extends GlWindow {
 
-    @Getter public final long id;
-    @Getter @NonNull private String title;
+    @Getter
+    public final long id;
 
-    public GLFWWindow(int width, int height, String title, boolean fullscreen) {
+    @Getter
+    @NonNull
+    private String title;
+
+    public GlfwWindow(int width, int height, String title, boolean fullscreen) {
         if (width < 0 || height < 0)
             throw new IllegalArgumentException("Window's dimensions cannot be negative.");
         if (title == null)
             throw new IllegalArgumentException("Title cannot be null.");
         this.title = title;
 
-        if(fullscreen){
+        if (fullscreen) {
             GLFWVidMode mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
             width = mode.width();
             height = mode.height();
         }
-
         id = glfwCreateWindow(width, height, title, fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
     }
 
@@ -49,8 +52,8 @@ public class GLFWWindow extends GLWindow {
     public void centerPosition() {
         glfwSetWindowPos(
                 id,
-                (xyz.upperlevel.ulge.window.GLFW.PRIMARY_MONITOR.width() - getWidth()) / 2,
-                (xyz.upperlevel.ulge.window.GLFW.PRIMARY_MONITOR.height() - getHeight()) / 2
+                (Glfw.PRIMARY_MONITOR.width() - getWidth()) / 2,
+                (Glfw.PRIMARY_MONITOR.height() - getHeight()) / 2
         );
     }
 
@@ -106,7 +109,7 @@ public class GLFWWindow extends GLWindow {
     public Vector2f getCursorPosition() {
         DoubleBuffer x = BufferUtils.createDoubleBuffer(1), y = BufferUtils.createDoubleBuffer(1);
         glfwGetCursorPos(id, x, y);
-        return new Vector2f((float)x.get()/getWidth(), (float)y.get()/getHeight());
+        return new Vector2f((float) x.get() / getWidth(), (float) y.get() / getHeight());
     }
 
     @Override

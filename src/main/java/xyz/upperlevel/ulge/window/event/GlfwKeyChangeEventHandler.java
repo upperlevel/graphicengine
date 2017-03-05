@@ -7,7 +7,7 @@ import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.key.GLFWKey;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
-public class GLFWKeyChangeEventHandler extends AbstractGLFWEventHandler<KeyChangeEvent> {
+public class GlfwKeyChangeEventHandler extends AbstractGlfwEventHandler<KeyChangeEvent> {
 
     @Override
     public void apply(Window window) {

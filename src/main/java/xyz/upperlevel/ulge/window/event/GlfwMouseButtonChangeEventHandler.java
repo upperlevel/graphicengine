@@ -7,7 +7,7 @@ import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.button.GLFWMouseButton;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
 
-public class GLFWMouseButtonChangeEventHandler extends AbstractGLFWEventHandler<MouseButtonChangeEvent> {
+public class GlfwMouseButtonChangeEventHandler extends AbstractGlfwEventHandler<MouseButtonChangeEvent> {
 
     @Override
     public void apply(Window window) {

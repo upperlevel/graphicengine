@@ -6,7 +6,7 @@ import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 import xyz.upperlevel.ulge.simple.shapes.Circle;
-import xyz.upperlevel.ulge.window.GLFW;
+import xyz.upperlevel.ulge.window.Glfw;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
@@ -21,7 +21,7 @@ public class SimpleGETest {
     public static Circle obj;
 
     public static void main(String... args) {
-        w = GLFW.createWindow(500, 500, "Ciao", false);
+        w = Glfw.createWindow(500, 500, "Ciao", false);
         w.contextualize();
         w.show();
         w.setVSync(false);

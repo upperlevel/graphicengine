@@ -4,7 +4,8 @@ import xyz.upperlevel.ulge.window.Window;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWScrollCallback;
 
-public class GLFWMouseScrollEventHandler extends AbstractGLFWEventHandler<MouseScrollEvent> {
+public class GlfwMouseScrollEventHandler extends AbstractGlfwEventHandler<MouseScrollEvent> {
+
     @Override
     public void apply(Window window) {
         GLFW.glfwSetScrollCallback(window.getId(), new GLFWScrollCallback() {

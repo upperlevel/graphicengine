@@ -7,7 +7,7 @@ import xyz.upperlevel.ulge.opengl.shader.Program;
 import xyz.upperlevel.ulge.opengl.shader.ShaderType;
 import xyz.upperlevel.ulge.opengl.shader.ShaderUtil;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
-import xyz.upperlevel.ulge.window.GLFW;
+import xyz.upperlevel.ulge.window.Glfw;
 import xyz.upperlevel.ulge.window.Window;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -18,7 +18,7 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 public class BaseOpenGLTest {
 
     public static void main(String[] args) {
-        Window win = GLFW.createWindow(500, 500, "base opengl test", false);
+        Window win = Glfw.createWindow(500, 500, "base opengl test", false);
         win.centerPosition();
         win.contextualize();
         win.show();

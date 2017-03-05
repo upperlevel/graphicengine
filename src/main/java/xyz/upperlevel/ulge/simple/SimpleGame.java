@@ -1,7 +1,7 @@
 package xyz.upperlevel.ulge.simple;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.ulge.window.GLFW;
+import xyz.upperlevel.ulge.window.Glfw;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.KeyChangeEvent;
 import xyz.upperlevel.ulge.window.event.MouseButtonChangeEvent;
@@ -41,17 +41,17 @@ public class SimpleGame {
 
     public void launch() {
         config();
-        window = GLFW.createWindow(width, height, title, false);
+        window = Glfw.createWindow(width, height, title, false);
         window.contextualize();
         window.show();
         window.setVSync(vsync);
         window.setTitle(title);
 
-        WindowEventHandler<KeyChangeEvent> keyChange = GLFW.events().KEY_CHANGE.inst();
+        WindowEventHandler<KeyChangeEvent> keyChange = Glfw.events().KEY_CHANGE.create();
         keyChange.register((window, key, action) -> keyChange(key, action));
         keyChange.apply(window);
 
-        WindowEventHandler<MouseButtonChangeEvent> mouseChange = GLFW.events().MOUSE_BUTTON_CHANGE.inst();
+        WindowEventHandler<MouseButtonChangeEvent> mouseChange = Glfw.events().MOUSE_BUTTON_CHANGE.create();
         mouseChange.register((window, key, action) -> mouseChange(key, action));
         mouseChange.apply(window);
 

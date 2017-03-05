@@ -10,9 +10,11 @@ import xyz.upperlevel.ulge.text.impl.truetype.CharData;
 import xyz.upperlevel.ulge.text.impl.truetype.CharDataManager;
 import xyz.upperlevel.ulge.text.impl.truetype.chardata.StandardCharDataManager;
 
+import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 
 public final class FontUtil {
     public static final char[] NO_CHARS = new char[0];
@@ -140,7 +142,7 @@ public final class FontUtil {
             }
         }
 
-        ImageContent content = new ImageContent(image, false);
+        ImageContent content = new ImageContent(image);
         Texture2D tex = new Texture2D().loadImage(TextureFormat.RGBA, content);
         parameters.setup();
         return new BitmapTextRenderer(tex, chars);
