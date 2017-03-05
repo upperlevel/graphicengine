@@ -3,13 +3,20 @@ package xyz.upperlevel.ulge.gui;
 import xyz.upperlevel.ulge.gui.impl.Button;
 import xyz.upperlevel.ulge.gui.impl.SingletonContainer;
 import xyz.upperlevel.ulge.gui.impl.text.TextBox;
+import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
+import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
+import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
+import xyz.upperlevel.ulge.simple.SimpleGETest;
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.text.SuperText;
 import xyz.upperlevel.ulge.text.TextPiece;
-import xyz.upperlevel.ulge.text.TextRenderer;
 import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
+
+import static xyz.upperlevel.ulge.gui.GuiBackground.color;
+import static xyz.upperlevel.ulge.gui.GuiBackground.texture;
 
 public class SimpleGuiTest extends SimpleGame {
 
@@ -27,14 +34,18 @@ public class SimpleGuiTest extends SimpleGame {
     public void init() {
         simpleAlpha();
 
+        ImageContent c = ImageContent.fromResource("simple/cat.jpg", SimpleGETest.class);
+        Texture2D tex = new Texture2D().loadImage(TextureFormat.RGBA, c);
+        TextureParameters.getDefault().setup();
+
         gui = new SingletonContainer(
                 new CustomButton(
-                        new Bounds(0f, 0f, 0.5f, 0.25f),
-                        Color.AQUA,
-                        Color.YELLOW,
-                        Color.RED
+                        new Bounds(0f, 0f, 1f, 1f),
+                        color(Color.AQUA),
+                        color(Color.WHITE),
+                        texture(tex)
                 ),
-                new Bounds(0.5f, 0.5f, 1f, 1f)
+                new Bounds(0.25f, 0.25f, 0.75f, 0.75f)
         );
         wrapper = new SimpleGuiWrapper(gui);
 
@@ -63,11 +74,10 @@ public class SimpleGuiTest extends SimpleGame {
     public static class CustomButton extends Button {
 
         private TextBox text = new TextBox()
-                .origin(TextRenderer.TextOrigin.UPPER_LEFT)
-                .size(0.15f)
+                .size(0.2f)
                 .text(SuperText.of(TextPiece.of("Click me", Color.BLACK)));
 
-        public CustomButton(Bounds bounds, Color color, Color hoverColor, Color clickColor) {
+        public CustomButton(Bounds bounds, GuiBackground color, GuiBackground hoverColor, GuiBackground clickColor) {
             super(bounds, color, hoverColor, clickColor);
         }
 

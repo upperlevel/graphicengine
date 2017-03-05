@@ -6,11 +6,10 @@ import lombok.experimental.Accessors;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.gui.BaseGui;
 import xyz.upperlevel.ulge.gui.Bounds;
+import xyz.upperlevel.ulge.gui.GuiBackground;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.text.SuperText;
 import xyz.upperlevel.ulge.text.TextRenderer;
-import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.util.FontUtil;
 import xyz.upperlevel.utils.event.EventManager;
 
@@ -22,9 +21,10 @@ import static org.lwjgl.opengl.GL11.*;
 public class TextBox extends BaseGui {
 
     public static TextRenderer DEFAULT_TEXT_RENDER = FontUtil.textRenderer(Font.getFont(Font.SERIF));
-    public static TextRenderer.TextOrigin DEFAULT_ORIGIN = TextRenderer.TextOrigin.UPPER_LEFT;
+    public static TextRenderer.TextOrigin DEFAULT_ORIGIN = TextRenderer.TextOrigin.CENTER;
     public static float DEFAULT_SIZE = 0.4f;
     public static boolean DEFAULT_LIMIT_TO_GUI = false;
+    public static GuiBackground DEF_BACKGROUND = GuiBackground.transparent();
 
     @Getter
     @Setter
@@ -50,7 +50,11 @@ public class TextBox extends BaseGui {
     @Setter
     private boolean limitToGui = DEFAULT_LIMIT_TO_GUI;
 
-    private Color background = Color.rgba(0f, 0f, 0f, 0f);
+    @Getter
+    @Setter
+    private Vector2f relativeTextPos = new Vector2f(0.5f, 0.5f);
+
+    private GuiBackground background = DEF_BACKGROUND;
 
     public TextBox(Bounds bounds, EventManager eventManager) {
         super(bounds, eventManager);
@@ -80,8 +84,7 @@ public class TextBox extends BaseGui {
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
         //glStencilMask(0xFF);//Already on 0xFF because of no other calls
 
-        r.setTexture(Texture2D.NULL);
-        r.setColor(background);
+        background.apply(r);
         r.fill();
 
 
@@ -90,12 +93,17 @@ public class TextBox extends BaseGui {
 
         Bounds abs = r.getAbsoluteBounds();
 
+        Vector2f pos = new Vector2f(
+                (abs.maxX - abs.minX) * relativeTextPos.x + abs.minX,
+                (abs.maxY - abs.minY) * relativeTextPos.y + abs.minY
+        );
+
         final float maxW = limitToGui ? (abs.maxX - abs.minX) : Float.POSITIVE_INFINITY;
 
         //Coordinate conversion
         // GUI  -> OpenGL
         //[0;1] -> [1;-1] (y inverted)
-        renderer.drawText2D(text, new Vector2f(abs.minX * 2f - 1f, 1f - abs.minY * 2f), origin, r.getDepth(), size, maxW);
+        renderer.drawText2D(text, new Vector2f(pos.x * 2f - 1f, 1f - pos.y * 2f), origin, r.getDepth(), size, maxW);
 
 
         glDisable(GL_STENCIL_TEST);

@@ -1,7 +1,6 @@
 package xyz.upperlevel.ulge.util;
 
 public class Color {
-
     public final float r, g, b, a;
 
     private Color(float r, float g, float b, float a) {
@@ -150,6 +149,8 @@ public class Color {
 
 
     //----------------------------- DEF COLORS -----------------------------
+
+    public static final Color TRANSPARENT = rgba(0f, 0f, 0f, 0f);
 
     public static final Color WHITE       = rgb(255, 255, 255);
     public static final Color BLACK       = rgb(0  , 0  , 0  );
