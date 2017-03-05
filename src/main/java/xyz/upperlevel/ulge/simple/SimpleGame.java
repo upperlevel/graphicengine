@@ -1,6 +1,7 @@
 package xyz.upperlevel.ulge.simple;
 
 import org.joml.Vector2f;
+import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.window.GLFW;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.KeyChangeEvent;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
+import static org.lwjgl.opengl.GL11.*;
 
 public class SimpleGame {
 
@@ -26,6 +28,8 @@ public class SimpleGame {
     private int fps_frames = 0;
     private double fps_lastTime;
     private double lastFrame = -1;
+
+    private Color background = Color.BLACK;
 
     private SimpleGraphicEngine engine;
 
@@ -55,7 +59,7 @@ public class SimpleGame {
         mouseChange.register((window, key, action) -> mouseChange(key, action));
         mouseChange.apply(window);
 
-        engine = new SimpleGraphicEngine(width, height);
+        engine = new SimpleGraphicEngine(width, height, background);
 
         init();
 
@@ -75,6 +79,11 @@ public class SimpleGame {
     protected void postDraw() {
     }
 
+
+    public void simpleAlpha() {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
 
     public int width() {
         return width;
@@ -118,6 +127,15 @@ public class SimpleGame {
     public void title(String title) {
         checkPreWindowState();
         this.title = title;
+    }
+
+    public Color background() {
+        return background;
+    }
+
+    public void background(Color color) {
+        checkPreWindowState();
+        this.background = color;
     }
 
 

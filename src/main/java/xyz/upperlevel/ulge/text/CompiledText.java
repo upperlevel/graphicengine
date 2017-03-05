@@ -1,7 +1,6 @@
 package xyz.upperlevel.ulge.text;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.ulge.util.math.Vec;
 
 public abstract class CompiledText<R extends TextRenderer> {
     public final SuperText text;

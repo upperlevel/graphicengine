@@ -44,12 +44,15 @@ public class TextRenderTest extends SimpleGame {
     @Override
     public void config() {
         vsync(false);
+        background(Color.BLACK);
     }
 
 
 
     @Override
     public void init() {
+        simpleAlpha();
+
         long init = System.nanoTime();
         renderer = FontUtil.textRenderer(getFont(SERIF));
         renderer.init();
@@ -115,9 +118,9 @@ public class TextRenderTest extends SimpleGame {
     public void postDraw() {
         Vector2f vec = new Vector2f(cursorPos()).mul(1, -1).mul(2).sub(1f, -1f);
         long init = System.nanoTime();
-        //renderer.drawText2D(compiled.text, vec, origin, 0f, scale);
+        renderer.drawText2D(compiled.text, vec, origin, 0f, scale, 0.4f);
         //origin.translate(vec, scale, compiled.size);
-        compiled.render(vec, origin, 0f);
+        //compiled.render(vec, origin, 0f);
         long end = System.nanoTime();
         sum += (end - init);
         samples++;

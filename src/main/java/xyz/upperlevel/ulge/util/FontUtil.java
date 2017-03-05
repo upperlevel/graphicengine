@@ -102,7 +102,7 @@ public final class FontUtil {
 
         {
             image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            Graphics g = image.getGraphics();
+            Graphics2D g = (Graphics2D)image.getGraphics();
 
             int currentX = 0;
             int currentY = 0;

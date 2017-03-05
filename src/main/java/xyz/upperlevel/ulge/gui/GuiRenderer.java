@@ -79,6 +79,8 @@ public abstract class GuiRenderer {
 
     public abstract void setDepth(float depth);
 
+    public abstract float getDepth();
+
     public void setSize(Vector2f size) {
         setSize(size.x, size.y);
     }

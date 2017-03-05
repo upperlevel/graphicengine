@@ -36,6 +36,11 @@ public abstract class Container extends BaseGui {
 
 
     @Override
+    public void init(GuiRenderer r) {
+        guis().forEach(g -> g.handle.init(r));
+    }
+
+    @Override
     public boolean onMouseMove(Vector2f lastPos, Vector2f pos) {
         if(!super.onMouseMove(lastPos, pos))
             return false;

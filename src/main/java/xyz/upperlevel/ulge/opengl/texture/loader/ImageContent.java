@@ -85,8 +85,8 @@ public class ImageContent {
             for (int x = 0; x < w; x++) {
                 int pixel = pixels[y * texImage.getWidth() + x];
                 buffer.put((byte) ((pixel >> 16) & 0xFF));    // red component
-                buffer.put((byte) ((pixel >> 8) & 0xFF));     // green component
-                buffer.put((byte) (pixel & 0xFF));            // blue component
+                buffer.put((byte) ((pixel >> 8 ) & 0xFF));    // green component
+                buffer.put((byte) ( pixel        & 0xFF));    // blue component
                 buffer.put((byte) ((pixel >> 24) & 0xFF));    // alpha component
             }
         }

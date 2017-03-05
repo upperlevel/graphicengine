@@ -117,25 +117,28 @@ public class BitmapTextRenderer extends TextRenderer {
 
     @Override
     public void init() {
-        Uniformer uniformer = program.bind();
+        if(textureLoc == null) {//Just a test to remove redundancy
+            Uniformer uniformer = program.push();
 
-        textureLoc = uniformer.get("tex");
-        colorLoc = uniformer.get("col");
-        projectionLoc = uniformer.get("projection");
+            textureLoc = uniformer.get("tex");
+            colorLoc = uniformer.get("col");
+            projectionLoc = uniformer.get("projection");
 
-        charXLoc = uniformer.get("ch.x");
-        charYLoc = uniformer.get("ch.y");
-        charWidthLoc = uniformer.get("ch.w");
-        charHeightLoc = uniformer.get("ch.h");
+            charXLoc = uniformer.get("ch.x");
+            charYLoc = uniformer.get("ch.y");
+            charWidthLoc = uniformer.get("ch.w");
+            charHeightLoc = uniformer.get("ch.h");
 
-        program.unbind();
+            program.pop();
+        }
     }
 
     @Override
-    public Vector2f getSize(CharSequence str, float scale) {
+    public Vector2f getSize(CharSequence str, float scale, float maxW) {
         Vector2f size = new Vector2f(0.0f, 0.0f);
         float lineWidth = 0.0f;
         final int length = str.length();
+        maxW *= 2f;
         for(int i = 0; i < length; i++) {
             char c = str.charAt(i);
             if(c == '\n') {
@@ -148,7 +151,16 @@ public class BitmapTextRenderer extends TextRenderer {
                 CharData ch = chars.get(c);
                 if(ch == null)
                     continue;
-                lineWidth += ch.ratio * scale;
+                final float w = ch.ratio * scale;
+
+                if(lineWidth +  w > maxW) {
+                    if(size.x < lineWidth)
+                        size.x = lineWidth;
+
+                    size.y += scale;
+                    lineWidth = 0;
+                }
+                lineWidth += w;
             }
         }
         if(size.x < lineWidth)
@@ -157,9 +169,10 @@ public class BitmapTextRenderer extends TextRenderer {
     }
 
     @Override
-    public Vector2f getSize(SuperText text, float scale) {
+    public Vector2f getSize(SuperText text, float scale, float maxW) {
         Vector2f size = new Vector2f(0.0f, scale);
         float lineWidth = 0.0f;
+        maxW *= 2f;
         for(TextPiece piece : text) {
             final int length = piece.text.length();
             for (int i = 0; i < length; i++) {
@@ -173,7 +186,17 @@ public class BitmapTextRenderer extends TextRenderer {
                     CharData ch = chars.get(c);
                     if (ch == null)
                         continue;
-                    lineWidth += ch.ratio * scale;
+                    final float w = ch.ratio * scale;
+
+                    if(lineWidth +  w > maxW) {
+                        if(size.x < lineWidth)
+                            size.x = lineWidth;
+
+                        size.y += scale;
+                        lineWidth = 0;
+                    }
+
+                     lineWidth += w;
                 }
             }
         }
@@ -184,11 +207,14 @@ public class BitmapTextRenderer extends TextRenderer {
     }
 
     @Override
-    public void drawText2D(SuperText text, Vector2f pos, float distance, float scale) {
-        program.bind();
+    public void drawText2D0(SuperText text, Vector2f pos, float distance, float scale, float maxWidth) {
+        program.push();
         texture.bind();
 
+        maxWidth *= 2f;
+
         final float initX = pos.x;
+        float dx = 0f;
 
         for(TextPiece piece : text.asList()) {
             if(piece.bold) throw new NotImplementedException();
@@ -204,6 +230,7 @@ public class BitmapTextRenderer extends TextRenderer {
                 if(c == '\n') {
                     pos.y -= scale;
                     pos.x = initX;
+                    dx = 0f;
                     continue;
                 }
 
@@ -213,11 +240,18 @@ public class BitmapTextRenderer extends TextRenderer {
                 if(data == null)
                     continue;
 
-                final float widthScale = scale * data.ratio;
+                final float w = scale * data.ratio;
 
-                projectionLoc.set(new Matrix4f().translate(pos.x, pos.y, distance).scale(widthScale, scale, 1.0f));
+                if(dx + w > maxWidth) {
+                    pos.y -= scale;
+                    pos.x = initX;
+                    dx = 0f;
+                }
 
-                pos.x += widthScale;
+                projectionLoc.set(new Matrix4f().translate(pos.x, pos.y, distance).scale(w, scale, 1.0f));
+
+                pos.x += w;
+                dx += w;
 
                 uniform2d(data);
 
@@ -225,7 +259,7 @@ public class BitmapTextRenderer extends TextRenderer {
             }
         }
 
-        program.unbind();
+        program.pop();
     }
 
     protected void uniform2d(CharData data) {
@@ -340,7 +374,7 @@ public class BitmapTextRenderer extends TextRenderer {
 
         @Override
         public void render(Vector2f pos, TextOrigin origin, float distance) {
-            program.bind();
+            program.push();
             texture.bind();
 
             origin.translate(pos, scale, size);
@@ -376,7 +410,7 @@ public class BitmapTextRenderer extends TextRenderer {
                 pos.x = initX;
             }
 
-            program.unbind();
+            program.pop();
         }
     }
 

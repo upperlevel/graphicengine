@@ -4,6 +4,7 @@ import org.joml.Vector2f;
 import xyz.upperlevel.ulge.opengl.texture.Texture2D;
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.simple.shapes.Square;
+import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.util.FontUtil;
 
 import static java.awt.Font.SERIF;
@@ -16,7 +17,14 @@ public class FontToBitmapTest extends SimpleGame {
     }
 
     @Override
+    public void config() {
+        background(Color.AQUA);
+    }
+
+    @Override
     public void init() {
+        simpleAlpha();
+
         Texture2D tex = FontUtil.textRenderer(getFont(SERIF)).getTexture();
 
         register(
