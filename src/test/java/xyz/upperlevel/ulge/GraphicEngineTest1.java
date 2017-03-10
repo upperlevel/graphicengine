@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
@@ -305,11 +305,11 @@ public class GraphicEngineTest1 {
         diffTexContent = tlm.load(new File("C:/Users/Lorenzo/Desktop/textures/container2.png"));
         specTexContent = tlm.load(new File("C:/Users/Lorenzo/Desktop/textures/container2_specular.png"));
 
-        Texture2D diffTex = new Texture2D()
+        Texture2d diffTex = new Texture2d()
                 .loadImage(TextureFormat.RGBA, diffTexContent);
         TextureParameters.getDefault().setup();
 
-        Texture2D specTex = new Texture2D()
+        Texture2d specTex = new Texture2d()
                 .loadImage(TextureFormat.RGBA, specTexContent);
         TextureParameters.getDefault().setup();
 

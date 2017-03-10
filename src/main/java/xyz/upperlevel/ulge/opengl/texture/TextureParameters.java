@@ -59,8 +59,8 @@ public class TextureParameters {
             {
                 put(TextureParameter.Type.Wrapping.S, TextureParameter.Value.Wrapping.CLAMP_TO_EDGE);
                 put(TextureParameter.Type.Wrapping.T, TextureParameter.Value.Wrapping.CLAMP_TO_EDGE);
-                put(TextureParameter.Type.Filter.MIN, TextureParameter.Value.Filter.LINEAR);
-                put(TextureParameter.Type.Filter.MAG, TextureParameter.Value.Filter.LINEAR);
+                put(TextureParameter.Type.Filter.MIN, TextureParameter.Value.Filter.NEAREST);
+                put(TextureParameter.Type.Filter.MAG, TextureParameter.Value.Filter.NEAREST);
             }
         });
     }

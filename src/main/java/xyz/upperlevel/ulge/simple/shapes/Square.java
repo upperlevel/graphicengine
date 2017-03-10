@@ -6,7 +6,7 @@ import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.Uniform;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
 import xyz.upperlevel.ulge.util.Color;
 
@@ -62,7 +62,7 @@ public class Square extends SimpleRenderable {
         this.size = size;
     }
 
-    public Square(Vector2f pos, Vector2f size, Texture2D texture) {
+    public Square(Vector2f pos, Vector2f size, Texture2d texture) {
         super(texture);
         this.pos = pos;
         this.size = size;

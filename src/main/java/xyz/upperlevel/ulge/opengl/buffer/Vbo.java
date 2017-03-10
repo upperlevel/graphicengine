@@ -38,7 +38,7 @@ public class Vbo implements GlBuffer {
     }
 
     public Vbo bind() {
-        if (bound == null || bound.id == id)
+        if (bound == null || bound.id != id)
             recordBind();
         return this;
     }

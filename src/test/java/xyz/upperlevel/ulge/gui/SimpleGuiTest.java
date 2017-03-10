@@ -3,7 +3,7 @@ package xyz.upperlevel.ulge.gui;
 import xyz.upperlevel.ulge.gui.impl.Button;
 import xyz.upperlevel.ulge.gui.impl.SingletonContainer;
 import xyz.upperlevel.ulge.gui.impl.text.TextBox;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
@@ -35,7 +35,7 @@ public class SimpleGuiTest extends SimpleGame {
         simpleAlpha();
 
         ImageContent c = ImageContent.fromResource("simple/cat.jpg", SimpleGETest.class);
-        Texture2D tex = new Texture2D().loadImage(TextureFormat.RGBA, c);
+        Texture2d tex = new Texture2d().loadImage(TextureFormat.RGBA, c);
         TextureParameters.getDefault().setup();
 
         gui = new SingletonContainer(

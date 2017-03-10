@@ -1,7 +1,7 @@
 package xyz.upperlevel.ulge.text;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.simple.shapes.Square;
 import xyz.upperlevel.ulge.util.Color;
@@ -25,7 +25,7 @@ public class FontToBitmapTest extends SimpleGame {
     public void init() {
         simpleAlpha();
 
-        Texture2D tex = FontUtil.textRenderer(getFont(SERIF)).getTexture();
+        Texture2d tex = FontUtil.textRenderer(getFont(SERIF)).getTexture();
 
         register(
                 new Square(

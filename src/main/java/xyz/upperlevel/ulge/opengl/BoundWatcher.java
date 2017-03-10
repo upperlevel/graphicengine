@@ -4,7 +4,7 @@ import xyz.upperlevel.ulge.opengl.buffer.Ebo;
 import xyz.upperlevel.ulge.opengl.buffer.Vao;
 import xyz.upperlevel.ulge.opengl.buffer.Vbo;
 import xyz.upperlevel.ulge.opengl.shader.Program;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 
 public final class BoundWatcher {
 
@@ -27,7 +27,7 @@ public final class BoundWatcher {
         return Program.bound;
     }
 
-    public static Texture2D getBoundTexture2D() {
-        return Texture2D.bound;
+    public static Texture2d getBoundTexture2D() {
+        return Texture2d.bound;
     }
 }

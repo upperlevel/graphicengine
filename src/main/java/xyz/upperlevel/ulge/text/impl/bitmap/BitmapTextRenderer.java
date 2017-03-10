@@ -9,7 +9,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.opengl.texture.loader.ImageContent;
 import xyz.upperlevel.ulge.text.CompiledText;
 import xyz.upperlevel.ulge.text.SuperText;
@@ -41,7 +41,7 @@ public class BitmapTextRenderer extends TextRenderer {
 
 
     @Getter
-    protected final Texture2D texture;
+    protected final Texture2d texture;
     protected final Program program;
 
     private final int width, height;
@@ -98,7 +98,7 @@ public class BitmapTextRenderer extends TextRenderer {
                 .link();
     }
 
-    public BitmapTextRenderer(Texture2D texture, CharDataManager chars) {
+    public BitmapTextRenderer(Texture2d texture, CharDataManager chars) {
         program = getProgram();
         this.texture = texture;
         this.chars = chars;

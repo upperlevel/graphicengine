@@ -10,14 +10,14 @@ import java.util.Objects;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Texture2D {
+public class Texture2d {
 
-    public static final Texture2D NULL;
+    public static final Texture2d NULL;
 
-    public static Texture2D bound = null;
+    public static Texture2d bound = null;
 
     static {
-        NULL = new Texture2D();
+        NULL = new Texture2d();
         NULL.loadImage(
                 0,
                 TextureFormat.RGBA,
@@ -44,15 +44,15 @@ public class Texture2D {
     @Getter
     private ImageContent image = null;
 
-    public Texture2D() {
+    public Texture2d() {
         id = glGenTextures();
     }
 
-    public Texture2D(int id) {
+    public Texture2d(int id) {
         this.id = id;
     }
 
-    public Texture2D bind() {
+    public Texture2d bind() {
         if (bound == null || bound.id != id) {
             glBindTexture(GL_TEXTURE_2D, id);
             bound = this;
@@ -60,13 +60,13 @@ public class Texture2D {
         return this;
     }
 
-    public Texture2D forceBind() {
+    public Texture2d forceBind() {
         glBindTexture(GL_TEXTURE_2D, id);
         bound = this;
         return this;
     }
 
-    public Texture2D unbind() {
+    public Texture2d unbind() {
         if (bound != null) {
             glBindTexture(GL_TEXTURE_2D, 0);
             bound = null;
@@ -74,18 +74,18 @@ public class Texture2D {
         return this;
     }
 
-    public Texture2D forceUnbind() {
+    public Texture2d forceUnbind() {
         glBindTexture(GL_TEXTURE_2D, 0);
         bound = null;
         return this;
     }
 
-    public Texture2D loadImage(int mipmapLevel, int formatType, int dataType, int width, int height, ByteBuffer image) {
+    public Texture2d loadImage(int mipmapLevel, int formatType, int dataType, int width, int height, ByteBuffer image) {
         glTexImage2D(GL_TEXTURE_2D, mipmapLevel, formatType, width, height, 0, formatType, dataType, image);
         return this;
     }
 
-    public Texture2D loadImage(int mipmapLevel, int formatType, int dataType, ImageContent image) {
+    public Texture2d loadImage(int mipmapLevel, int formatType, int dataType, ImageContent image) {
         Objects.requireNonNull(image, "image");
         bind();
         glTexImage2D(GL_TEXTURE_2D,
@@ -101,24 +101,24 @@ public class Texture2D {
         return this;
     }
 
-    public Texture2D loadImage(int mipmapLevel, TextureFormat formatType, DataType dataType, ImageContent image) {
+    public Texture2d loadImage(int mipmapLevel, TextureFormat formatType, DataType dataType, ImageContent image) {
         Objects.requireNonNull(formatType, "formatType");
         Objects.requireNonNull(dataType, "dataType");
         loadImage(mipmapLevel, formatType.getId(), dataType.getId(), image);
         return this;
     }
 
-    public Texture2D loadImage(TextureFormat formatType, ImageContent image) {
+    public Texture2d loadImage(TextureFormat formatType, ImageContent image) {
         loadImage(0, formatType, DataType.UNSIGNED_BYTE, image);
         return this;
     }
 
-    public Texture2D destroy() {
+    public Texture2d destroy() {
         glDeleteTextures(id);
         return this;
     }
 
-    public static Texture2D wrap(int id) {
-        return new Texture2D(id);
+    public static Texture2d wrap(int id) {
+        return new Texture2d(id);
     }
 }

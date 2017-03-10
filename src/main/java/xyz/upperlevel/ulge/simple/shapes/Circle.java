@@ -9,7 +9,7 @@ import xyz.upperlevel.ulge.opengl.buffer.VboDataUsage;
 import xyz.upperlevel.ulge.opengl.buffer.VertexLinker;
 import xyz.upperlevel.ulge.opengl.shader.Uniform;
 import xyz.upperlevel.ulge.opengl.shader.Uniformer;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
 import xyz.upperlevel.ulge.util.Color;
 
@@ -35,7 +35,7 @@ public class Circle extends SimpleRenderable{
         this.size = size;
     }
 
-    public Circle(Vector2f pos, Vector2f size, Texture2D texture, int segments) {
+    public Circle(Vector2f pos, Vector2f size, Texture2d texture, int segments) {
         super(texture);
         this.segments = segments;
         initVerts(segments);

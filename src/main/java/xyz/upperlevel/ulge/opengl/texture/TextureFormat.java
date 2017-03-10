@@ -31,4 +31,11 @@ public enum TextureFormat {
     TextureFormat(int id) {
         this.id = id;
     }
+
+    public static TextureFormat fromId(int id) {
+        for (TextureFormat v : values())
+            if (v.getId() == id)
+                return v;
+        return null;
+    }
 }

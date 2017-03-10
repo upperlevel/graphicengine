@@ -1,6 +1,6 @@
 package xyz.upperlevel.ulge.util;
 
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.opengl.texture.TextureFormat;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameter;
 import xyz.upperlevel.ulge.opengl.texture.TextureParameters;
@@ -10,11 +10,9 @@ import xyz.upperlevel.ulge.text.impl.bitmap.CharData;
 import xyz.upperlevel.ulge.text.impl.bitmap.CharDataManager;
 import xyz.upperlevel.ulge.text.impl.bitmap.chardata.StandardCharDataManager;
 
-import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 
 public final class FontUtil {
     public static final char[] NO_CHARS = new char[0];
@@ -143,7 +141,7 @@ public final class FontUtil {
         }
 
         ImageContent content = new ImageContent(image);
-        Texture2D tex = new Texture2D().loadImage(TextureFormat.RGBA, content);
+        Texture2d tex = new Texture2d().loadImage(TextureFormat.RGBA, content);
         parameters.setup();
         return new BitmapTextRenderer(tex, chars);
     }

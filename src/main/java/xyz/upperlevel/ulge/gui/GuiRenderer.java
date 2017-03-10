@@ -7,7 +7,7 @@ import org.joml.Vector2f;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.Program;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.util.Color;
 
 import java.util.Objects;
@@ -75,7 +75,7 @@ public abstract class GuiRenderer {
 
     public abstract boolean isBoundsStackEmpty();
 
-    public abstract void setTexture(Texture2D texture);
+    public abstract void setTexture(Texture2d texture);
 
     public abstract void setDepth(float depth);
 

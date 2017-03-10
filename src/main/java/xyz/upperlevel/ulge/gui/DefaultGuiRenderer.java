@@ -1,7 +1,7 @@
 package xyz.upperlevel.ulge.gui;
 
 import xyz.upperlevel.ulge.opengl.shader.*;
-import xyz.upperlevel.ulge.opengl.texture.Texture2D;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.util.Color;
 
 import java.util.LinkedList;
@@ -69,7 +69,7 @@ public class DefaultGuiRenderer extends GuiRenderer {
     }
 
     @Override
-    public void setTexture(Texture2D texture) {
+    public void setTexture(Texture2d texture) {
         texture.bind();
     }
 
