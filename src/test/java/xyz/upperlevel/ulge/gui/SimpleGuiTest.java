@@ -39,15 +39,6 @@ public class SimpleGuiTest extends SimpleGame {
         Texture2D tex = new Texture2D().loadImage(TextureFormat.RGBA, c);
         TextureParameters.getDefault().setup();
 
-        /*gui = new SingletonContainer(
-                new CustomButton(
-                        color(Color.AQUA),
-                        color(Color.WHITE),
-                        texture(tex)
-                ),
-                new Bounds(0.25f, 0.25f, 0.75f, 0.75f)
-        );*/
-
         gui = new SingletonContainer(
                 new UnionContainer(
                         new Button((Button b) -> {
