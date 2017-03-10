@@ -3,7 +3,6 @@ package xyz.upperlevel.ulge.gui.impl;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.gui.GuiBackground;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
-import xyz.upperlevel.ulge.gui.events.GuiClickEvent;
 import xyz.upperlevel.ulge.gui.impl.text.TextBox;
 import xyz.upperlevel.ulge.text.SuperText;
 import xyz.upperlevel.utils.event.EventManager;
@@ -54,7 +53,7 @@ public class Button extends Pane {
 
     @Override
     public boolean onClickBegin(Vector2f position) {
-        if(getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.BEGIN))) {
+        if(super.onClickBegin(position)) {
             if(run != null)
                 run.run();
             return true;
