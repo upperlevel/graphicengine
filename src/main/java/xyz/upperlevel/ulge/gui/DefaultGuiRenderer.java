@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class DefaultGuiRenderer extends GuiRenderer {
+
     public static final DefaultGuiRenderer $ = new DefaultGuiRenderer();
 
     private Uniform uBounds, uColor, uDepth, uSize;
@@ -17,6 +18,8 @@ public class DefaultGuiRenderer extends GuiRenderer {
     private Bounds current = Bounds.FULL;
 
     private float depth = 0f;
+
+    private boolean isFlushed = false;
 
     public DefaultGuiRenderer() {
         super(createProgram());
@@ -49,9 +52,10 @@ public class DefaultGuiRenderer extends GuiRenderer {
             boundsStack.add(bounds);
         } else {
             Bounds abs = current.shrink(bounds);
-            boundsStack.add(abs);
+            boundsStack.add(current);
             current = abs;
         }
+        isFlushed = false;
         return current;
     }
 
@@ -59,13 +63,23 @@ public class DefaultGuiRenderer extends GuiRenderer {
     public void popBounds() {
         if(boundsStack.poll() == null)
             throw new IllegalStateException("Trying to pop from an empty bounds stack!");
-        else
-            current = boundsStack.peek();
+        current = boundsStack.peek();
+        if(current == null)
+            current = Bounds.FULL;
+
+        isFlushed = false;
     }
 
     @Override
     public boolean isBoundsStackEmpty() {
         return boundsStack.isEmpty();
+    }
+
+    @Override
+    public void flushBounds() {
+        if(isFlushed) return;
+        isFlushed = true;
+        setBounds(current);
     }
 
     @Override

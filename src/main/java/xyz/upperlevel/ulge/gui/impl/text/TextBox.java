@@ -17,7 +17,7 @@ import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
-@Accessors(fluent = true)
+@Accessors(fluent = true, chain = true)
 public class TextBox extends BaseGui {
 
     public static TextRenderer DEFAULT_TEXT_RENDER = FontUtil.textRenderer(Font.getFont(Font.SERIF));
@@ -56,12 +56,8 @@ public class TextBox extends BaseGui {
 
     private GuiBackground background = DEF_BACKGROUND;
 
-    public TextBox(Bounds bounds, EventManager eventManager) {
-        super(bounds, eventManager);
-    }
-
-    public TextBox(Bounds bounds) {
-        super(bounds);
+    public TextBox(EventManager eventManager) {
+        super(eventManager);
     }
 
     public TextBox() {
@@ -70,19 +66,18 @@ public class TextBox extends BaseGui {
 
     @Override
     public void init(GuiRenderer r) {
-        System.out.println("TextBox -> init()");
         renderer.init();
     }
 
     @Override
-    public void render(GuiRenderer r) {
+    public void draw(GuiRenderer r) {
 
         glEnable(GL_STENCIL_TEST);
 
         glStencilOp(GL_ZERO, GL_ZERO, GL_REPLACE);
 
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
-        //glStencilMask(0xFF);//Already on 0xFF because of no other calls
+        glStencilMask(0xFF);//Already on 0xFF because of no other calls
 
         background.apply(r);
         r.fill();

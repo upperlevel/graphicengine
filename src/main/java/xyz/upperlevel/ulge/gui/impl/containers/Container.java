@@ -1,4 +1,4 @@
-package xyz.upperlevel.ulge.gui.impl;
+package xyz.upperlevel.ulge.gui.impl.containers;
 
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.gui.BaseGui;
@@ -15,20 +15,27 @@ public abstract class Container extends BaseGui {
         super();
     }
 
-    public Container(Bounds bounds) {
-        super(bounds);
-    }
-
-    public Container(Bounds bounds, EventManager manager) {
-        super(bounds, manager);
+    public Container(EventManager manager) {
+        super(manager);
     }
 
 
-    public void add(Gui gui) {
+    /**
+     * Tries to add a Gui into the container, returns true only if the operation has succeeded
+     * @param gui the Gui to add
+     * @param bounds the Bounds in which this Gui will be limited
+     * @return <tt>true</tt> only if the operation has succeeded
+     */
+    public boolean add(Gui gui, Bounds bounds) {
         throw new UnsupportedOperationException();
     }
 
-    public void remove(Gui gui) {
+    /**
+     * Tries to remove a Gui from the container, returns true only if the operation has succeeded
+     * @param gui the Gui to remove
+     * @return <tt>true</tt> only if the operation has succeeded
+     */
+    public boolean remove(Gui gui) {
         throw new UnsupportedOperationException();
     }
 
@@ -37,7 +44,7 @@ public abstract class Container extends BaseGui {
 
     @Override
     public void init(GuiRenderer r) {
-        guis().forEach(g -> g.handle.init(r));
+        guis().forEach(g -> g.init(r));
     }
 
     @Override
@@ -50,7 +57,7 @@ public abstract class Container extends BaseGui {
                 if(gui.lasPos == null)
                     if(!gui.handle.onMouseEnter(rel))
                         return false;
-                if(!gui.handle.onMouseMove(lastPos, pos))
+                if(!gui.handle.onMouseMove(gui.rel(lastPos), rel))
                     return false;
                 gui.lasPos = rel;
             } else if(gui.lasPos != null) {
@@ -153,23 +160,38 @@ public abstract class Container extends BaseGui {
     }
 
     @Override
-    public void render(GuiRenderer renderer) {
+    public void draw(GuiRenderer renderer) {
         for(GuiData gui : guis())
-            gui.handle.draw(renderer);
+            gui.draw(renderer);
     }
 
     public static class GuiData {
-        public final Gui handle;
+        public Gui handle;
 
+        public Bounds bounds;
         public Vector2f lasPos = null;
         public Vector2f lastClick = null;
+        public boolean init = false;
 
-        public GuiData(Gui handle) {
+        public GuiData(Gui handle, Bounds bounds) {
             this.handle = handle;
+            this.bounds = bounds;
         }
 
         public Vector2f rel(Vector2f in) {
-            return handle.getBounds().relative(in, new Vector2f());
+            return bounds.relative(in, new Vector2f());
+        }
+
+        public void init(GuiRenderer r) {
+            init = true;
+            handle.init(r);
+        }
+
+        public void draw(GuiRenderer r) {
+            if(!init) init(r);
+            r.pushAndSetBounds(bounds);
+            handle.draw(r);
+            r.popBounds();
         }
     }
 }

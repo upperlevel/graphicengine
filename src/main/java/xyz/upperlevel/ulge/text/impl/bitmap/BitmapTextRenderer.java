@@ -209,6 +209,9 @@ public class BitmapTextRenderer extends TextRenderer {
     @Override
     public void drawText2D0(SuperText text, Vector2f pos, float distance, float scale, float maxWidth) {
         program.push();
+        //To remove some initialization errora
+        init();
+
         texture.bind();
 
         maxWidth *= 2f;

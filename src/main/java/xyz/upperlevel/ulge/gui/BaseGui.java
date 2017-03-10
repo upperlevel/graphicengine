@@ -6,41 +6,20 @@ import lombok.Setter;
 import xyz.upperlevel.utils.event.EventManager;
 import xyz.upperlevel.utils.event.impl.SimpleEventManager;
 
-public abstract class BaseGui implements Gui {
-
-    @Getter
-    @Setter
-    @NonNull
-    private Bounds bounds;
-
+public abstract class BaseGui extends Gui {
     @Getter
     @Setter
     @NonNull
     private EventManager eventManager;
 
-    public BaseGui(Bounds bounds, EventManager eventManager) {
-        this.bounds = bounds;
+    public BaseGui(EventManager eventManager) {
         this.eventManager = eventManager;
     }
 
-    public BaseGui(Bounds bounds) {
-        this(bounds, new SimpleEventManager());
-    }
-
     public BaseGui() {
-        this(Bounds.FULL, new SimpleEventManager());
+        this(new SimpleEventManager());
     }
 
     @Override
-    public void init(GuiRenderer renderer) {
-    }
-
-    @Override
-    public void draw(GuiRenderer renderer) {
-        renderer.pushAndSetBounds(bounds);
-        render(renderer);
-        renderer.popBounds();
-    }
-
-    public abstract void render(GuiRenderer renderer);
+    public void init(GuiRenderer renderer) {}
 }

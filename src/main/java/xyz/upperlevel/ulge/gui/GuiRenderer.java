@@ -57,6 +57,7 @@ public abstract class GuiRenderer {
     }
     public abstract void setColor(Color color);
 
+
     public abstract Bounds getAbsoluteBounds();
 
     public void resetBounds() {
@@ -76,6 +77,12 @@ public abstract class GuiRenderer {
     public abstract boolean isBoundsStackEmpty();
 
     public abstract void setTexture(Texture2d texture);
+
+    /**
+     * Equal to setBounds(getAbsoluteBounds());
+     * Sends the bounds to their uniform
+     */
+    public abstract void flushBounds();
 
     public abstract void setDepth(float depth);
 
@@ -97,6 +104,7 @@ public abstract class GuiRenderer {
     }
 
     public void fill() {
+        flushBounds();
         fillVao.bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         fillVao.unbind();
