@@ -10,6 +10,7 @@ import xyz.upperlevel.ulge.gui.GuiBackground;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
 import xyz.upperlevel.ulge.text.SuperText;
 import xyz.upperlevel.ulge.text.TextRenderer;
+import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.util.FontUtil;
 import xyz.upperlevel.utils.event.EventManager;
 
@@ -24,7 +25,7 @@ public class TextBox extends BaseGui {
     public static TextRenderer.TextOrigin DEFAULT_ORIGIN = TextRenderer.TextOrigin.CENTER;
     public static float DEFAULT_SIZE = 0.4f;
     public static boolean DEFAULT_LIMIT_TO_GUI = false;
-    public static GuiBackground DEF_BACKGROUND = GuiBackground.transparent();
+    public static GuiBackground DEF_BACKGROUND = GuiBackground.color(Color.AQUA);
 
     @Getter
     @Setter
@@ -78,7 +79,7 @@ public class TextBox extends BaseGui {
         glStencilOp(GL_ZERO, GL_ZERO, GL_REPLACE);
 
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
-        //glStencilMask(0xFF);//Already on 0xFF because of no other calls
+        glStencilMask(0xFF);//Already on 0xFF because of no other calls
 
         background.apply(r);
         r.fill();
