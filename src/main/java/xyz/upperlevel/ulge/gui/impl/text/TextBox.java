@@ -10,7 +10,6 @@ import xyz.upperlevel.ulge.gui.GuiBackground;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
 import xyz.upperlevel.ulge.text.SuperText;
 import xyz.upperlevel.ulge.text.TextRenderer;
-import xyz.upperlevel.ulge.util.Color;
 import xyz.upperlevel.ulge.util.FontUtil;
 import xyz.upperlevel.utils.event.EventManager;
 
@@ -25,7 +24,7 @@ public class TextBox extends BaseGui {
     public static TextRenderer.TextOrigin DEFAULT_ORIGIN = TextRenderer.TextOrigin.CENTER;
     public static float DEFAULT_SIZE = 0.4f;
     public static boolean DEFAULT_LIMIT_TO_GUI = false;
-    public static GuiBackground DEF_BACKGROUND = GuiBackground.color(Color.AQUA);
+    public static GuiBackground DEF_BACKGROUND = GuiBackground.transparent();
 
     @Getter
     @Setter
