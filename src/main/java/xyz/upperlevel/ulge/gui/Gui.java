@@ -1,56 +1,69 @@
 package xyz.upperlevel.ulge.gui;
 
+import lombok.Getter;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.gui.events.*;
 import xyz.upperlevel.utils.event.EventManager;
 
-public interface Gui {
+public abstract class Gui {
+    @Getter
+    private boolean hover = false;
+    @Getter
+    private boolean click = false;
 
-    void init(GuiRenderer renderer);
+    public abstract void init(GuiRenderer renderer);
 
-    void draw(GuiRenderer renderer);
+    public abstract void draw(GuiRenderer renderer);
 
-    default boolean onMouseMove(Vector2f lastPos, Vector2f pos) {
+    public abstract EventManager getEventManager();
+
+
+
+    public boolean onMouseMove(Vector2f lastPos, Vector2f pos) {
         return getEventManager().call(new GuiMouseMoveEvent(this, lastPos, pos));
     }
 
-    default boolean onClickBegin(Vector2f position) {
-        return getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.BEGIN));
+    public boolean onClickBegin(Vector2f position) {
+        if(getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.BEGIN))) {
+            click = true;
+            return true;
+        } else return false;
     }
 
-    default boolean onClickEnd(Vector2f position) {
-        return getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.END));
+    public boolean onClickEnd(Vector2f position) {
+        if(getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.END))) {
+            click = false;
+            return true;
+        } else return false;
     }
 
-    default boolean onMouseEnter(Vector2f enterPos) {
-        return getEventManager().call(new GuiMouseEnterEvent(this, enterPos));
+    public boolean onMouseEnter(Vector2f enterPos) {
+        if(getEventManager().call(new GuiMouseEnterEvent(this, enterPos))) {
+            hover = true;
+            return true;
+        } else return false;
     }
 
-    default boolean onMouseExit(Vector2f lastPos) {
-        return getEventManager().call(new GuiMouseExitEvent(this, lastPos));
+    public boolean onMouseExit(Vector2f lastPos) {
+        if(getEventManager().call(new GuiMouseExitEvent(this, lastPos))) {
+            hover = false;
+            return true;
+        } else return false;
     }
 
-    default boolean onOpen() {
+    public boolean onOpen() {
         return getEventManager().call(new GuiOpenEvent(this));
     }
 
-    default boolean onClose() {
+    public boolean onClose() {
         return getEventManager().call(new GuiCloseEvent(this));
     }
 
-    default boolean onChange(Gui gui) {
+    public boolean onChange(Gui gui) {
         return getEventManager().call(new GuiChangeEvent(this, gui));
     }
 
-    default boolean onDrag(Vector2f lastPos, Vector2f newPos) {
+    public boolean onDrag(Vector2f lastPos, Vector2f newPos) {
         return getEventManager().call(new GuiDragEvent(this, lastPos, newPos));
-    }
-
-    EventManager getEventManager();
-
-    Bounds getBounds();
-
-    default void setBounds(Bounds bounds) {
-        throw new UnsupportedOperationException();
     }
 }

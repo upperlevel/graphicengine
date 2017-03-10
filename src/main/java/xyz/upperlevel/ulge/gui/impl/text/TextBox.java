@@ -56,12 +56,8 @@ public class TextBox extends BaseGui {
 
     private GuiBackground background = DEF_BACKGROUND;
 
-    public TextBox(Bounds bounds, EventManager eventManager) {
-        super(bounds, eventManager);
-    }
-
-    public TextBox(Bounds bounds) {
-        super(bounds);
+    public TextBox(EventManager eventManager) {
+        super(eventManager);
     }
 
     public TextBox() {
@@ -75,7 +71,7 @@ public class TextBox extends BaseGui {
     }
 
     @Override
-    public void render(GuiRenderer r) {
+    public void draw(GuiRenderer r) {
 
         glEnable(GL_STENCIL_TEST);
 

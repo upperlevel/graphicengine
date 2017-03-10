@@ -27,20 +27,16 @@ public class SimpleGuiWrapper {
 
 
     public void clickBegin(Vector2f pos) {
-        lastPos = rel(pos);
         clicked = true;
-        gui.onClickBegin(new Vector2f(lastPos));
+        gui.onClickBegin(pos);
     }
 
     public void clickEnd(Vector2f pos) {
-        lastPos = rel(pos);
         clicked = false;
-        gui.onClickEnd(new Vector2f(lastPos));
+        gui.onClickEnd(pos);
     }
 
     public void move(Vector2f newPos) {
-        newPos = rel(newPos);
-
         boolean isInside = isNormal(newPos);
         if(lastPos == null && !isInside)
             return;
@@ -64,9 +60,5 @@ public class SimpleGuiWrapper {
             gui.onMouseExit(pos);
             lastPos = null;
         }
-    }
-
-    private Vector2f rel(Vector2f abs) {
-        return gui.getBounds().relative(abs, new Vector2f());
     }
 }

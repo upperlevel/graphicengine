@@ -18,6 +18,8 @@ public class DefaultGuiRenderer extends GuiRenderer {
 
     private float depth = 0f;
 
+    private boolean isFlushed = false;
+
     public DefaultGuiRenderer() {
         super(createProgram());
 
@@ -52,6 +54,7 @@ public class DefaultGuiRenderer extends GuiRenderer {
             boundsStack.add(abs);
             current = abs;
         }
+        isFlushed = false;
         return current;
     }
 
@@ -59,14 +62,22 @@ public class DefaultGuiRenderer extends GuiRenderer {
     public void popBounds() {
         if(boundsStack.poll() == null)
             throw new IllegalStateException("Trying to pop from an empty bounds stack!");
-        else
-            current = boundsStack.peek();
+        current = boundsStack.peek();
+        isFlushed = false;
     }
 
     @Override
     public boolean isBoundsStackEmpty() {
         return boundsStack.isEmpty();
     }
+
+    @Override
+    public void flushBounds() {
+        if(isFlushed) return;
+        isFlushed = true;
+        setBounds(current);
+    }
+
 
     @Override
     public void setTexture(Texture2D texture) {

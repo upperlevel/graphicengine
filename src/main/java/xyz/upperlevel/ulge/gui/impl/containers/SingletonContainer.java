@@ -1,4 +1,4 @@
-package xyz.upperlevel.ulge.gui.impl;
+package xyz.upperlevel.ulge.gui.impl.containers;
 
 import lombok.Getter;
 import xyz.upperlevel.ulge.gui.Bounds;
@@ -17,17 +17,13 @@ public class SingletonContainer extends Container {
     private final Set<GuiData> guis;
 
     public SingletonContainer(Gui gui, Bounds bounds, EventManager manager) {
-        super(bounds);
+        super(manager);
         this.gui = gui;
-        this.guis = Collections.singleton(new GuiData(gui));
+        this.guis = Collections.singleton(new GuiData(gui, bounds));
     }
 
     public SingletonContainer(Gui gui, Bounds bounds) {
         this(gui, bounds, new SimpleEventManager());
-    }
-
-    public SingletonContainer(Gui gui) {
-        this(gui, Bounds.FULL, new SimpleEventManager());
     }
 
     @Override
