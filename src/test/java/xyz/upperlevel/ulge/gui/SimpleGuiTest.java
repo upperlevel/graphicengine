@@ -1,6 +1,6 @@
 package xyz.upperlevel.ulge.gui;
 
-import xyz.upperlevel.ulge.gui.impl.Button;
+import xyz.upperlevel.ulge.gui.impl.Pane;
 import xyz.upperlevel.ulge.gui.impl.containers.SingletonContainer;
 import xyz.upperlevel.ulge.gui.impl.containers.UnionContainer;
 import xyz.upperlevel.ulge.gui.impl.text.TextBox;
@@ -41,7 +41,7 @@ public class SimpleGuiTest extends SimpleGame {
 
         gui = new SingletonContainer(
                 new UnionContainer(
-                        new Button((Button b) -> {
+                        new Pane((Pane b) -> {
                             if(b.isClick())
                                 return texture(tex);
                             else if(b.isHover())

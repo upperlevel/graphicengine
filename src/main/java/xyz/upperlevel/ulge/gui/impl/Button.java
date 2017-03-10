@@ -1,42 +1,69 @@
 package xyz.upperlevel.ulge.gui.impl;
 
-import xyz.upperlevel.ulge.gui.BaseGui;
+import org.joml.Vector2f;
 import xyz.upperlevel.ulge.gui.GuiBackground;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
+import xyz.upperlevel.ulge.gui.events.GuiClickEvent;
+import xyz.upperlevel.ulge.gui.impl.text.TextBox;
+import xyz.upperlevel.ulge.text.SuperText;
 import xyz.upperlevel.utils.event.EventManager;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class Button extends BaseGui {
-    public static GuiBackground DEF_BACKGROUND = GuiBackground.transparent();
+public class Button extends Pane {
+    protected TextBox text = new TextBox();
+    protected Runnable run = null;
 
-    private final Supplier<GuiBackground> bkg;
 
     public Button(EventManager manager, Supplier<GuiBackground> bkg) {
-        super(manager);
-        this.bkg = bkg;
+        super(manager, bkg);
     }
 
     public Button(Supplier<GuiBackground> bkg) {
-        this.bkg = bkg;
+        super(bkg);
     }
 
-    public Button(Function<Button, GuiBackground> bkg) {
-        this.bkg = () -> bkg.apply(this);
+    public Button(Function<Pane, GuiBackground> bkg) {
+        super(bkg);
     }
 
     public Button(GuiBackground bkg){
-        this(() -> bkg);
+        super(bkg);
     }
 
     public Button() {
-        this(() -> DEF_BACKGROUND);
+        super();
+    }
+
+
+    public Button setText(SuperText text) {
+        this.text.text(text);
+        return this;
+    }
+
+    public Button setSize(float size) {
+        this.text.size(size);
+        return this;
+    }
+
+    public Button setOnClick(Runnable run) {
+        this.run = run;
+        return this;
     }
 
     @Override
-    public void draw(GuiRenderer renderer) {
-        bkg.get().apply(renderer);
-        renderer.fill();
+    public boolean onClickBegin(Vector2f position) {
+        if(getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.BEGIN))) {
+            if(run != null)
+                run.run();
+            return true;
+        } else return false;
+    }
+
+    @Override
+    public void draw(GuiRenderer r) {
+        super.draw(r);
+        text.draw(r);
     }
 }

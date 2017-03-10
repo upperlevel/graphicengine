@@ -57,7 +57,7 @@ public abstract class Container extends BaseGui {
                 if(gui.lasPos == null)
                     if(!gui.handle.onMouseEnter(rel))
                         return false;
-                if(!gui.handle.onMouseMove(lastPos, pos))
+                if(!gui.handle.onMouseMove(gui.rel(lastPos), rel))
                     return false;
                 gui.lasPos = rel;
             } else if(gui.lasPos != null) {
@@ -189,7 +189,7 @@ public abstract class Container extends BaseGui {
 
         public void draw(GuiRenderer r) {
             if(!init) init(r);
-            r.pushBounds(bounds);
+            r.pushAndSetBounds(bounds);
             handle.draw(r);
             r.popBounds();
         }

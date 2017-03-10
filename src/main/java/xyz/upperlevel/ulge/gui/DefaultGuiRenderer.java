@@ -51,7 +51,7 @@ public class DefaultGuiRenderer extends GuiRenderer {
             boundsStack.add(bounds);
         } else {
             Bounds abs = current.shrink(bounds);
-            boundsStack.add(abs);
+            boundsStack.add(current);
             current = abs;
         }
         isFlushed = false;
@@ -63,6 +63,9 @@ public class DefaultGuiRenderer extends GuiRenderer {
         if(boundsStack.poll() == null)
             throw new IllegalStateException("Trying to pop from an empty bounds stack!");
         current = boundsStack.peek();
+        if(current == null)
+            current = Bounds.FULL;
+
         isFlushed = false;
     }
 

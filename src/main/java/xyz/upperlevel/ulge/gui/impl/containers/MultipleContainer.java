@@ -12,16 +12,20 @@ import java.util.stream.Collectors;
 public class MultipleContainer extends Container{
     private final Map<Gui, GuiData> guis;
 
-    public MultipleContainer(Map<Gui, Bounds> guis, EventManager manager) {
+    public MultipleContainer(Map<Bounds, Gui> guis, EventManager manager) {
         super(manager);
         this.guis = guis.entrySet()
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                Map.Entry::getKey,
-                                e -> toData(e.getKey(), e.getValue())
+                                Map.Entry::getValue,
+                                e -> toData(e.getValue(), e.getKey())
                         )
                 );
+    }
+
+    public MultipleContainer(Map<Bounds, Gui> guis) {
+        this(guis, new SimpleEventManager());
     }
 
     public MultipleContainer(EventManager manager) {

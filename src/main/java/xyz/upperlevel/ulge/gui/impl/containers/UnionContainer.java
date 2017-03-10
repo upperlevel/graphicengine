@@ -2,7 +2,6 @@ package xyz.upperlevel.ulge.gui.impl.containers;
 
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.gui.BaseGui;
-import xyz.upperlevel.ulge.gui.Bounds;
 import xyz.upperlevel.ulge.gui.Gui;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
 import xyz.upperlevel.utils.event.EventManager;
@@ -19,7 +18,7 @@ public class UnionContainer extends BaseGui{
     public UnionContainer(List<Gui> guis, EventManager manager) {
         super(manager);
         this.guis = guis.stream()
-                .map(g -> new GuiData(g, Bounds.FULL))
+                .map(GuiData::new)
                 .collect(Collectors.toList());
     }
 
@@ -154,7 +153,7 @@ public class UnionContainer extends BaseGui{
         public Gui handle;
         public boolean init = false;
 
-        public GuiData(Gui handle, Bounds bounds) {
+        public GuiData(Gui handle) {
             this.handle = handle;
         }
 

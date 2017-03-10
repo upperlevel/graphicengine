@@ -1,6 +1,7 @@
 package xyz.upperlevel.ulge.text;
 
 import xyz.upperlevel.ulge.util.ArrayUnmodifiableIterator;
+import xyz.upperlevel.ulge.util.Color;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -51,5 +52,9 @@ public class SuperText implements Iterable<TextPiece>{
 
     public static SuperText of(String str) {
         return new SuperText(TextPiece.of(str));
+    }
+
+    public static SuperText of(String str, Color color) {
+        return new SuperText(TextPiece.of(str, color));
     }
 }
