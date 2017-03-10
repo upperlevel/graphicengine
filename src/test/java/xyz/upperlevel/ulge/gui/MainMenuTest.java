@@ -31,10 +31,8 @@ public class MainMenuTest extends SimpleGame {
     public static Function<Pane, GuiBackground> BKG_GENERATOR = (pane) -> {
         if(pane.isClick())
             return BTN_CLICKED;
-        if(pane.isHover()) {
-            //System.out.println("HOVER!");
+        if(pane.isHover())
             return BTN_HOVER;
-        }
         return BTN_REST;
     };
 
@@ -75,21 +73,30 @@ public class MainMenuTest extends SimpleGame {
                                 put(
                                         new Bounds(0f, 0.05f, 1f, 0.25f),
                                         new Button(BKG_GENERATOR)
-                                                .setText(SuperText.of("Lol", Color.BLACK))
+                                                .setText(SuperText.of("Singleplayer", Color.BLACK))
                                                 .setSize(0.2f)
-                                                .setOnClick(() -> System.out.println("Testoooo"))
+                                                .setOnClick(() -> onSinglePlayer())
                                 );
                                 put(
                                         new Bounds(0f, 0.3f, 1f, 0.5f),
-                                        new Pane(BKG_GENERATOR)
+                                        new Button(BKG_GENERATOR)
+                                                .setText(SuperText.of("Multiplayer", Color.BLACK))
+                                                .setSize(0.2f)
+                                                .setOnClick(() -> onMultiPlayer())
                                 );
                                 put(
                                         new Bounds(0f, 0.55f, 1f, 0.75f),
-                                        new Pane(BKG_GENERATOR)
+                                        new Button(BKG_GENERATOR)
+                                                .setText(SuperText.of("Options", Color.BLACK))
+                                                .setSize(0.2f)
+                                                .setOnClick(() -> onOptions())
                                 );
                                 put(
                                         new Bounds(0f, 0.8f, 1f, 1f),
-                                        new Pane(BKG_GENERATOR)
+                                        new Button(BKG_GENERATOR)
+                                                .setText(SuperText.of("Quit game", Color.BLACK))
+                                                .setSize(0.2f)
+                                                .setOnClick(() -> onQuit())
                                 );
                             }}
                         ),
@@ -101,6 +108,23 @@ public class MainMenuTest extends SimpleGame {
         wrapper = new SimpleGuiWrapper(gui);
 
         gui.init(DefaultGuiRenderer.$);
+    }
+
+    private void onSinglePlayer() {
+        System.out.println("Going SinglePlayer!");
+    }
+
+    private void onMultiPlayer() {
+        System.out.println("Going MultiPlayer!");
+    }
+
+    public void onOptions() {
+        System.out.println("Viewing options!");
+    }
+
+    public void onQuit() {
+        System.out.println("Quitting...!");
+        stop();
     }
 
 

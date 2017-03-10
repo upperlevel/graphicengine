@@ -17,7 +17,7 @@ import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
-@Accessors(fluent = true)
+@Accessors(fluent = true, chain = true)
 public class TextBox extends BaseGui {
 
     public static TextRenderer DEFAULT_TEXT_RENDER = FontUtil.textRenderer(Font.getFont(Font.SERIF));
@@ -66,7 +66,6 @@ public class TextBox extends BaseGui {
 
     @Override
     public void init(GuiRenderer r) {
-        System.out.println("TextBox -> init()");
         renderer.init();
     }
 
