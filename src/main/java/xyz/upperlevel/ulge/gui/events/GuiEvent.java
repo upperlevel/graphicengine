@@ -6,8 +6,9 @@ import xyz.upperlevel.ulge.gui.Gui;
 import xyz.upperlevel.utils.event.CancellableEvent;
 
 public class GuiEvent extends CancellableEvent {
+
     @Getter
-    public final Gui gui;
+    private Gui gui;
 
     public GuiEvent(@NonNull Gui gui) {
         this.gui = gui;

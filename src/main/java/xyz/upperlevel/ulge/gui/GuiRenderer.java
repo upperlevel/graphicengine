@@ -2,25 +2,24 @@ package xyz.upperlevel.ulge.gui;
 
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
-import org.joml.Vector2f;
+import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
-import xyz.upperlevel.ulge.opengl.shader.Program;
+import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.util.Color;
 
-import java.util.Objects;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glDrawElements;
 
-import static org.lwjgl.opengl.GL11.*;
+public class GuiRenderer {
 
-public abstract class GuiRenderer {
-
-    public static final Vao fillVao;
+    public static final Vao guiMesh;
 
     static {
-        fillVao = new Vao();
-        fillVao.bind();
+        guiMesh = new Vao();
+        guiMesh.bind();
         {
 
             Ebo ebo = new Ebo();
@@ -43,70 +42,57 @@ public abstract class GuiRenderer {
                     .setup();
             vbo.unbind();
         }
-        fillVao.unbind();
+        guiMesh.unbind();
     }
 
     @Getter
-    @Setter
-    @NonNull
     private Program program;
 
-    public GuiRenderer(Program program) {
-        Objects.requireNonNull(program, "program");
+    private Uniform transformationUni, colorUni, depthUni;
+
+    public GuiRenderer() {
+        this(createProgram());
+    }
+
+    public GuiRenderer(@NonNull Program program) {
         this.program = program;
-    }
-    public abstract void setColor(Color color);
 
+        Uniformer uniformer = program.uniformer;
 
-    public abstract Bounds getAbsoluteBounds();
-
-    public void resetBounds() {
-        setBounds(getAbsoluteBounds());
+        transformationUni = uniformer.get("transformation");
+        colorUni          = uniformer.get("color");
+        depthUni          = uniformer.get("depth");
     }
 
-    public abstract void setBounds(Bounds bounds);
-
-    public void pushAndSetBounds(Bounds bounds) {
-        setBounds(pushBounds(bounds));
+    private static Program createProgram() {
+        Program program = new Program();
+        program.attach(Shader.create(ShaderType.VERTEX, "gui/basicShader.vs", GuiRenderer.class));
+        program.attach(Shader.create(ShaderType.FRAGMENT, "gui/basicShader.fs", GuiRenderer.class));
+        return program;
     }
 
-    public abstract Bounds pushBounds(Bounds bounds);
-
-    public abstract void popBounds();
-
-    public abstract boolean isBoundsStackEmpty();
-
-    public abstract void setTexture(Texture2d texture);
-
-    /**
-     * Equal to setBounds(getAbsoluteBounds());
-     * Sends the bounds to their uniform
-     */
-    public abstract void flushBounds();
-
-    public abstract void setDepth(float depth);
-
-    public abstract float getDepth();
-
-    public void setSize(Vector2f size) {
-        setSize(size.x, size.y);
+    public void setTransformation(@NonNull Matrix4f transformation) {
+        if (transformationUni != null)
+            transformationUni.set(transformation);
     }
 
-    public abstract void setSize(float w, float h);
-
-    public void fill(Vector2f size) {
-        fill(size.x, size.y);
+    public void setColor(@NonNull Color color) {
+        if (colorUni != null)
+            colorUni.set(color);
     }
 
-    public void fill(float x, float y) {
-        setSize(x, y);
-        fill();
+    public void setDepth(float depth) {
+        if (depthUni != null)
+            depthUni.set(depth);
     }
 
-    public void fill() {
-        flushBounds();
-        fillVao.bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        fillVao.unbind();
+    public void setTexture(@NonNull Texture2d texture) {
+        texture.bind();
+    }
+
+    public void render() {
+        guiMesh.bind();
+        glDrawElements(GL11.GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        guiMesh.unbind();
     }
 }

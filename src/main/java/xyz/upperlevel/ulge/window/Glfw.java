@@ -39,7 +39,7 @@ public final class Glfw {
                 try {
                     ctr = handlerClass.getDeclaredConstructor();
                 } catch (NoSuchMethodException e) {
-                    throw new IllegalStateException("window event handler constructor cannot have args", e);
+                    throw new IllegalStateException("window events handler constructor cannot have args", e);
                 }
                 try {
                     return (T) ctr.newInstance();

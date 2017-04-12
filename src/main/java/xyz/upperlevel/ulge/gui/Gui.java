@@ -1,69 +1,112 @@
 package xyz.upperlevel.ulge.gui;
 
 import lombok.Getter;
-import org.joml.Vector2f;
+import lombok.NonNull;
+import lombok.Setter;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import xyz.upperlevel.ulge.gui.events.*;
 import xyz.upperlevel.utils.event.EventManager;
+import xyz.upperlevel.utils.event.impl.SimpleEventManager;
 
-public abstract class Gui {
+public class Gui {
+
+    @Getter
+    private boolean clicked = false;
+
     @Getter
     private boolean hover = false;
+
     @Getter
-    private boolean click = false;
+    @Setter
+    private EventManager eventManager = new SimpleEventManager();
 
-    public abstract void init(GuiRenderer renderer);
+    @Getter
+    @Setter
+    private double x = 0, y = 0;
 
-    public abstract void draw(GuiRenderer renderer);
+    @Getter
+    @Setter
+    private double width = 0, height = 0;
 
-    public abstract EventManager getEventManager();
-
-
-
-    public boolean onMouseMove(Vector2f lastPos, Vector2f pos) {
-        return getEventManager().call(new GuiMouseMoveEvent(this, lastPos, pos));
+    public Gui() {
     }
 
-    public boolean onClickBegin(Vector2f position) {
-        if(getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.BEGIN))) {
-            click = true;
-            return true;
-        } else return false;
+    public boolean isIn(double absX, double absY) {
+        return absX >= this.x && absY >= this.y &&
+                absX <= width && absY <= height;
     }
 
-    public boolean onClickEnd(Vector2f position) {
-        if(getEventManager().call(new GuiClickEvent(this, position, GuiClickEvent.Type.END))) {
-            click = false;
-            return true;
-        } else return false;
+    public void render(GuiRenderer renderer) {
+        render(new Matrix4f(), renderer);
     }
 
-    public boolean onMouseEnter(Vector2f enterPos) {
-        if(getEventManager().call(new GuiMouseEnterEvent(this, enterPos))) {
+    public void render(Matrix4f transformation, GuiRenderer renderer) {
+        float x = (float) this.x;
+        float y = (float) this.y;
+
+        float w = (float) width;
+        float h = (float) height;
+
+        transformation.translate(new Vector3f(x, y, 0));
+        transformation.scale(new Vector3f(w, h, 1));
+
+        renderer.setTransformation(transformation);
+    }
+
+    public boolean onCursorEnter(double x, double y) {
+        if (eventManager != null && eventManager.call(new GuiCursorEnterEvent(this, x, y))) {
             hover = true;
             return true;
-        } else return false;
+        }
+        return false;
     }
 
-    public boolean onMouseExit(Vector2f lastPos) {
-        if(getEventManager().call(new GuiMouseExitEvent(this, lastPos))) {
+    public boolean onCursorMove(double startX, double startY, double endX, double endY) {
+        return eventManager != null &&
+                eventManager.call(new GuiCursorMoveEvent(this, startX, startY, endX, endY));
+    }
+
+    public boolean onCursorExit(double x, double y) {
+        if (eventManager != null && eventManager.call(new GuiCursorExitEvent(this, x, y))) {
             hover = false;
             return true;
-        } else return false;
+        }
+        return false;
+    }
+
+    public boolean onClickBegin(double x, double y) {
+        if (eventManager != null && eventManager.call(new GuiClickBeginEvent(this, x, y))) {
+            clicked = false;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean onClickEnd(double x, double y) {
+        if (eventManager != null && eventManager.call(new GuiClickEndEvent(this, x, y))) {
+            clicked = false;
+            return true;
+        }
+        return false;
     }
 
     public boolean onOpen() {
-        return getEventManager().call(new GuiOpenEvent(this));
+        return eventManager != null &&
+                eventManager.call(new GuiOpenEvent(this));
     }
 
     public boolean onClose() {
-        return getEventManager().call(new GuiCloseEvent(this));
+        return eventManager != null &&
+                eventManager.call(new GuiCloseEvent(this));
     }
 
     public boolean onChange(Gui gui) {
-        return getEventManager().call(new GuiChangeEvent(this, gui));
+        return false;
     }
 
-    public boolean onDrag(Vector2f lastPos, Vector2f newPos) {
-        return getEventManager().call(new GuiDragEvent(this, lastPos, newPos));
+    public boolean onDrag(double startX, double startY, double endX, double endY) {
+        return eventManager != null &&
+                eventManager.call(new GuiDragEvent(this, startX, startY, endX, endY));
     }
 }
