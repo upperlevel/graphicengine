@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Accessors(chain = true, fluent = true)
 public class GuiContainer extends Gui {
 
     private List<Gui> guis;
@@ -27,19 +26,16 @@ public class GuiContainer extends Gui {
         this.guis = guis;
     }
 
-    public GuiContainer add(Gui gui) {
+    public void add(Gui gui) {
         guis.add(gui);
-        return this;
     }
 
-    public GuiContainer remove(Gui gui) {
+    public void remove(Gui gui) {
         guis.remove(gui);
-        return this;
     }
 
-    public GuiContainer clear() {
+    public void clear() {
         guis.clear();
-        return this;
     }
 
     @Override

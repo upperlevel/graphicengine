@@ -1,13 +1,11 @@
 package xyz.upperlevel.ulge.gui;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import xyz.upperlevel.ulge.gui.events.*;
-import xyz.upperlevel.utils.event.EventManager;
-import xyz.upperlevel.utils.event.impl.SimpleEventManager;
+import xyz.upperlevel.utils.event.impl.def.EventManager;
 
 public class Gui {
 
@@ -19,7 +17,7 @@ public class Gui {
 
     @Getter
     @Setter
-    private EventManager eventManager = new SimpleEventManager();
+    private EventManager eventManager = new EventManager();
 
     @Getter
     @Setter
@@ -27,14 +25,24 @@ public class Gui {
 
     @Getter
     @Setter
-    private double width = 0, height = 0;
+    private double width = 1.0, height = 1.0;
 
     public Gui() {
     }
 
-    public boolean isIn(double absX, double absY) {
-        return absX >= this.x && absY >= this.y &&
-                absX <= width && absY <= height;
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void setSize(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public boolean isIn(double x, double y) {
+        return x >= this.x && x <= this.x + width &&
+               y >= this.y && y <= this.y + height;
     }
 
     public void render(GuiRenderer renderer) {
@@ -48,7 +56,11 @@ public class Gui {
         float w = (float) width;
         float h = (float) height;
 
-        transformation.translate(new Vector3f(x, y, 0));
+        // translate to pos
+        transformation.translate(new Vector3f(x * 2, -y * 2, 0));
+
+        // scale and fix scale issues
+        transformation.translate(new Vector3f(-1 + w, 1 - h, 0));
         transformation.scale(new Vector3f(w, h, 1));
 
         renderer.setTransformation(transformation);

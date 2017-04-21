@@ -8,10 +8,8 @@ public class GuiViewer {
     private GuiContainer container = new GuiContainer();
 
     public GuiViewer() {
-        container.setX(0);
-        container.setY(0);
-        container.setWidth(1);
-        container.setHeight(1);
+        container.setPosition(0, 0);
+        container.setSize(1, 1);
     }
 
     public void open(Gui gui) {

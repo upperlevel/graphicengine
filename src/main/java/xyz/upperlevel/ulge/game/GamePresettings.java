@@ -2,9 +2,14 @@ package xyz.upperlevel.ulge.game;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import xyz.upperlevel.ulge.window.Glfw;
 import xyz.upperlevel.ulge.window.Window;
 
+@Accessors(
+        fluent = true,
+        chain  = true
+)
 public class GamePresettings {
 
     @Getter

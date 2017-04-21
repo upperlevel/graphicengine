@@ -1,8 +1,6 @@
 package xyz.upperlevel.ulge.gui.impl;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 import org.joml.Matrix4f;
 import xyz.upperlevel.ulge.gui.Gui;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
@@ -18,12 +16,6 @@ public class GuiPane extends Gui {
     private Texture2d texture = Texture2d.NULL;
 
     public GuiPane() {
-    }
-
-    @Builder
-    public GuiPane(Color color, Texture2d texture) {
-        this.color = color;
-        this.texture = texture;
     }
 
     public void setColor(Color color) {

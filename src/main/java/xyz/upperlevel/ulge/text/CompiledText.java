@@ -1,17 +1,23 @@
 package xyz.upperlevel.ulge.text;
 
-import org.joml.Vector2f;
+import lombok.Getter;
 
-public abstract class CompiledText<R extends TextRenderer> {
-    public final SuperText text;
-    public final Vector2f size;
-    private final R renderer;
+import java.util.ArrayList;
+import java.util.List;
 
-    public CompiledText(SuperText text, R renderer, Vector2f size) {
-        this.text = text;
-        this.renderer = renderer;
-        this.size = size;
+public class CompiledText {
+
+    @Getter
+    private List<TextPiece> lines = new ArrayList<>();
+
+    public CompiledText() {
     }
 
-    public abstract void render(Vector2f pos, TextRenderer.TextOrigin origin, float distance);
+    public void add(TextPiece piece) {
+        lines.add(piece);
+    }
+
+    public void remove(int line) {
+        lines.remove(line);
+    }
 }

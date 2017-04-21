@@ -15,11 +15,11 @@ import static org.lwjgl.opengl.GL11.glDrawElements;
 
 public class GuiRenderer {
 
-    public static final Vao guiMesh;
+    private static final Vao MESH;
 
     static {
-        guiMesh = new Vao();
-        guiMesh.bind();
+        MESH = new Vao();
+        MESH.bind();
         {
 
             Ebo ebo = new Ebo();
@@ -31,7 +31,7 @@ public class GuiRenderer {
             Vbo vbo = new Vbo();
             vbo.bind();
             vbo.loadData(new float[]{
-                    //Coords (x, y, z)
+                    // coords (x, y, z)
                     0.0f, 0.0f,
                     0.0f, 1.0f,
                     1.0f, 0.0f,
@@ -42,13 +42,16 @@ public class GuiRenderer {
                     .setup();
             vbo.unbind();
         }
-        guiMesh.unbind();
+        MESH.unbind();
     }
 
     @Getter
     private Program program;
 
-    private Uniform transformationUni, colorUni, depthUni;
+    private Uniform
+            modelUniform,
+            colorUniform,
+            depthUniform;
 
     public GuiRenderer() {
         this(createProgram());
@@ -59,31 +62,37 @@ public class GuiRenderer {
 
         Uniformer uniformer = program.uniformer;
 
-        transformationUni = uniformer.get("transformation");
-        colorUni          = uniformer.get("color");
-        depthUni          = uniformer.get("depth");
+        modelUniform = uniformer.get("model");
+        if (modelUniform == null)
+            throw new NullPointerException("modelUniform");
+
+        colorUniform = uniformer.get("color");
+        if (colorUniform == null)
+            throw new NullPointerException("colorUniform");
+
+        depthUniform = uniformer.get("depth");
+        if (depthUniform == null)
+            throw new NullPointerException("depthUniform");
     }
 
     private static Program createProgram() {
         Program program = new Program();
         program.attach(Shader.create(ShaderType.VERTEX, "gui/basicShader.vs", GuiRenderer.class));
         program.attach(Shader.create(ShaderType.FRAGMENT, "gui/basicShader.fs", GuiRenderer.class));
+        program.link();
         return program;
     }
 
     public void setTransformation(@NonNull Matrix4f transformation) {
-        if (transformationUni != null)
-            transformationUni.set(transformation);
+        modelUniform.set(transformation);
     }
 
     public void setColor(@NonNull Color color) {
-        if (colorUni != null)
-            colorUni.set(color);
+        colorUniform.set(color);
     }
 
     public void setDepth(float depth) {
-        if (depthUni != null)
-            depthUni.set(depth);
+        depthUniform.set(depth);
     }
 
     public void setTexture(@NonNull Texture2d texture) {
@@ -91,8 +100,8 @@ public class GuiRenderer {
     }
 
     public void render() {
-        guiMesh.bind();
+        MESH.bind();
         glDrawElements(GL11.GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        guiMesh.unbind();
+        MESH.unbind();
     }
 }

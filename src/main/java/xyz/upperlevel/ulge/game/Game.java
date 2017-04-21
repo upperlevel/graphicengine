@@ -1,6 +1,8 @@
 package xyz.upperlevel.ulge.game;
 
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import xyz.upperlevel.ulge.window.Glfw;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.*;
@@ -13,7 +15,9 @@ public class Game {
     private Window window;
 
     @Getter
-    private Scene scene = null;
+    @Setter
+    @NonNull
+    private Stage stage = new Stage();
 
     public Game(GamePresettings presettings) {
         window = presettings.createWindow();
@@ -26,32 +30,29 @@ public class Game {
         // mouse button change
         event = Glfw.events().MOUSE_BUTTON_CHANGE.create();
         event.register((MouseButtonChangeEvent) (window, button, action) -> {
-            if (scene != null)
-                scene.mouseButtonChange(button, action);
+            stage.onMouseButtonChange(button, action);
         });
         event.apply(window);
 
         // key button change
         event = Glfw.events().KEY_CHANGE.create();
         event.register((KeyChangeEvent) (window, key, action) -> {
-            if (scene != null)
-                scene.keyChange(key, action);
+            stage.onKeyChange(key, action);
         });
         event.apply(window);
 
         // mouse scroll
         event = Glfw.events().MOUSE_SCROLL.create();
         event.register((MouseScrollEvent) (window, x, y) -> {
-            if (scene != null)
-                scene.mouseScroll(x, y);
+            stage.onMouseScroll(x, y);
         });
         event.apply(window);
 
         // cursor move
         event = Glfw.events().CURSOR_MOVE.create();
         event.register((CursorMoveEvent) (window, x, y) -> {
-            if (scene != null)
-                scene.cursorMove(x, y);
+            if (stage.staged() != null)
+                stage.staged().onCursorMove(x, y);
         });
         event.apply(window);
     }
@@ -66,8 +67,10 @@ public class Game {
         window.contextualize();
         window.show();
 
+        stage.onEnable(null);
+
         long lastTick = currentTimeMillis();
-        long lastFps  = currentTimeMillis();
+        long lastFps = currentTimeMillis();
         long now;
 
         long fpsCounter = 0;
@@ -76,8 +79,7 @@ public class Game {
             // tick update
             now = currentTimeMillis();
             if (now - lastTick >= tickEach) {
-                if (scene != null)
-                    scene.tick();
+                stage.onTick();
                 lastTick = now;
             }
 
@@ -86,14 +88,12 @@ public class Game {
             now = currentTimeMillis();
             if (now - lastFps >= 1000) {
                 fps = fpsCounter;
-                if (scene != null)
-                    scene.fps();
+                stage.onFps();
                 fpsCounter = 0;
             }
 
             // render update
-            if (scene != null)
-                scene.render();
+            stage.onRender();
 
             window.update();
         }
@@ -102,6 +102,7 @@ public class Game {
     }
 
     public void stop() {
+        stage.clear();
         window.close();
     }
 }

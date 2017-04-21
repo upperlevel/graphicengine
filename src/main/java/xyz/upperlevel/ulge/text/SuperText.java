@@ -1,60 +1,24 @@
 package xyz.upperlevel.ulge.text;
 
-import xyz.upperlevel.ulge.util.ArrayUnmodifiableIterator;
-import xyz.upperlevel.ulge.util.Color;
+import lombok.Getter;
+import lombok.NonNull;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SuperText implements Iterable<TextPiece>{
-    public static final SuperText EMPTY = of("");
+public class SuperText {
 
-    private final TextPiece[] pieces;
-    private List<TextPiece> view;
+    @Getter
+    private List<TextPiece> pieces = new ArrayList<>();
 
-    public SuperText(TextPiece... pieces) {
-        this.pieces = pieces.clone();
-
+    public SuperText() {
     }
 
-    public SuperText(List<TextPiece> pieces) {
-        this(pieces.toArray(new TextPiece[0]));
+    public void add(@NonNull TextPiece piece) {
+        pieces.add(piece);
     }
 
-
-    public List<TextPiece> asList() {
-        if (view == null)
-            view = Collections.unmodifiableList(Arrays.asList(pieces));
-        return view;
-    }
-
-    @Override
-    public Iterator<TextPiece> iterator() {
-        return new ArrayUnmodifiableIterator<>(pieces);
-    }
-
-    @Override
-    public void forEach(Consumer<? super TextPiece> action) {
-        for(TextPiece piece : pieces)
-            action.accept(piece);
-    }
-
-    @Override
-    public Spliterator<TextPiece> spliterator() {
-        return asList().spliterator();
-    }
-
-
-
-    public static SuperText of(TextPiece... piece) {
-        return new SuperText(piece);
-    }
-
-    public static SuperText of(String str) {
-        return new SuperText(TextPiece.of(str));
-    }
-
-    public static SuperText of(String str, Color color) {
-        return new SuperText(TextPiece.of(str, color));
+    public void remove(@NonNull TextPiece piece) {
+        pieces.remove(piece);
     }
 }
