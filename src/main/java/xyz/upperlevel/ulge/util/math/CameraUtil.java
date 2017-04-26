@@ -17,19 +17,19 @@ public final class CameraUtil {
 
     public static Vector3f getForward(float yaw, float pitch) {
         return getOrientation(yaw, pitch)
-                .invert(new Matrix4f())
+                .invert()
                 .transformDirection(new Vector3f(0f, 0f, -1f));
     }
 
     public static Vector3f getRight(float yaw, float pitch) {
         return getOrientation(yaw, pitch)
-                .invert(new Matrix4f())
+                .invert()
                 .transformDirection(new Vector3f(1f, 0f, 0f));
     }
 
     public static Vector3f getUp(float yaw, float pitch) {
         return getOrientation(yaw, pitch)
-                .invert(new Matrix4f())
+                .invert()
                 .transformDirection(new Vector3f(0f, 1f, 0f));
     }
 
