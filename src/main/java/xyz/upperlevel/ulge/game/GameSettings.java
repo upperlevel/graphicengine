@@ -10,7 +10,7 @@ import xyz.upperlevel.ulge.window.Window;
         fluent = true,
         chain  = true
 )
-public class GamePresettings {
+public class GameSettings {
 
     @Getter
     @Setter
@@ -24,7 +24,7 @@ public class GamePresettings {
     @Setter
     public boolean fullscreen;
 
-    public GamePresettings() {
+    public GameSettings() {
     }
 
     public Window createWindow() {

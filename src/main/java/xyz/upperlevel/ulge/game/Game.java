@@ -17,10 +17,11 @@ public class Game {
     @Getter
     @Setter
     @NonNull
-    private Stage stage = new Stage();
+    private Stage stage;
 
-    public Game(GamePresettings presettings) {
-        window = presettings.createWindow();
+    public Game(GameSettings settings) {
+        stage = new Stage();
+        window = settings.createWindow();
     }
 
     @SuppressWarnings("unchecked")
@@ -51,8 +52,8 @@ public class Game {
         // cursor move
         event = Glfw.events().CURSOR_MOVE.create();
         event.register((CursorMoveEvent) (window, x, y) -> {
-            if (stage.staged() != null)
-                stage.staged().onCursorMove(x, y);
+            if (stage.getScene() != null)
+                stage.getScene().onCursorMove(x, y);
         });
         event.apply(window);
     }
