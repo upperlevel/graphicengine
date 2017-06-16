@@ -116,16 +116,8 @@ public class Color {
         return new Color(normalizeColorValue(r), normalizeColorValue(g), normalizeColorValue(b), normalizeColorValue(a));
     }
 
-    public static Color color(javafx.scene.paint.Color color) {
-        return new Color((float) color.getRed(), (float) color.getGreen(), (float) color.getBlue(), (float) color.getOpacity());
-    }
-
     public static Color color(java.awt.Color color) {
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-    }
-
-    public static Color web(String web) {
-        return color(javafx.scene.paint.Color.web(web));
     }
 
     private static byte fromHex(char[] in, int index) {
