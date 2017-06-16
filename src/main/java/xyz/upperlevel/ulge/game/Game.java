@@ -103,7 +103,7 @@ public class Game {
     }
 
     public void stop() {
-        stage.clear();
+        stage.setScene(null);
         window.close();
     }
 }
