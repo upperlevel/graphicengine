@@ -8,20 +8,26 @@ import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.*;
 
 import static java.lang.System.currentTimeMillis;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
 
+@Getter
 public class Game {
-
-    @Getter
+    @Setter
     private Window window;
 
-    @Getter
     @Setter
-    @NonNull
     private Stage stage;
 
     public Game(GameSettings settings) {
-        stage = new Stage();
-        window = settings.createWindow();
+        this.window = settings.createWindow();
+        this.stage = new Stage();
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+        this.stage.onEnable(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -58,17 +64,13 @@ public class Game {
         event.apply(window);
     }
 
-    @Getter
+    @Setter
     private long tickEach = 1000;
-
-    @Getter
     private long fps = 0;
 
     public void start() {
         window.contextualize();
         window.show();
-
-        stage.onEnable(null);
 
         long lastTick = currentTimeMillis();
         long lastFps = currentTimeMillis();
@@ -77,6 +79,8 @@ public class Game {
         long fpsCounter = 0;
 
         while (!window.isClosed()) {
+            glClear(GL_COLOR_BUFFER_BIT);
+
             // tick update
             now = currentTimeMillis();
             if (now - lastTick >= tickEach) {
@@ -90,6 +94,7 @@ public class Game {
             if (now - lastFps >= 1000) {
                 fps = fpsCounter;
                 stage.onFps();
+                lastFps = now;
                 fpsCounter = 0;
             }
 

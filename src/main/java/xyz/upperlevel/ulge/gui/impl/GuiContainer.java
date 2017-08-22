@@ -59,7 +59,7 @@ public class GuiContainer extends Gui {
             boolean wasIn = gui.isIn(startX, startY);
             boolean isIn  = gui.isIn(endX, endY);
 
-            // if both positions are in the gui calls move event
+            // if both positions are in the gui calls move events
             if (isIn && wasIn) {
                 double relSx = startX - gui.getX();
                 double relSy = startY - gui.getY();
