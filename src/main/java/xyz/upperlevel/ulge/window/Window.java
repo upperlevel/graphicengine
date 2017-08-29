@@ -1,7 +1,7 @@
 package xyz.upperlevel.ulge.window;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.event.impl.def.EventManager;
+import xyz.upperlevel.event.EventManager;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
 import xyz.upperlevel.ulge.window.event.key.Key;
 

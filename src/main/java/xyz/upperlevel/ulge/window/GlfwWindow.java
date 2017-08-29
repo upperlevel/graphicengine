@@ -5,7 +5,7 @@ import lombok.NonNull;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
-import xyz.upperlevel.event.impl.def.EventManager;
+import xyz.upperlevel.event.EventManager;
 import xyz.upperlevel.ulge.window.event.*;
 import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.button.GLFWMouseButton;

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import xyz.upperlevel.event.impl.def.EventManager;
+import xyz.upperlevel.event.EventManager;
 import xyz.upperlevel.ulge.gui.events.*;
 
 public class Gui {
