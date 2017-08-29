@@ -14,15 +14,17 @@ import static org.lwjgl.opengl.GL11.glClear;
 
 @Getter
 public class Game {
-    @Setter
     private Window window;
-
-    @Setter
     private Stage stage;
 
-    public Game(GameSettings settings) {
-        this.window = settings.createWindow();
+    public Game(Window window) {
+        setWindow(window);
         this.stage = new Stage();
+    }
+
+    public void setWindow(Window window) {
+        this.window = window;
+        window.contextualize();
     }
 
     public void setStage(Stage stage) {
@@ -69,7 +71,6 @@ public class Game {
     private long fps = 0;
 
     public void start() {
-        window.contextualize();
         window.show();
 
         long lastTick = currentTimeMillis();

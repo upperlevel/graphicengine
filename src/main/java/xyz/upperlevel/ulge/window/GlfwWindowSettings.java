@@ -3,7 +3,6 @@ package xyz.upperlevel.ulge.window;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class GlfwWindowSettings {
-
     public GlfwWindowSettings() {
         glfwDefaultWindowHints();
     }

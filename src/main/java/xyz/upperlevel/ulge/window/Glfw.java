@@ -12,7 +12,6 @@ import static org.lwjgl.glfw.GLFW.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Glfw {
-
     public static final GLFWVidMode PRIMARY_MONITOR;
 
     static {
@@ -22,8 +21,7 @@ public final class Glfw {
     }
 
     public static class Event {
-
-        public static final Event GET = new Event();
+        private static final Event instance = new Event();
 
         public static class Initializer<T extends WindowEventHandler> {
 
@@ -39,16 +37,16 @@ public final class Glfw {
                 try {
                     ctr = handlerClass.getDeclaredConstructor();
                 } catch (NoSuchMethodException e) {
-                    throw new IllegalStateException("window events handler constructor cannot have arg", e);
+                    throw new IllegalStateException("Window event handler constructor cannot have args.", e);
                 }
                 try {
                     return (T) ctr.newInstance();
                 } catch (InstantiationException e) {
-                    throw new IllegalStateException("can't init " + handlerClass.getName() + " class", e);
+                    throw new IllegalStateException("Cannot init " + handlerClass.getName() + " class.", e);
                 } catch (IllegalAccessException e) {
-                   throw new IllegalStateException("can't access " + handlerClass.getName() + " constructor", e);
+                   throw new IllegalStateException("Cannot access " + handlerClass.getName() + " constructor.", e);
                 } catch (InvocationTargetException e) {
-                    throw new IllegalStateException(handlerClass.getName() + " constructor thrown an exception", e);
+                    throw new IllegalStateException(handlerClass.getName() + " constructor thrown an exception.", e);
                 }
             }
         }
@@ -60,7 +58,7 @@ public final class Glfw {
     }
 
     public static Event events() {
-        return Event.GET;
+        return Event.instance;
     }
 
     public static GlfwWindow createWindow(int width, int height, String title, boolean fullscreen) {

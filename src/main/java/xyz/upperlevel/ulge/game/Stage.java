@@ -1,11 +1,6 @@
 package xyz.upperlevel.ulge.game;
 
-import xyz.upperlevel.ulge.window.event.action.Action;
-import xyz.upperlevel.ulge.window.event.button.MouseButton;
-import xyz.upperlevel.ulge.window.event.key.Key;
-
 public class Stage implements Scene {
-
     private Scene scene = null;
 
     public Stage() {
@@ -56,29 +51,5 @@ public class Stage implements Scene {
     public void onRender() {
         if (scene != null)
             scene.onRender();
-    }
-    
-    @Override
-    public void onMouseButtonChange(MouseButton button, Action action) {
-        if (scene != null)
-            scene.onMouseButtonChange(button, action);
-    }
-
-    @Override
-    public void onKeyChange(Key key, Action action) {
-        if (scene != null)
-            scene.onKeyChange(key, action);
-    }
-
-    @Override
-    public void onMouseScroll(double x, double y) {
-        if (scene != null)
-            scene.onMouseScroll(x, y);
-    }
-
-    @Override
-    public void onCursorMove(double x, double y) {
-        if (scene != null)
-            scene.onCursorMove(x, y);
     }
 }
