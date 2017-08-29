@@ -1,11 +1,17 @@
-package xyz.upperlevel.ulge.window.event;
+package xyz.upperlevel.ulge.game.events;
 
-import xyz.upperlevel.ulge.window.Window;
-import xyz.upperlevel.ulge.window.event.button.MouseButton;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import xyz.upperlevel.event.Event;
 import xyz.upperlevel.ulge.window.event.action.Action;
+import xyz.upperlevel.ulge.window.event.button.MouseButton;
 
-@FunctionalInterface
-public interface MouseButtonChangeEvent extends WindowEvent {
-
-    void onCall(Window window, MouseButton button, Action action);
+/**
+ * Event called when user clicks.
+ */
+@Getter
+@RequiredArgsConstructor
+public class MouseButtonChangeEvent implements Event {
+    private final MouseButton button;
+    private final Action action;
 }

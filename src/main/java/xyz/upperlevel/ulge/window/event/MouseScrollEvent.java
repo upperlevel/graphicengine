@@ -1,9 +1,15 @@
-package xyz.upperlevel.ulge.window.event;
+package xyz.upperlevel.ulge.game.events;
 
-import xyz.upperlevel.ulge.window.Window;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import xyz.upperlevel.event.Event;
 
-@FunctionalInterface
-public interface MouseScrollEvent extends WindowEvent {
-
-    void onCall(Window window, double x, double y);
+/**
+ * Event called when user scrolls mouse wheel.
+ */
+@Getter
+@RequiredArgsConstructor
+public class MouseScrollEvent implements Event {
+    private final double x;
+    private final double y;
 }

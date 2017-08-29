@@ -5,6 +5,8 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import xyz.upperlevel.event.EventHandler;
+import xyz.upperlevel.event.Listener;
 import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture2d;
@@ -17,15 +19,15 @@ import xyz.upperlevel.ulge.window.Glfw;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.CursorMoveEvent;
 import xyz.upperlevel.ulge.window.event.MouseScrollEvent;
-import xyz.upperlevel.ulge.window.event.WindowEventHandler;
 
 import java.io.*;
+import java.lang.annotation.Inherited;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static xyz.upperlevel.ulge.opengl.DataType.FLOAT;
 
-public class GraphicEngineTest1 {
+public class GraphicEngineTest1  {
 
     private static final String VERTEX_SRC =
             "#version 330 core\n" +
@@ -115,25 +117,19 @@ public class GraphicEngineTest1 {
         //--------------------------------
         // defines window
         Window win = Glfw.createWindow(WIDTH, HEIGHT, "ciao", false);
-        // scroll
-        WindowEventHandler<MouseScrollEvent> scroll = Glfw.events().MOUSE_SCROLL.create();
-        scroll.register((window, x, y) -> {
-            camera_fov -= y;
-            camera.setFov(Math.toRadians(camera_fov));
-        });
-
-        win.registerEventHandler(scroll);
-        win.disableCursor();
-        win.setCursorPosition(0, 0);
-        // mouse move
-        WindowEventHandler<CursorMoveEvent> cursorMove = Glfw.events().CURSOR_MOVE.create();
-        cursorMove.register(new CursorMoveEvent() {
+        win.getEventManager().register(new Listener() {
             private double last_x = 0, last_y = 0;
 
-            @Override
-            public void onCall(Window window, double x, double y) {
-                double mov_x = last_x - x;
-                double mov_y = y - last_y;
+            @EventHandler
+            public void onMouseScroll(MouseScrollEvent event) {
+                camera_fov -= event.getY();
+                camera.setFov(Math.toRadians(camera_fov));
+            }
+
+            @EventHandler
+            public void onCursorMove(CursorMoveEvent event) {
+                double mov_x = last_x - event.getX();
+                double mov_y = event.getY() - last_y;
 
                 camera_yaw += -mov_x;
                 camera_pitch += mov_y;
@@ -144,11 +140,11 @@ public class GraphicEngineTest1 {
 
                 camera.setRotation(Math.toRadians(camera_yaw), Math.toRadians(camera_pitch), 0);
 
-                last_x = x;
-                last_y = y;
+                last_x = event.getX();
+                last_y = event.getY();
             }
+
         });
-        win.registerEventHandler(cursorMove);
         win.contextualize();
         win.show();
 

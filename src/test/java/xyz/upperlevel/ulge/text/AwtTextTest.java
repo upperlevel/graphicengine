@@ -5,9 +5,6 @@ import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.text.AttributedString;
 
-/**
- * Created by loryruta on 17/04/17.
- */
 public class AwtTextTest extends JPanel {
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;

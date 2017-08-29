@@ -1,11 +1,13 @@
 package xyz.upperlevel.ulge.window;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.ulge.window.event.WindowEventHandler;
+import xyz.upperlevel.event.impl.def.EventManager;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
 public interface Window {
+
+    EventManager getEventManager();
 
     long getId();
 
@@ -64,10 +66,6 @@ public interface Window {
     void setVSync(boolean vSync);
 
     void update();
-
-    default void registerEventHandler(WindowEventHandler eventHandler) {
-        eventHandler.apply(this);
-    }
 
     void contextualize();
 

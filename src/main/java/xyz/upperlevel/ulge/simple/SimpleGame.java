@@ -1,13 +1,13 @@
 package xyz.upperlevel.ulge.simple;
 
 import org.joml.Vector2f;
-import xyz.upperlevel.ulge.window.Glfw;
+import xyz.upperlevel.event.EventHandler;
+import xyz.upperlevel.event.Listener;
 import xyz.upperlevel.ulge.util.Color;
+import xyz.upperlevel.ulge.window.Glfw;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.KeyChangeEvent;
 import xyz.upperlevel.ulge.window.event.MouseButtonChangeEvent;
-import xyz.upperlevel.ulge.window.event.WindowEventHandler;
-import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
@@ -17,7 +17,7 @@ import java.util.List;
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.opengl.GL11.*;
 
-public class SimpleGame {
+public class SimpleGame implements Listener {
 
     private int width = 800, height = 500;
     private String title;
@@ -50,13 +50,8 @@ public class SimpleGame {
         window.setVSync(vsync);
         window.setTitle(title);
 
-        WindowEventHandler<KeyChangeEvent> keyChange = Glfw.events().KEY_CHANGE.create();
-        keyChange.register((window, key, action) -> keyChange(key, action));
-        keyChange.apply(window);
-
-        WindowEventHandler<MouseButtonChangeEvent> mouseChange = Glfw.events().MOUSE_BUTTON_CHANGE.create();
-        mouseChange.register((window, key, action) -> mouseChange(key, action));
-        mouseChange.apply(window);
+        System.out.println("REGISTERING");
+        window.getEventManager().register(this);
 
         engine = new SimpleGraphicEngine(width, height, background);
 
@@ -228,11 +223,13 @@ public class SimpleGame {
     public void update(double delta) {
     }
 
-    public void mouseChange(MouseButton button, Action action) {
+    @EventHandler
+    public void onMouseChange(MouseButtonChangeEvent event) {
     }
 
-    public void keyChange(Key key, Action action) {
-        if (key == Key.ESCAPE)
+    @EventHandler
+    public void onKeyChange(KeyChangeEvent event) {
+        if (event.getKey() == Key.ESCAPE)
             window.close();
     }
 

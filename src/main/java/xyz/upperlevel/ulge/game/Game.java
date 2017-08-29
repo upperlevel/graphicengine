@@ -32,40 +32,6 @@ public class Game {
         this.stage.onEnable(null);
     }
 
-    @SuppressWarnings("unchecked")
-    public void setup() {
-        WindowEventHandler event;
-
-        // mouse button change
-        event = Glfw.events().MOUSE_BUTTON_CHANGE.create();
-        event.register((MouseButtonChangeEvent) (window, button, action) -> {
-            stage.onMouseButtonChange(button, action);
-        });
-        event.apply(window);
-
-        // key button change
-        event = Glfw.events().KEY_CHANGE.create();
-        event.register((KeyChangeEvent) (window, key, action) -> {
-            stage.onKeyChange(key, action);
-        });
-        event.apply(window);
-
-        // mouse scroll
-        event = Glfw.events().MOUSE_SCROLL.create();
-        event.register((MouseScrollEvent) (window, x, y) -> {
-            stage.onMouseScroll(x, y);
-        });
-        event.apply(window);
-
-        // cursor move
-        event = Glfw.events().CURSOR_MOVE.create();
-        event.register((CursorMoveEvent) (window, x, y) -> {
-            if (stage.getScene() != null)
-                stage.getScene().onCursorMove(x, y);
-        });
-        event.apply(window);
-    }
-
     @Setter
     private long tickEach = 1000;
     private long fps = 0;

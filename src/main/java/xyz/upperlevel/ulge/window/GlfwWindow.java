@@ -4,12 +4,16 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.*;
+import xyz.upperlevel.event.impl.def.EventManager;
+import xyz.upperlevel.ulge.window.event.*;
+import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.button.GLFWMouseButton;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
 import xyz.upperlevel.ulge.window.event.key.GLFWKey;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
+import java.io.File;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 
@@ -19,11 +23,14 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class GlfwWindow extends GlWindow {
 
     @Getter
-    public final long id;
+    private final long id;
 
     @Getter
     @NonNull
     private String title;
+
+    @Getter
+    private EventManager eventManager = new EventManager();
 
     public GlfwWindow(int width, int height, String title, boolean fullscreen) {
         if (width < 0 || height < 0)
@@ -38,6 +45,65 @@ public class GlfwWindow extends GlWindow {
             height = mode.height();
         }
         id = glfwCreateWindow(width, height, title, fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
+        setupHooks();
+    }
+
+    protected void setupHooks() {
+        GLFW.glfwSetKeyCallback(id, new GLFWKeyCallback() {
+            @Override
+            public void invoke(long id, int key, int scanCode, int action, int mods) {
+                final Key stKey = GLFWKey.toStandard(key);
+                final Action stAction = action != GLFW.GLFW_RELEASE ? Action.PRESS : Action.RELEASE;
+                eventManager.call(new KeyChangeEvent(GlfwWindow.this, stKey, stAction));
+            }
+        });
+
+        GLFW.glfwSetCursorPosCallback(id, new GLFWCursorPosCallback() {
+            @Override
+            public void invoke(long id, double x, double y) {
+                eventManager.call(new CursorMoveEvent(GlfwWindow.this, x, y));
+            }
+        });
+
+        GLFW.glfwSetMouseButtonCallback(id, new GLFWMouseButtonCallback() {
+            @Override
+            public void invoke(long id, int button, int action, int mode) {
+                final Action stAction = action != GLFW.GLFW_RELEASE ? Action.PRESS : Action.RELEASE;
+                final MouseButton stButton = GLFWMouseButton.toStandard(button);
+                eventManager.call(new MouseButtonChangeEvent(GlfwWindow.this, stButton, stAction));
+            }
+        });
+
+        GLFW.glfwSetScrollCallback(id, new GLFWScrollCallback() {
+            @Override
+            public void invoke(long id, double x, double y) {
+                eventManager.call(new MouseScrollEvent(GlfwWindow.this, x, y));
+            }
+        });
+
+        GLFW.glfwSetCursorEnterCallback(id, new GLFWCursorEnterCallback() {
+            @Override
+            public void invoke(long id, boolean entered) {
+                eventManager.call(entered ? new CursorEnterEvent(GlfwWindow.this) : new CursorExitEvent(GlfwWindow.this));
+            }
+        });
+
+        GLFW.glfwSetCharCallback(id, new GLFWCharCallback() {
+            @Override
+            public void invoke(long id, int ch) {
+                eventManager.call(new TextEvent(GlfwWindow.this, (char) ch));
+            }
+        });
+
+        GLFW.glfwSetDropCallback(id, new GLFWDropCallback() {
+            @Override
+            public void invoke(long id, int count, long rawNames) {
+                File[] names = new File[count];
+                for(int i = 0; i < count; i++)
+                    names[i] = new File(getName(rawNames, i));
+                eventManager.call(new FileDropEvent(GlfwWindow.this, names));
+            }
+        });
     }
 
     @Override

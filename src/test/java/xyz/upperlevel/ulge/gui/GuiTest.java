@@ -5,6 +5,8 @@ import xyz.upperlevel.ulge.gui.impl.GuiContainer;
 import xyz.upperlevel.ulge.gui.impl.GuiPane;
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.util.Color;
+import xyz.upperlevel.ulge.window.event.KeyChangeEvent;
+import xyz.upperlevel.ulge.window.event.MouseButtonChangeEvent;
 import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
 import xyz.upperlevel.ulge.window.event.key.Key;
@@ -58,18 +60,20 @@ public class GuiTest extends SimpleGame {
     }
 
     @Override
-    public void mouseChange(MouseButton button, Action action) {
+    public void onMouseChange(MouseButtonChangeEvent event) {
+        super.onMouseChange(event);
         Vector2f cp = cursorPos();
-        if (button == MouseButton.LEFT)
-            if (action == Action.PRESS)
+        if (event.getButton() == MouseButton.LEFT)
+            if (event.getAction() == Action.PRESS)
                 gui.onClickBegin(cp.x, cp.y);
             else
                 gui.onClickEnd(cp.x, cp.y);
     }
 
     @Override
-    public void keyChange(Key k, Action a) {
-        super.keyChange(k, a);
+    public void onKeyChange(KeyChangeEvent event) {
+        super.onKeyChange(event);
+        Key k = event.getKey();
         if (k == Key.UP)
             gui.setY(gui.getY() + 0.01);
         else if (k == Key.DOWN)
