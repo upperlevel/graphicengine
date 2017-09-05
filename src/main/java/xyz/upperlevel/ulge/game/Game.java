@@ -8,9 +8,7 @@ import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.*;
 
 import static java.lang.System.currentTimeMillis;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.*;
 
 @Getter
 public class Game {
@@ -45,9 +43,10 @@ public class Game {
 
         long fpsCounter = 0;
 
-        while (!window.isClosed()) {
-            glClear(GL_COLOR_BUFFER_BIT);
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_ALPHA_TEST);
 
+        while (!window.isClosed()) {
             // tick update
             now = currentTimeMillis();
             if (now - lastTick >= tickEach) {
