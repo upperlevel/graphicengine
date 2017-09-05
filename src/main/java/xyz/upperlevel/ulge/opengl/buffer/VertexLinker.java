@@ -55,8 +55,13 @@ public class VertexLinker {
     }
 
     public VertexLinker attrib(int index, int count, int dataTypeId, int bytes) {
+        if(index < 0)
+            throw new IllegalArgumentException("negative index: " + index);
+        if(count < 0)
+            throw new IllegalArgumentException("negative count: " + count);
+        if(bytes < 0)
+            throw new IllegalArgumentException("negative bytes: " + bytes);
         Attrib attr = new Attrib(index, count, dataTypeId, bytes);
-        //System.out.println(attr);
         vertex.add(attr);
         return this;
     }
