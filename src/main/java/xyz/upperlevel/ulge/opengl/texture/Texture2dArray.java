@@ -114,6 +114,10 @@ public class Texture2dArray {
         );
     }
 
+    public void setup(TextureParameters parameters) {
+        parameters.getParameters().forEach((type, val) -> glTexParameteri(GL_TEXTURE_2D_ARRAY, type.getId(), val.getId()));
+    }
+
     public void destroy() {
         glDeleteTextures(id);
     }
