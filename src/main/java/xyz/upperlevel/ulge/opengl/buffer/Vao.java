@@ -3,9 +3,7 @@ package xyz.upperlevel.ulge.opengl.buffer;
 import lombok.Getter;
 
 import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
+import static org.lwjgl.opengl.GL30.*;
 
 public class Vao {
 
@@ -15,7 +13,7 @@ public class Vao {
     public final int id;
 
     public Vao() {
-        id = glGenBuffers();
+        id = glGenVertexArrays();
     }
 
     public Vao(int id) {
