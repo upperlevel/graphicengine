@@ -1,0 +1,64 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'xyz.upperlevel.ulge'
+version = '1.0-SNAPSHOT'
+
+description = """ulge"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+
+repositories {
+    mavenLocal()
+    jcenter()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+
+dependencies {
+    compile group: 'org.lwjgl', name: 'lwjgl', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-assimp', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-bgfx', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-egl', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-glfw', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-jawt', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-jemalloc', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-lmdb', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-nanovg', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-nfd', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-nuklear', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-openal', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-opencl', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-opengl', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-opengles', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-par', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-sse', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-stb', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-tinyfd', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-vulkan', version:'3.1.1'
+    compile group: 'org.lwjgl', name: 'lwjgl-xxhash', version:'3.1.1'
+    runtime group: 'org.lwjgl', name: 'lwjgl', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-assimp', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-bgfx', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-glfw', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-jemalloc', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-lmdb', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-nanovg', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-nfd', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-nuklear', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-openal', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-opengl', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-opengles', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-par', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-sse', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-stb', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-tinyfd', version:'3.1.1', classifier:'natives-linux'
+    runtime group: 'org.lwjgl', name: 'lwjgl-xxhash', version:'3.1.1', classifier:'natives-linux'
+    compile group: 'org.joml', name: 'joml', version:'1.9.2'
+
+    compile group: 'xyz.upperlevel.event', name: 'event-api', version:'1.0.1'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version:'1.16.18'
+}
