@@ -10,18 +10,6 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 public class VertexLinker {
-
-    @RequiredArgsConstructor
-    private static class Attrib {
-
-        public final int index, count, type, bytes;
-
-        @Override
-        public String toString() {
-            return "{i:" + index + ", c:" + count + ", b:" + bytes + "}";
-        }
-    }
-
     private final List<Attrib> vertex = new LinkedList<>();
     private DataType defDataType = DataType.FLOAT;
 
@@ -55,12 +43,12 @@ public class VertexLinker {
     }
 
     public VertexLinker attrib(int index, int count, int dataTypeId, int bytes) {
-        if(index < 0)
-            throw new IllegalArgumentException("negative index: " + index);
-        if(count < 0)
-            throw new IllegalArgumentException("negative count: " + count);
-        if(bytes < 0)
-            throw new IllegalArgumentException("negative bytes: " + bytes);
+        if (index < 0)
+            throw new IllegalArgumentException("Negative index: " + index);
+        if (count < 0)
+            throw new IllegalArgumentException("Negative count: " + count);
+        if (bytes < 0)
+            throw new IllegalArgumentException("Negative bytes: " + bytes);
         Attrib attr = new Attrib(index, count, dataTypeId, bytes);
         vertex.add(attr);
         return this;
@@ -74,5 +62,15 @@ public class VertexLinker {
     public VertexLinker attrib(int index, int count) {
         attrib(index, count, defDataType.id, count * defDataType.bytes);
         return this;
+    }
+
+    @RequiredArgsConstructor
+    private class Attrib {
+        public final int index, count, type, bytes;
+
+        @Override
+        public String toString() {
+            return "{i:" + index + ", c:" + count + ", b:" + bytes + "}";
+        }
     }
 }
