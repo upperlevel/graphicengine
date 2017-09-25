@@ -6,7 +6,7 @@ import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.*;
 
 public class Vao {
-
+    public static int instances = 0;
     public static Vao bound;
 
     @Getter
@@ -14,10 +14,12 @@ public class Vao {
 
     public Vao() {
         id = glGenVertexArrays();
+        instances++;
     }
 
     public Vao(int id) {
         this.id = id;
+        instances++;
     }
 
     public Vao bind() {
@@ -50,6 +52,7 @@ public class Vao {
 
     public Vao destroy() {
         glDeleteVertexArrays(id);
+        instances--;
         return this;
     }
 
