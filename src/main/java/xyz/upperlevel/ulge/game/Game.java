@@ -31,7 +31,7 @@ public class Game {
     }
 
     @Setter
-    private long tickEach = 1000;
+    private long tickEach = 1000 / 20;
     private long fps = 0;
 
     public void start() {

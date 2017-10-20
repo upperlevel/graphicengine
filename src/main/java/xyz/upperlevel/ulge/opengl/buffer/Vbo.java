@@ -12,7 +12,7 @@ import static org.lwjgl.opengl.GL31.GL_COPY_READ_BUFFER;
 import static org.lwjgl.opengl.GL31.GL_COPY_WRITE_BUFFER;
 
 public class Vbo implements GlBuffer {
-
+    public static int instances = 0;
     public static Vbo bound;
 
     @Getter
@@ -20,10 +20,12 @@ public class Vbo implements GlBuffer {
 
     public Vbo() {
         id = glGenBuffers();
+        instances++;
     }
 
     public Vbo(int id) {
         this.id = id;
+        instances++;
     }
 
     @Override
@@ -97,6 +99,7 @@ public class Vbo implements GlBuffer {
     @Override
     public void destroy() {
         glDeleteBuffers(id);
+        instances--;
     }
 
     // loadData(byte)
