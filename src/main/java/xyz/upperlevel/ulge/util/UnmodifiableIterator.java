@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-public class UnmofiableIterator<E> implements Iterator<E> {
+public class UnmodifiableIterator<E> implements Iterator<E> {
     private final Iterator<E> handle;
 
     @Override
@@ -25,7 +25,7 @@ public class UnmofiableIterator<E> implements Iterator<E> {
     }
 
     @Override
-    public void forEachRemaining(Consumer action) {
+    public void forEachRemaining(Consumer<? super E> action) {
         handle.forEachRemaining(action);
     }
 }

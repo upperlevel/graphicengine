@@ -47,7 +47,7 @@ public class SimpleGraphicEngine {
     }
 
     protected Shader createFragmentShader() {
-        Shader shader =  new Shader(ShaderType.FRAGMENT).linkResource("simple/fragment_shader.glsl");
+        Shader shader =  new Shader(ShaderType.FRAGMENT).linkResource("simple/fragment_shader.glsl", getClass());
         CompileStatus status = shader.compileSource();
         if(!status.isOk())
             throw new IllegalStateException("Cannot compile default fragment shader: " + status.getLog());
@@ -55,7 +55,7 @@ public class SimpleGraphicEngine {
     }
 
     protected Shader createVertexShader() {
-        Shader shader =  new Shader(ShaderType.VERTEX).linkResource("simple/vertex_shader.glsl");
+        Shader shader =  new Shader(ShaderType.VERTEX).linkResource("simple/vertex_shader.glsl", getClass());
         CompileStatus status = shader.compileSource();
         if(!status.isOk())
             throw new IllegalStateException("Cannot compile default vertex shader:\n" + status.getLog());

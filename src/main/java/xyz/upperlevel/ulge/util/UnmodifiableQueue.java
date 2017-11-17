@@ -33,7 +33,7 @@ public class UnmodifiableQueue<T> implements Queue<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new UnmofiableIterator<>(handle.iterator());
+        return new UnmodifiableIterator<>(handle.iterator());
     }
 
     @Override
