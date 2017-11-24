@@ -1,23 +1,33 @@
 package xyz.upperlevel.ulge.gui;
 
-import lombok.Getter;
 import xyz.upperlevel.ulge.gui.impl.GuiContainer;
+
+import java.util.List;
 
 public class GuiViewer {
 
-    private GuiContainer container = new GuiContainer();
+    protected final GuiContainer container = new GuiContainer();
 
     public GuiViewer() {
         container.setPosition(0, 0);
         container.setSize(1, 1);
+        container.onOpen();
     }
 
     public void open(Gui gui) {
+        gui.onOpen();
         container.add(gui);
     }
 
     public void close(Gui gui) {
-        container.remove(gui);
+        gui.onClose();
+        if (!container.remove(gui)) {
+            throw new IllegalStateException("Closing a Gui without opening it");
+        }
+    }
+
+    public List<Gui> getGuis() {
+        return container.getAll();
     }
 
     public void clickBegin(double x, double y) {

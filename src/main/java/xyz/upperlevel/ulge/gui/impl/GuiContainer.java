@@ -1,13 +1,13 @@
 package xyz.upperlevel.ulge.gui.impl;
 
 import lombok.NonNull;
-import lombok.experimental.Accessors;
 import org.joml.Matrix4f;
 import xyz.upperlevel.ulge.gui.Gui;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GuiContainer extends Gui {
@@ -30,8 +30,12 @@ public class GuiContainer extends Gui {
         guis.add(gui);
     }
 
-    public void remove(Gui gui) {
-        guis.remove(gui);
+    public boolean remove(Gui gui) {
+        return guis.remove(gui);
+    }
+
+    public List<Gui> getAll() {
+        return Collections.unmodifiableList(guis);
     }
 
     public void clear() {
@@ -46,7 +50,9 @@ public class GuiContainer extends Gui {
             double relX = x - gui.getX();
             double relY = y - gui.getY();
 
-            gui.onCursorEnter(relX, relY);
+            if (gui.isIn(relX, relY)) {
+                gui.onCursorEnter(relX, relY);
+            }
         }
         return true;
     }
@@ -150,6 +156,10 @@ public class GuiContainer extends Gui {
     @Override
     public void render(Matrix4f transformation, GuiRenderer renderer) {
         super.render(transformation, renderer);
-        guis.forEach(gui -> gui.render(transformation, renderer));
+        guis.forEach(gui -> gui.render(new Matrix4f(transformation), renderer));
+    }
+
+    public boolean isEmpty() {
+        return guis.isEmpty();
     }
 }

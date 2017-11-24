@@ -1,12 +1,14 @@
 package xyz.upperlevel.ulge.gui;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import xyz.upperlevel.event.EventManager;
 import xyz.upperlevel.ulge.gui.events.*;
 
+@NoArgsConstructor
 public class Gui {
 
     @Getter
@@ -27,9 +29,6 @@ public class Gui {
     @Setter
     private double width = 1.0, height = 1.0;
 
-    public Gui() {
-    }
-
     public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
@@ -43,10 +42,6 @@ public class Gui {
     public boolean isIn(double x, double y) {
         return x >= this.x && x <= this.x + width &&
                y >= this.y && y <= this.y + height;
-    }
-
-    public void render(GuiRenderer renderer) {
-        render(new Matrix4f(), renderer);
     }
 
     public void render(Matrix4f transformation, GuiRenderer renderer) {
@@ -75,13 +70,13 @@ public class Gui {
     }
 
     public boolean onCursorMove(double startX, double startY, double endX, double endY) {
-        return eventManager != null &&
-                eventManager.call(new GuiCursorMoveEvent(this, startX, startY, endX, endY));
+        return eventManager != null && eventManager.call(new GuiCursorMoveEvent(this, startX, startY, endX, endY));
     }
 
     public boolean onCursorExit(double x, double y) {
         if (eventManager != null && eventManager.call(new GuiCursorExitEvent(this, x, y))) {
             hover = false;
+            clicked = false;
             return true;
         }
         return false;
@@ -89,7 +84,7 @@ public class Gui {
 
     public boolean onClickBegin(double x, double y) {
         if (eventManager != null && eventManager.call(new GuiClickBeginEvent(this, x, y))) {
-            clicked = false;
+            clicked = true;
             return true;
         }
         return false;
@@ -104,13 +99,11 @@ public class Gui {
     }
 
     public boolean onOpen() {
-        return eventManager != null &&
-                eventManager.call(new GuiOpenEvent(this));
+        return eventManager != null && eventManager.call(new GuiOpenEvent(this));
     }
 
     public boolean onClose() {
-        return eventManager != null &&
-                eventManager.call(new GuiCloseEvent(this));
+        return eventManager != null && eventManager.call(new GuiCloseEvent(this));
     }
 
     public boolean onChange(Gui gui) {
@@ -118,7 +111,6 @@ public class Gui {
     }
 
     public boolean onDrag(double startX, double startY, double endX, double endY) {
-        return eventManager != null &&
-                eventManager.call(new GuiDragEvent(this, startX, startY, endX, endY));
+        return eventManager != null && eventManager.call(new GuiDragEvent(this, startX, startY, endX, endY));
     }
 }
