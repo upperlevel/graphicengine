@@ -27,7 +27,7 @@ public class GuiRenderer {
         Ebo ebo = new Ebo();
         ebo.loadData(new int[]{
                 0, 1, 2,
-                1, 2, 3
+                1, 3, 2
         }, EboDataUsage.STATIC_DRAW);
 
         // Setup Vbo
