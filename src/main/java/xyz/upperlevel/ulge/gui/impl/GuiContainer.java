@@ -1,165 +1,179 @@
 package xyz.upperlevel.ulge.gui.impl;
 
-import lombok.NonNull;
-import org.joml.Matrix4f;
+import lombok.Getter;
+import xyz.upperlevel.ulge.gui.BaseGui;
 import xyz.upperlevel.ulge.gui.Gui;
+import xyz.upperlevel.ulge.gui.GuiBounds;
 import xyz.upperlevel.ulge.gui.GuiRenderer;
+import xyz.upperlevel.ulge.opengl.texture.Texture2d;
+import xyz.upperlevel.ulge.util.Color;
+import xyz.upperlevel.ulge.window.event.button.MouseButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GuiContainer extends Gui {
+/**
+ * Class used to group some child Guis
+ * <br>This can also have some color and texture to use as background (see {@link #setColor(Color)} and {@link #setTexture(Texture2d)})
+ */
+public class GuiContainer extends BaseGui {
+    private List<Gui> handles;
+    @Getter
+    private Color color = Color.TRANSPARENT;
+    @Getter
+    private Texture2d texture = Texture2d.NULL;
 
-    private List<Gui> guis;
+    public GuiContainer(List<Gui> handles) {
+        this.handles = handles;
+    }
 
     public GuiContainer() {
         this(new ArrayList<>());
     }
 
-    public GuiContainer(Gui... guis) {
-        this(Arrays.asList(guis));
-    }
-
-    public GuiContainer(@NonNull List<Gui> guis) {
-        this.guis = guis;
-    }
-
-    public void add(Gui gui) {
-        guis.add(gui);
-    }
-
-    public boolean remove(Gui gui) {
-        return guis.remove(gui);
-    }
-
-    public List<Gui> getAll() {
-        return Collections.unmodifiableList(guis);
-    }
-
-    public void clear() {
-        guis.clear();
-    }
-
-    @Override
-    public boolean onCursorEnter(double x, double y) {
-        if (!super.onCursorEnter(x, y))
-            return false;
-        for (Gui gui : guis) {
-            double relX = x - gui.getX();
-            double relY = y - gui.getY();
-
-            if (gui.isIn(relX, relY)) {
-                gui.onCursorEnter(relX, relY);
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onCursorMove(double startX, double startY, double endX, double endY) {
-        if (!super.onCursorMove(startX, startY, endX, endY))
-            return false;
-        for (Gui gui : guis) {
-            boolean wasIn = gui.isIn(startX, startY);
-            boolean isIn  = gui.isIn(endX, endY);
-
-            // if both positions are in the gui calls move events
-            if (isIn && wasIn) {
-                double relSx = startX - gui.getX();
-                double relSy = startY - gui.getY();
-
-                double relEx = endX - gui.getX();
-                double relEy = endY - gui.getY();
-
-                gui.onCursorMove(relSx, relSy, relEx, relEy);
-
-                if (gui.isClicked())
-                    gui.onDrag(startX, startY, endX, endY);
-            }
-
-            // if enter the gui
-            if (!wasIn && isIn)
-                gui.onCursorEnter(endX, endY);
-
-            // if exit the gui
-            if (wasIn && !isIn)
-                gui.onCursorExit(endX, endY);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onCursorExit(double x, double y) {
-        if (!super.onCursorExit(x, y))
-            return false;
-        for (Gui gui : guis) {
-            double relX = x - gui.getX();
-            double relY = y - gui.getY();
-
-            gui.onCursorExit(relX, relY);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onClickBegin(double x, double y) {
-        if (!super.onClickBegin(x, y))
-            return false;
-        for (Gui gui : guis) {
-            if (gui.isIn(x, y)) {
-                double relX = x - gui.getX();
-                double relY = y - gui.getY();
-
-                gui.onClickBegin(relX, relY);
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onClickEnd(double x, double y) {
-        if (!super.onClickEnd(x, y))
-            return false;
-        for (Gui gui : guis) {
-            if (gui.isIn(x, y)) {
-                double relX = x - gui.getX();
-                double relY = y - gui.getY();
-
-                gui.onClickEnd(relX, relY);
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOpen() {
-        if (!super.onOpen())
-            return false;
-        for (Gui gui : guis)
-            if (!gui.onOpen())
-                return false;
-        return true;
-    }
-
-    @Override
-    public boolean onClose() {
-        if (!super.onClose())
-            return false;
-        for (Gui gui : guis)
-            if (!gui.onClose())
-                return false;
-        return true;
-    }
-
-    @Override
-    public void render(Matrix4f transformation, GuiRenderer renderer) {
-        super.render(transformation, renderer);
-        guis.forEach(gui -> gui.render(new Matrix4f(transformation), renderer));
-    }
-
+    /**
+     * Returns true only if the container doesn't contain any child
+     * @return true if no child is found
+     */
     public boolean isEmpty() {
-        return guis.isEmpty();
+        return handles.isEmpty();
+    }
+
+    /**
+     * Returns an unmodifiable view of all the gui's children
+     * @return the gui's children
+     */
+    public List<Gui> getChildren() {
+        return Collections.unmodifiableList(handles);
+    }
+
+    /**
+     * Sets the background's color
+     * @param color the background color
+     */
+    public void setColor(Color color) {
+        this.color = color == null ? Color.TRANSPARENT : color;
+    }
+
+    /**
+     * Sets the background's texture
+     * @param texture the background texture
+     */
+    public void setTexture(Texture2d texture) {
+        this.texture = texture == null ? Texture2d.NULL : texture;
+    }
+
+    /**
+     * Adds a child to handle
+     * @param gui the new child
+     */
+    public void add(Gui gui) {
+        handles.add(gui);
+    }
+
+    /**
+     * Removes a child (if present) and returns true on success
+     * @param gui the child to remove
+     * @return true only if the operation succeed
+     */
+    public boolean remove(Gui gui) {
+        return handles.remove(gui);
+    }
+
+    @Override
+    public void onCursorEnter(double x, double y) {
+        for (Gui handle : handles) {
+            if (handle.isInside(x, y)) {
+                handle.onCursorEnter(x - handle.getX(), y - handle.getY());
+            }
+        }
+        super.onCursorEnter(x, y);
+    }
+
+    @Override
+    public void onCursorExit(double x, double y) {
+        for (Gui handle : handles) {
+            if (handle.isHovered()) {
+                handle.onCursorExit(x - handle.getX(), y - handle.getY());
+            }
+        }
+        super.onCursorExit(x, y);
+    }
+
+    @Override
+    public void onCursorMove(double startX, double startY, double endX, double endY) {
+        for (Gui handle : handles) {
+
+            // Check if mouse was or is inside of the handle
+            boolean wasInside = handle.isHovered();
+            boolean isInside = handle.isInside(endX, endY);
+
+            // No exit nor enter, always outside
+            if (!wasInside && !isInside) continue;
+
+            if (wasInside && isInside) {
+                // Mouse was and still is inside, just a move
+                handle.onCursorMove(
+                        startX - handle.getX(), startY - handle.getY(),
+                        endX - handle.getX(), endY - handle.getY()
+                );
+            } else if (isInside) {
+                // Mouse was outside and came inside (enter)
+                handle.onCursorEnter(endX - handle.getX(), endY - handle.getY());
+            } else {
+                // Mouse was inside and went outside (exit)
+                handle.onCursorExit(startX - handle.getX(), startY - handle.getY());
+            }
+        }
+        super.onCursorMove(startX, startY, endX, endY);
+    }
+
+    @Override
+    public void onClickBegin(double x, double y, MouseButton button) {
+        for (Gui handle : handles) {
+            if (handle.isInside(x, y)) {
+                handle.onClickBegin(x - handle.getX(), y - handle.getY(), button);
+            }
+        }
+        super.onClickBegin(x, y, button);
+    }
+
+    @Override
+    public void onClickEnd(double x, double y, MouseButton button) {
+        for (Gui handle : handles) {
+            if (handle.isHovered()) {
+                handle.onClickEnd(x - handle.getX(), y - handle.getY(), button);
+            }
+        }
+        super.onClickEnd(x, y, button);
+    }
+
+    @Override
+    public void onOpen() {
+        super.onOpen();
+        handles.forEach(Gui::onOpen);
+    }
+
+    @Override
+    public void onClose() {
+        handles.forEach(Gui::onClose);
+        super.onClose();
+    }
+
+    @Override
+    public void render(GuiBounds upperBounds) {
+        GuiBounds bounds = upperBounds.insideRelative(getBounds());
+        if (color.a != 0 || texture != Texture2d.NULL) {
+            GuiRenderer renderer = GuiRenderer.get();
+            // Both texture and color needs to be replaced even if transparent
+            // or another one might be used
+            renderer.setColor(color);
+            renderer.setTexture(texture);
+            renderer.render(bounds);
+        }
+        for (Gui handle : handles) {
+            handle.render(bounds);
+        }
     }
 }

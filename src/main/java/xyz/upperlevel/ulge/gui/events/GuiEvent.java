@@ -2,10 +2,10 @@ package xyz.upperlevel.ulge.gui.events;
 
 import lombok.Getter;
 import lombok.NonNull;
-import xyz.upperlevel.event.CancellableEvent;
+import xyz.upperlevel.event.Event;
 import xyz.upperlevel.ulge.gui.Gui;
 
-public class GuiEvent extends CancellableEvent {
+public class GuiEvent implements Event {
 
     @Getter
     private Gui gui;

@@ -96,6 +96,28 @@ public class Color {
         );
     }
 
+    @Override
+    public String toString() {
+        return "{" + getRedAsInt() + "," + getGreenAsInt() + "," + getBlueAsInt() + "," + getOpacityAsInt() + "}";
+    }
+
+    @Override
+    public int hashCode() {
+        // rgba = 4 bytes = sizeof(int)
+        return  (getRedAsInt()     << 8 * 0) |
+                (getGreenAsInt()   << 8 * 1) |
+                (getBlueAsInt()    << 8 * 2) |
+                (getOpacityAsInt() << 8 * 3);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof Color)) return false;
+        Color other = (Color) o;
+        return other.r == r && other.g == g && other.b == b && other.a == a;
+    }
+
     public static Color rgb(int r, int g, int b) {
         return rgba(r, g, b, 255);
     }

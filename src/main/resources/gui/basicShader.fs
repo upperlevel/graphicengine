@@ -7,7 +7,6 @@ uniform vec4 color;
 
 out vec4 result;
 
-void main()
-{
+void main() {
     result = color * texture(tex, texCoord);
 }

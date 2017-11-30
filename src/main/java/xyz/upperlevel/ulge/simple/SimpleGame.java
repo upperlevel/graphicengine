@@ -205,6 +205,10 @@ public class SimpleGame implements Listener {
         return window.getCursorPosition();
     }
 
+    public Window window() {
+        return window;
+    }
+
     public boolean mouse(MouseButton button) {
         return window.getMouseButton(button);
     }
