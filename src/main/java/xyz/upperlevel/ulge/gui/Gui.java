@@ -1,91 +1,81 @@
 package xyz.upperlevel.ulge.gui;
 
+import lombok.Getter;
+import lombok.Setter;
 import xyz.upperlevel.event.EventManager;
 import xyz.upperlevel.ulge.gui.events.*;
+import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
 
-public interface Gui {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-    /**
-     * Gets the x coordinate of this gui (top-left convention)
-     * @return the x coordinate
-     */
-    double getX();
+public class Gui {
+    @Getter
+    @Setter
+    private Gui parent;
+    @Getter
+    private Window window;
+    @Getter
+    @Setter
+    private int width, height;
+    @Getter
+    @Setter
+    private int offsetLeft, offsetRight, offsetTop, offsetBottom;
+    @Getter
+    @Setter
+    private GuiAlign align = GuiAlign.CENTER;
 
-    /**
-     * Gets the y coordinate of this gui (top-left convention)
-     * @return the y coordinate
-     */
-    double getY();
+    private List<Gui> children = new ArrayList<>();
 
-    /**
-     * Gets the width of the gui
-     * <br>If the gui isn't box-shaped returns the width of the box that approximates the shape
-     * @return the width
-     */
-    double getW();
+    // LAYOUT DEPENDANT VARS
 
-    /**
-     * Gets the height of the gui
-     * <br>If the gui isn't box-shaped returns the height of the box that approximates the shape
-     * @return the height
-     */
-    double getH();
+    @Getter
+    private int realX, realY, relX, relY;
 
-    /**
-     * Sets the x coordinate of this gui (top-left convention)
-     * @param x the new x coordinate
-     */
-    void setX(double x);
+    @Getter
+    private GuiBounds bounds;
 
-    /**
-     * Sets the y coordinate of this gui (top-left convention)
-     * @param y the new y coordinate
-     */
-    void setY(double y);
+    // END LAYOUT DEPENDANT VARS
 
-    /**
-     * Sets the width of the gui
-     * @param w the new width
-     */
-    void setW(double w);
+    private boolean hovered, clicked;
 
-    /**
-     * Sets the height of the gui
-     * @param h the new height
-     */
-    void setH(double h);
+    private EventManager eventHandler;
 
-    /**
-     * Sets both position and size of the gui
-     * @param x the new x coordinate
-     * @param y the new y coordinate
-     * @param w the new width
-     * @param h the new height
-     */
-    default void setBounds(double x, double y, double w, double h) {
-        setX(x);
-        setY(y);
-        setW(w);
-        setH(h);
+    @Getter
+    @Setter
+    private GuiBackground background = GuiBackground.TRANSPARENT;
+
+    public Gui(Window window, EventManager handler) {
+        this.eventHandler = handler;
+        if (window != null) {
+            setWindow(window);
+            reloadLayout();
+        }
     }
 
-    default void setBounds(GuiBounds bounds) {
-        setBounds(bounds.minX, bounds.minY, bounds.maxX + bounds.minX, bounds.maxY - bounds.minY);
+    public Gui(Window window) {
+        this(window, new EventManager());
     }
 
-    default GuiBounds getBounds() {
-        return new GuiBounds(getX(), getY(), getX() + getW(), getY() + getH());
+    public Gui () {
+        this(null, new EventManager());
     }
 
-    /**
-     * Sets the position of the gui
-     * @param x the new x coordinate
-     * @param y the new y coordinate
-     */
-    default void setPosition(double x, double y) {
-        setX(x);
-        setY(y);
+    public void setOffset(int left, int right, int top, int bottom) {
+        offsetLeft = left;
+        offsetRight = right;
+        offsetTop = top;
+        offsetBottom = bottom;
+    }
+
+    public void setOffset(int vertical, int horizontal) {
+        setOffset(horizontal, horizontal, vertical, vertical);
+    }
+
+    public void setOffset(int offset) {
+        setOffset(offset, offset, offset, offset);
     }
 
     /**
@@ -93,9 +83,9 @@ public interface Gui {
      * @param w the new width
      * @param h the new height
      */
-    default void setSize(double w, double h) {
-        setW(w);
-        setH(h);
+    public void setSize(int w, int h) {
+        this.width = w;
+        this.height = h;
     }
 
     /**
@@ -104,36 +94,127 @@ public interface Gui {
      * @param y the point's y coordinate
      * @return true only if the point is inside of the Gui, false otherwise
      */
-    default boolean isInside(double x, double y) {
-        return  x >= getX() && x <= getX() + getW() &&
-                y >= getY() && y <= getY() + getH();
+    public boolean isInside(double x, double y) {
+        return  x >= relX && x <= relX + width &&
+                y >= relY && y <= relY + height;
+    }
+
+    public void reloadLayout() {
+        int parWidth, parHeight, parX, parY;
+        if (parent != null) {
+            parX = parent.realX;
+            parY = parent.realY;
+            parWidth = parent.width;
+            parHeight = parent.height;
+            setWindow(parent.window);
+        } else {
+            parX = 0;
+            parY = 0;
+            parWidth = window.getWidth();
+            parHeight = window.getHeight();
+        }
+
+        { // horizontal layout
+            switch (align.getHorizontal()) {
+                case 0: // Left
+                    realX = parX + offsetLeft;
+                    break;
+                case 1: // Center
+                    realX = parX + (parWidth - (offsetLeft + width + offsetRight)) / 2;
+                    break;
+                case 2: // Right
+                    realX = parX + parWidth - (width + offsetRight);
+                    break;
+            }
+        }
+
+        { // vertical layout
+            switch (align.getVertical()) {
+                case 0: // Left
+                    realY = parY + offsetTop;
+                    break;
+                case 1: // Center
+                    realY = parY + (parHeight - (offsetTop + height + offsetBottom)) / 2;
+                    break;
+                case 2: // Right
+                    realY = parY + parHeight - (height + offsetBottom);
+                    break;
+            }
+        }
+
+        relX = realX - parX;
+        relY = realY - parY;
+
+        bounds = new GuiBounds(realX, realY, realX + width, realY + height);
+
+        children.forEach(Gui::reloadLayout);
+    }
+
+    protected void setWindow(Window window) {
+        this.window = window;
     }
 
     /**
      * returns true if the mouse is currently inside of the gui (even if it's clicked)
      * @return true if hovered
      */
-    boolean isHovered();
+    public boolean isHovered() {
+        return hovered;
+    }
 
     /**
      * returns true if the Gui is being clicked by the mouse
      * @return true if clicked
      */
-    boolean isClicked();
+    public boolean isClicked() {
+        return clicked;
+    }
+
+    public List<Gui> getChildren() {
+        return Collections.unmodifiableList(children);
+    }
+
+    /**
+     * Returns true only if the container doesn't contain any child
+     * @return true if no child is found
+     */
+    public boolean isEmpty() {
+        return children.isEmpty();
+    }
+
+    public void addChild(Gui child) {
+        children.add(child);
+        child.setParent(this);
+    }
+
+    public boolean removeChild(Gui child) {
+        if (children.remove(child)) {
+            child.setParent(null);
+            return true;
+        } else return false;
+    }
 
     /**
      * Gets the {@link EventManager}
      * @return the {@link EventManager}
      */
-    EventManager getEventManager();
+    public EventManager getEventManager() {
+        return eventHandler;
+    }
 
     /**
      * Called when the cursor enters the Gui
      * @param x the entry x coordinate
      * @param y the entry y coordinate
      */
-    default void onCursorEnter(double x, double y) {
+    public void onCursorEnter(double x, double y) {
+        for (Gui child : children) {
+            if (child.isInside(x, y)) {
+                child.onCursorEnter(x - child.relX, y - child.relY);
+            }
+        }
         getEventManager().call(new GuiCursorEnterEvent(this, x, y));
+        hovered = true;
     }
 
     /**
@@ -141,8 +222,15 @@ public interface Gui {
      * @param x the last x coordinate
      * @param y the last y coordinate
      */
-    default void onCursorExit(double x, double y) {
+    public void onCursorExit(double x, double y) {
+        for (Gui child : children) {
+            if (child.isHovered()) {
+                child.onCursorExit(x - child.relX, y - child.relY);
+            }
+        }
         getEventManager().call(new GuiCursorExitEvent(this, x, y));
+        hovered = false;
+        clicked = false;
     }
 
     /**
@@ -152,8 +240,31 @@ public interface Gui {
      * @param endX the x of the ending point
      * @param endY the y of the ending point
      */
-    default void onCursorMove(double startX, double startY, double endX, double endY) {
-        getEventManager().call(new GuiCursorMoveEvent(this, startX, startY, endX, endY));
+    public void onCursorMove(double startX, double startY, double endX, double endY) {
+        for (Gui child : children) {
+
+            // Check if mouse was or is inside of the handle
+            boolean wasInside = child.isHovered();
+            boolean isInside = child.isInside(endX, endY);
+
+            // No exit nor enter, always outside
+            if (!wasInside && !isInside) continue;
+
+            if (wasInside && isInside) {
+                // Mouse was and still is inside, just a move
+                child.onCursorMove(
+                        startX - child.relX, startY - child.relY,
+                        endX - child.relX, endY - child.relY
+                );
+            } else if (isInside) {
+                // Mouse was outside and came inside (enter)
+                child.onCursorEnter(endX - child.relX, endY - child.relY);
+            } else {
+                // Mouse was inside and went outside (exit)
+                child.onCursorExit(startX - child.relX, startY - child.relY);
+            }
+        }
+        eventHandler.call(new GuiCursorMoveEvent(this, startX, startY, endX, endY));
     }
 
     /**
@@ -162,8 +273,16 @@ public interface Gui {
      * @param y the y of the cursor
      * @param button the pressed button
      */
-    default void onClickBegin(double x, double y, MouseButton button) {
-        getEventManager().call(new GuiClickBeginEvent(this, x, y, button));
+    public void onClickBegin(double x, double y, MouseButton button) {
+        for (Gui child : children) {
+            if (child.isInside(x, y)) {
+                child.onClickBegin(x - child.relX, y - child.relY, button);
+            }
+        }
+        eventHandler.call(new GuiClickBeginEvent(this, x, y, button));
+        if (button == MouseButton.LEFT) {
+            clicked = true;
+        }
     }
 
     /**
@@ -172,29 +291,58 @@ public interface Gui {
      * @param y the y of the cursor
      * @param button the pressed button
      */
-    default void onClickEnd(double x, double y, MouseButton button) {
-        getEventManager().call(new GuiClickEndEvent(this, x, y, button));
+    public void onClickEnd(double x, double y, MouseButton button) {
+        for (Gui child : children) {
+            if (child.isHovered()) {
+                child.onClickEnd(x - child.relX, y - child.relY, button);
+            }
+        }
+        eventHandler.call(new GuiClickEndEvent(this, x, y, button));
+        if (button == MouseButton.LEFT) {
+            clicked = false;
+        }
     }
 
     /**
      * Called when the gui is opened
      */
-    default void onOpen() {
-        getEventManager().call(new GuiOpenEvent(this));
+    public void onOpen() {
+        eventHandler.call(new GuiOpenEvent(this));
+        children.forEach(Gui::onOpen);
     }
 
     /**
      * Called when the gui is closed
      */
-    default void onClose() {
-        getEventManager().call(new GuiCloseEvent(this));
+    public void onClose() {
+        children.forEach(Gui::onClose);
+        eventHandler.call(new GuiCloseEvent(this));
     }
 
     /**
-     * Renders the gui using the normalized bounds of the upper window (need to relativize them)
-     * <br>Example: if this Gui has [0, 0, .5, .5] of xywh and has no parents then upperBounds = [0, 0, 1, 1]
-     * <br>to normalize use <pre>{@code GuiBounds bounds = upperBounds.insideRelative(getBounds()); }</pre>
-     * @param upperBounds the normalized gui bounds of the parennt window relative to the screen
+     * Called when the window is resized (before the layout call)
      */
-    void render(GuiBounds upperBounds);
+    public void onResize() {
+        for (Gui child : children) {
+            child.onResize();
+        }
+    }
+
+    /**
+     * Renders the gui
+     */
+    public void render() {
+        renderCurrent();
+        renderChildren();
+    }
+
+    protected void renderCurrent() {
+        background.render(window, bounds);
+    }
+
+    protected void renderChildren() {
+        for (Gui child : children) {
+            child.render();
+        }
+    }
 }

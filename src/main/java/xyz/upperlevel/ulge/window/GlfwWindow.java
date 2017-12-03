@@ -5,6 +5,7 @@ import lombok.NonNull;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.GL11;
 import xyz.upperlevel.event.EventManager;
 import xyz.upperlevel.ulge.window.event.*;
 import xyz.upperlevel.ulge.window.event.action.Action;
@@ -29,6 +30,11 @@ public class GlfwWindow extends GlWindow {
     @NonNull
     private String title;
 
+    // Cache width & height
+    // A lot of code is reliant on those and it would be expensive to do a JNI call at every get
+    @Getter
+    private int width, height;
+
     @Getter
     private EventManager eventManager = new EventManager();
 
@@ -44,6 +50,9 @@ public class GlfwWindow extends GlWindow {
             width = mode.width();
             height = mode.height();
         }
+        this.width = width;
+        this.height = height;
+
         id = glfwCreateWindow(width, height, title, fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
         setupHooks();
     }
@@ -62,6 +71,20 @@ public class GlfwWindow extends GlWindow {
             @Override
             public void invoke(long id, double x, double y) {
                 eventManager.call(new CursorMoveEvent(GlfwWindow.this, x, y));
+            }
+        });
+
+        GLFW.glfwSetWindowSizeCallback(id, new GLFWWindowSizeCallback() {
+            @Override
+            public void invoke(long window, int width, int height) {
+                // Reset cache
+                GlfwWindow.this.width = width;
+                GlfwWindow.this.height = height;
+
+                // Idk
+                GL11.glViewport(0, 0, width, height);
+
+                eventManager.call(new ResizeEvent(GlfwWindow.this, width, height));
             }
         });
 
@@ -106,6 +129,14 @@ public class GlfwWindow extends GlWindow {
         });
     }
 
+    public void reloadSize() {
+        IntBuffer widthBuffer = BufferUtils.createIntBuffer(1);
+        IntBuffer heightBuffer = BufferUtils.createIntBuffer(1);
+        glfwGetWindowSize(id, widthBuffer, heightBuffer);
+        this.width = widthBuffer.get();
+        this.height = heightBuffer.get();
+    }
+
     @Override
     public void setTitle(String title) {
         if (title == null)
@@ -118,33 +149,19 @@ public class GlfwWindow extends GlWindow {
     public void centerPosition() {
         glfwSetWindowPos(
                 id,
-                (Glfw.PRIMARY_MONITOR.width() - getWidth()) / 2,
-                (Glfw.PRIMARY_MONITOR.height() - getHeight()) / 2
+                (Glfw.PRIMARY_MONITOR.width() - width) / 2,
+                (Glfw.PRIMARY_MONITOR.height() - height) / 2
         );
     }
 
     @Override
-    public int getWidth() {
-        IntBuffer wdt = BufferUtils.createIntBuffer(1);
-        glfwGetWindowSize(id, wdt, null);
-        return wdt.get();
-    }
-
-    @Override
     public void setWidth(int width) {
-        setSize(width, getHeight());
-    }
-
-    @Override
-    public int getHeight() {
-        IntBuffer hgt = BufferUtils.createIntBuffer(1);
-        glfwGetWindowSize(id, null, hgt);
-        return hgt.get();
+        setSize(width, height);
     }
 
     @Override
     public void setHeight(int height) {
-        setSize(getWidth(), height);
+        setSize(width, height);
     }
 
     @Override
@@ -175,7 +192,7 @@ public class GlfwWindow extends GlWindow {
     public Vector2f getCursorPosition() {
         DoubleBuffer x = BufferUtils.createDoubleBuffer(1), y = BufferUtils.createDoubleBuffer(1);
         glfwGetCursorPos(id, x, y);
-        return new Vector2f((float) x.get() / getWidth(), (float) y.get() / getHeight());
+        return new Vector2f((float) x.get() / width, (float) y.get() / height);
     }
 
     @Override

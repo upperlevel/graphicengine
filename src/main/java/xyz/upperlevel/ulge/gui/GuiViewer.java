@@ -4,12 +4,9 @@ import lombok.Getter;
 import org.joml.Vector2f;
 import xyz.upperlevel.event.EventHandler;
 import xyz.upperlevel.event.Listener;
-import xyz.upperlevel.ulge.gui.impl.GuiContainer;
+import xyz.upperlevel.ulge.gui.events.GuiContainer;
 import xyz.upperlevel.ulge.window.Window;
-import xyz.upperlevel.ulge.window.event.CursorEnterEvent;
-import xyz.upperlevel.ulge.window.event.CursorExitEvent;
-import xyz.upperlevel.ulge.window.event.CursorMoveEvent;
-import xyz.upperlevel.ulge.window.event.MouseButtonChangeEvent;
+import xyz.upperlevel.ulge.window.event.*;
 import xyz.upperlevel.ulge.window.event.action.Action;
 
 import java.util.List;
@@ -21,7 +18,7 @@ import java.util.List;
  */
 public class GuiViewer implements Listener {
     @Getter
-    private GuiContainer handle = new GuiContainer();
+    private GuiContainer handle;
     private double lastMouseX, lastMouseY;
 
     /**
@@ -29,6 +26,10 @@ public class GuiViewer implements Listener {
      * @param window the windows used to interact
      */
     public GuiViewer(Window window) {
+        handle = new GuiContainer(window);
+        handle.setOffset(0,0);
+        handle.setSize(window.getWidth(), window.getHeight());
+        handle.reloadLayout();
         handle.onOpen();
         window.getEventManager().register(this);
         Vector2f pos = window.getCursorPosition();
@@ -45,7 +46,7 @@ public class GuiViewer implements Listener {
             close();
         }
         gui.onOpen();
-        handle.add(gui);
+        handle.addChild(gui);
     }
 
     /**
@@ -65,7 +66,7 @@ public class GuiViewer implements Listener {
         Gui gui = getCurrent();
         if (gui != null) {
             gui.onClose();
-            handle.remove(gui);
+            handle.removeChild(gui);
         }
     }
 
@@ -73,12 +74,14 @@ public class GuiViewer implements Listener {
      * Renders the Gui using the whole screen
      */
     public void render() {
-        handle.render(GuiBounds.FULL);
+        handle.render();
     }
 
     @EventHandler
     public void onClickBegin(MouseButtonChangeEvent event) {
-        Vector2f pos = event.getWindow().getCursorPosition();
+        Window window = event.getWindow();
+        Vector2f pos = window.getCursorPosition();
+        pos.mul(window.getWidth(), window.getHeight());
         if (event.getAction() == Action.PRESS) {
             handle.onClickBegin(pos.x, pos.y, event.getButton());
         } else { // action == RELEASE
@@ -88,23 +91,32 @@ public class GuiViewer implements Listener {
 
     @EventHandler
     public void onCursorEnter(CursorEnterEvent event) {
-        Vector2f pos = event.getWindow().getCursorPosition();
+        Window window = event.getWindow();
+        Vector2f pos = window.getCursorPosition();
+        pos.mul(window.getWidth(), window.getHeight());
         handle.onCursorEnter(pos.x, pos.y);
     }
 
     @EventHandler
     public void onCursorExit(CursorExitEvent event) {
-        Vector2f pos = event.getWindow().getCursorPosition();
+        Window window = event.getWindow();
+        Vector2f pos = window.getCursorPosition();
+        pos.mul(window.getWidth(), window.getHeight());
         handle.onCursorExit(pos.x, pos.y);
     }
 
     @EventHandler
     public void onCursorMove(CursorMoveEvent event) {
-        Window win = event.getWindow();
-        double mouseX = event.getX() / win.getWidth();
-        double mouseY = event.getY() / win.getHeight();
+        double mouseX = event.getX();
+        double mouseY = event.getY();
         handle.onCursorMove(lastMouseX, lastMouseY, mouseX, mouseY);
         lastMouseX = mouseX;
         lastMouseY = mouseY;
+    }
+
+    @EventHandler
+    public void onResize(ResizeEvent event) {
+        handle.onResize();
+        handle.reloadLayout();
     }
 }

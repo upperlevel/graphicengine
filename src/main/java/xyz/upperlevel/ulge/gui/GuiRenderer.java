@@ -8,6 +8,7 @@ import xyz.upperlevel.ulge.opengl.buffer.*;
 import xyz.upperlevel.ulge.opengl.shader.*;
 import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.util.Color;
+import xyz.upperlevel.ulge.window.Window;
 
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
@@ -77,7 +78,7 @@ public class GuiRenderer {
     }
 
     /**
-     * Changes the {@link Color} that will be used in the next {@link #render(GuiBounds)} call
+     * Changes the {@link Color} that will be used in the next {@link #render(Window, GuiBounds)} call
      * @param color the color that will be used
      */
     public void setColor(@NonNull Color color) {
@@ -86,7 +87,7 @@ public class GuiRenderer {
     }
 
     /**
-     * Changes the depth that the next {@link #render(GuiBounds)} will use (default: 0)
+     * Changes the depth that the next {@link #render(Window, GuiBounds)} will use (default: 0)
      * @param depth the depth that will be used
      */
     public void setDepth(float depth) {
@@ -95,7 +96,7 @@ public class GuiRenderer {
     }
 
     /**
-     * Changes the {@link Texture2d} that will be used in the next {@link #render(GuiBounds)} call
+     * Changes the {@link Texture2d} that will be used in the next {@link #render(Window, GuiBounds)} call
      * @param texture the texture that will be used
      */
     public void setTexture(@NonNull Texture2d texture) {
@@ -108,17 +109,19 @@ public class GuiRenderer {
      * <br>Warning: the uniforms should be always set or another call might overwrite them
      * @param bounds the bounds that will be used to render
      */
-    public void render(GuiBounds bounds) {
+    public void render(Window window, GuiBounds bounds) {
         program.bind();
         MESH.bind();
         // Two operations are being made:
         // - Converting the min-max system to the xywh system
         // - Inverting the y axis
+        float invWidth = 1f / window.getWidth();
+        float invHeight = 1f / window.getHeight();
         boundsUniform.set(
-                (float) bounds.minX,
-                1.0f - (float) bounds.minY,         // Invert y
-                (float) (bounds.maxX - bounds.minX),    // Convert maxX to width
-                (float) (bounds.minY - bounds.maxY)     // Convert maxY to height & Invert y: 1 - (max - min) = (min - max)
+                (float) bounds.minX * invWidth,
+                1.0f - (float) bounds.minY * invHeight,         // Invert y
+                (float) (bounds.maxX - bounds.minX) * invWidth,    // Convert maxX to width
+                (float) (bounds.minY - bounds.maxY) * invHeight     // Convert maxY to height & Invert y: 1 - (max - min) = (min - max)
         );
         glDrawElements(GL11.GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
