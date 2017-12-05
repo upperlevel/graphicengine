@@ -1,5 +1,6 @@
 package xyz.upperlevel.ulge.gui;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import xyz.upperlevel.event.EventManager;
@@ -8,21 +9,63 @@ import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class Gui {
+    /**
+     * Gui that contains this Gui instance
+     *
+     * @param parent the new Gui parent
+     * @return the Gui's parent or null if this is a root gui
+     */
     @Getter
     @Setter
     private Gui parent;
+
+    /**
+     * Window this Gui is displayed in
+     *
+     * @param window the new Window (used on initialization)
+     * @return the window in which the Gui is drawn (null if not initialized)
+     */
     @Getter
+    @Setter(AccessLevel.PROTECTED)
     private Window window;
+
+    /**
+     * The width of the Gui in pixels.
+     *
+     * @param width the new Gui's width
+     * @return the current width of the Gui
+     */
     @Getter
     @Setter
-    private int width, height;
+    private int width;
+
+    /**
+     * The height of the Gui in pixels.
+     *
+     * @param height the new Gui's height
+     * @return the current height of the Gui
+     */
+    @Getter
+    @Setter
+    private int height;
+
     @Getter
     @Setter
     private int offsetLeft, offsetRight, offsetTop, offsetBottom;
+
+    /**
+     * The align used by the Gui.
+     * <br>Ex. if set to {@link GuiAlign#CENTER} the Gui will try to stay in the center of the parent space.
+     * <br>Note: the actual Gui implementation may ignore this.
+     *
+     * @paran align The new align that this Gui will use
+     * @return the align that this Gui is currently using
+     */
     @Getter
     @Setter
     private GuiAlign align = GuiAlign.CENTER;
@@ -34,21 +77,49 @@ public class Gui {
     @Getter
     private int realX, realY, relX, relY;
 
+    /**
+     * The {@link GuiBounds} in screen-coords used by the Gui.
+     * <br>This variable is layout dependant, call {@link #reloadLayout()} to recalculate.
+     *
+     * @return The screen-coords bounds of the Gui
+     */
     @Getter
-    private GuiBounds bounds;
+    private GuiBounds bounds = GuiBounds.EMPTY;
 
     // END LAYOUT DEPENDANT VARS
 
-    private boolean hovered, clicked;
+    /**
+     * True if the mouse is currently inside of the gui (even if it's clicked).
+     * @return true if currently hovered
+     */
+    @Getter
+    private boolean hovered;
+    /**
+     * Ttrue if the Gui is being clicked by the mouse.
+     * @return true if clicked
+     */
+    @Getter
+    private boolean clicked;
 
-    private EventManager eventHandler;
+    /**
+     * The {@link EventManager} to notify this Gui's events.
+     * @return the {@link EventManager} used by this Gui
+     */
+    @Getter
+    private EventManager eventManager;
 
+    /**
+     * The {@link GuiBackground} used to render the Gui.
+     * <br>Note: The actual Gui implementation may ignore the background.
+     * @param background the new {@link GuiBackground}
+     * @return the currently used {@link GuiBackground}
+     */
     @Getter
     @Setter
     private GuiBackground background = GuiBackground.TRANSPARENT;
 
     public Gui(Window window, EventManager handler) {
-        this.eventHandler = handler;
+        this.eventManager = handler;
         if (window != null) {
             setWindow(window);
             reloadLayout();
@@ -79,7 +150,7 @@ public class Gui {
     }
 
     /**
-     * Sets the dimension of the gui
+     * Sets the dimension of the gui.
      * @param w the new width
      * @param h the new height
      */
@@ -89,7 +160,7 @@ public class Gui {
     }
 
     /**
-     * Checks if a point is inside of the Gui using the parent's reference
+     * Checks if a point is inside of the Gui using the parent's reference.
      * @param x the point's x coordinate
      * @param y the point's y coordinate
      * @return true only if the point is inside of the Gui, false otherwise
@@ -100,27 +171,24 @@ public class Gui {
     }
 
     public void reloadLayout() {
-        int parWidth, parHeight, parX, parY;
         if (parent != null) {
-            parX = parent.realX;
-            parY = parent.realY;
-            parWidth = parent.width;
-            parHeight = parent.height;
-            setWindow(parent.window);
-        } else {
-            parX = 0;
-            parY = 0;
-            parWidth = window.getWidth();
-            parHeight = window.getHeight();
-        }
+            if (window == null) {
+                setWindow(parent.getWindow());
+            }
+            reloadLayout(parent.relX, parent.relY, parent.width, parent.height);
+        } else if (window != null) {
+            reloadLayout(0, 0, window.getWidth(), window.getHeight());
+        } else throw new IllegalStateException("Cannot reload layout without no parent nor window");
+    }
 
+    public void reloadLayout(int parX, int parY, int parWidth, int parHeight) {
         { // horizontal layout
             switch (align.getHorizontal()) {
                 case 0: // Left
                     realX = parX + offsetLeft;
                     break;
                 case 1: // Center
-                    realX = parX + (parWidth - (offsetLeft + width + offsetRight)) / 2;
+                    realX = parX + offsetLeft + (parWidth - (offsetLeft + width + offsetRight)) / 2;
                     break;
                 case 2: // Right
                     realX = parX + parWidth - (width + offsetRight);
@@ -134,7 +202,7 @@ public class Gui {
                     realY = parY + offsetTop;
                     break;
                 case 1: // Center
-                    realY = parY + (parHeight - (offsetTop + height + offsetBottom)) / 2;
+                    realY = parY + offsetTop + (parHeight - (offsetTop + height + offsetBottom)) / 2;
                     break;
                 case 2: // Right
                     realY = parY + parHeight - (height + offsetBottom);
@@ -150,32 +218,12 @@ public class Gui {
         children.forEach(Gui::reloadLayout);
     }
 
-    protected void setWindow(Window window) {
-        this.window = window;
-    }
-
-    /**
-     * returns true if the mouse is currently inside of the gui (even if it's clicked)
-     * @return true if hovered
-     */
-    public boolean isHovered() {
-        return hovered;
-    }
-
-    /**
-     * returns true if the Gui is being clicked by the mouse
-     * @return true if clicked
-     */
-    public boolean isClicked() {
-        return clicked;
-    }
-
     public List<Gui> getChildren() {
         return Collections.unmodifiableList(children);
     }
 
     /**
-     * Returns true only if the container doesn't contain any child
+     * Returns true only if the container doesn't contain any child.
      * @return true if no child is found
      */
     public boolean isEmpty() {
@@ -187,6 +235,11 @@ public class Gui {
         child.setParent(this);
     }
 
+    public void addChildren(Collection<? extends Gui> children) {
+        this.children.addAll(children);
+        children.forEach(i -> i.setParent(this));
+    }
+
     public boolean removeChild(Gui child) {
         if (children.remove(child)) {
             child.setParent(null);
@@ -195,15 +248,7 @@ public class Gui {
     }
 
     /**
-     * Gets the {@link EventManager}
-     * @return the {@link EventManager}
-     */
-    public EventManager getEventManager() {
-        return eventHandler;
-    }
-
-    /**
-     * Called when the cursor enters the Gui
+     * Called when the cursor enters the Gui.
      * @param x the entry x coordinate
      * @param y the entry y coordinate
      */
@@ -218,7 +263,7 @@ public class Gui {
     }
 
     /**
-     * Called when the cursor exits the Gui
+     * Called when the cursor exits the Gui.
      * @param x the last x coordinate
      * @param y the last y coordinate
      */
@@ -234,7 +279,7 @@ public class Gui {
     }
 
     /**
-     * Called when the cursor moves
+     * Called when the cursor moves.
      * @param startX the x of the starting point
      * @param startY the y of the starting point
      * @param endX the x of the ending point
@@ -264,11 +309,11 @@ public class Gui {
                 child.onCursorExit(startX - child.relX, startY - child.relY);
             }
         }
-        eventHandler.call(new GuiCursorMoveEvent(this, startX, startY, endX, endY));
+        eventManager.call(new GuiCursorMoveEvent(this, startX, startY, endX, endY));
     }
 
     /**
-     * Called when the cursor begins a click (button pressed is specified in MouseButton)
+     * Called when the cursor begins a click (button pressed is specified in MouseButton).
      * @param x the x of the cursor
      * @param y the y of the cursor
      * @param button the pressed button
@@ -279,14 +324,14 @@ public class Gui {
                 child.onClickBegin(x - child.relX, y - child.relY, button);
             }
         }
-        eventHandler.call(new GuiClickBeginEvent(this, x, y, button));
+        eventManager.call(new GuiClickBeginEvent(this, x, y, button));
         if (button == MouseButton.LEFT) {
             clicked = true;
         }
     }
 
     /**
-     * Called when the cursor ends a click (button pressed is specified in MouseButton)
+     * Called when the cursor ends a click (button pressed is specified in MouseButton).
      * @param x the x of the cursor
      * @param y the y of the cursor
      * @param button the pressed button
@@ -297,30 +342,30 @@ public class Gui {
                 child.onClickEnd(x - child.relX, y - child.relY, button);
             }
         }
-        eventHandler.call(new GuiClickEndEvent(this, x, y, button));
+        eventManager.call(new GuiClickEndEvent(this, x, y, button));
         if (button == MouseButton.LEFT) {
             clicked = false;
         }
     }
 
     /**
-     * Called when the gui is opened
+     * Called when the gui is opened.
      */
     public void onOpen() {
-        eventHandler.call(new GuiOpenEvent(this));
+        eventManager.call(new GuiOpenEvent(this));
         children.forEach(Gui::onOpen);
     }
 
     /**
-     * Called when the gui is closed
+     * Called when the gui is closed.
      */
     public void onClose() {
         children.forEach(Gui::onClose);
-        eventHandler.call(new GuiCloseEvent(this));
+        eventManager.call(new GuiCloseEvent(this));
     }
 
     /**
-     * Called when the window is resized (before the layout call)
+     * Called when the window is resized (before the layout call).
      */
     public void onResize() {
         for (Gui child : children) {
@@ -329,20 +374,25 @@ public class Gui {
     }
 
     /**
-     * Renders the gui
+     * Renders both this Gui and it's children.
+     * <br>{@link #renderCurrent()} is used to render the local gui while {@link #renderChildren()} is used to render the children.
      */
     public void render() {
         renderCurrent();
         renderChildren();
     }
 
+    /**
+     * Renders only the current Gui.
+     */
     protected void renderCurrent() {
         background.render(window, bounds);
     }
 
+    /**
+     * Renders the Gui's children.
+     */
     protected void renderChildren() {
-        for (Gui child : children) {
-            child.render();
-        }
+        children.forEach(Gui::render);
     }
 }

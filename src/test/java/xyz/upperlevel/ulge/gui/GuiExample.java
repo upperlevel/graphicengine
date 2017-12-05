@@ -1,6 +1,5 @@
 package xyz.upperlevel.ulge.gui;
 
-import xyz.upperlevel.ulge.gui.events.GuiContainer;
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.util.Color;
 

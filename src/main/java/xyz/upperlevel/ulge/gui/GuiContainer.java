@@ -1,7 +1,6 @@
-package xyz.upperlevel.ulge.gui.events;
+package xyz.upperlevel.ulge.gui;
 
 import xyz.upperlevel.event.EventManager;
-import xyz.upperlevel.ulge.gui.Gui;
 import xyz.upperlevel.ulge.window.Window;
 
 public class GuiContainer extends Gui {

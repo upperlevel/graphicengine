@@ -4,7 +4,6 @@ import lombok.Getter;
 import org.joml.Vector2f;
 import xyz.upperlevel.event.EventHandler;
 import xyz.upperlevel.event.Listener;
-import xyz.upperlevel.ulge.gui.events.GuiContainer;
 import xyz.upperlevel.ulge.window.Window;
 import xyz.upperlevel.ulge.window.event.*;
 import xyz.upperlevel.ulge.window.event.action.Action;
