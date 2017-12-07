@@ -160,14 +160,13 @@ public class Gui {
     }
 
     /**
-     * Checks if a point is inside of the Gui using the parent's reference.
+     * Checks if a point is inside of the Gui using the screen reference.
      * @param x the point's x coordinate
      * @param y the point's y coordinate
      * @return true only if the point is inside of the Gui, false otherwise
      */
     public boolean isInside(double x, double y) {
-        return  x >= relX && x <= relX + width &&
-                y >= relY && y <= relY + height;
+        return bounds.isInside(x, y);
     }
 
     public void reloadLayout() {
@@ -210,8 +209,15 @@ public class Gui {
             }
         }
 
-        relX = realX - parX;
-        relY = realY - parY;
+        // Relative coordinates must always be relative to the parent
+        // while parX and parY might be changed to create limit the gui bounds
+        if (parent != null) {
+            relX = realX - parent.realX;
+            relY = realY - parent.realY;
+        } else {
+            relX = realX;
+            relY = realY;
+        }
 
         bounds = new GuiBounds(realX, realY, realX + width, realY + height);
 
@@ -254,7 +260,7 @@ public class Gui {
      */
     public void onCursorEnter(double x, double y) {
         for (Gui child : children) {
-            if (child.isInside(x, y)) {
+            if (child.isInside(realX + x, realY + y)) {
                 child.onCursorEnter(x - child.relX, y - child.relY);
             }
         }
@@ -290,7 +296,7 @@ public class Gui {
 
             // Check if mouse was or is inside of the handle
             boolean wasInside = child.isHovered();
-            boolean isInside = child.isInside(endX, endY);
+            boolean isInside = child.isInside(realX + endX, realY + endY);
 
             // No exit nor enter, always outside
             if (!wasInside && !isInside) continue;
@@ -320,7 +326,7 @@ public class Gui {
      */
     public void onClickBegin(double x, double y, MouseButton button) {
         for (Gui child : children) {
-            if (child.isInside(x, y)) {
+            if (child.isInside(realX + x, realY + y)) {
                 child.onClickBegin(x - child.relX, y - child.relY, button);
             }
         }

@@ -45,9 +45,9 @@ public interface Window {
 
     void hideCursor();
 
-    boolean isCursorDisabled();
+    boolean isCursorEnabled();
 
-    void disableCursor();
+    void setCursorEnabled(boolean enabled);
 
     boolean getMouseButton(MouseButton button);
 

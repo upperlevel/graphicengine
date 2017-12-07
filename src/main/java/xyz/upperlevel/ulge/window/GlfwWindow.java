@@ -226,13 +226,13 @@ public class GlfwWindow extends GlWindow {
     }
 
     @Override
-    public boolean isCursorDisabled() {
-        return glfwGetInputMode(id, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
+    public boolean isCursorEnabled() {
+        return glfwGetInputMode(id, GLFW_CURSOR) == GLFW_CURSOR_NORMAL;
     }
 
     @Override
-    public void disableCursor() {
-        glfwSetInputMode(id, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    public void setCursorEnabled(boolean enable) {
+        glfwSetInputMode(id, GLFW_CURSOR, enable ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
     }
 
     @Override
