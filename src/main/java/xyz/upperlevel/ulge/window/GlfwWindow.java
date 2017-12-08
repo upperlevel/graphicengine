@@ -2,7 +2,9 @@ package xyz.upperlevel.ulge.window;
 
 import lombok.Getter;
 import lombok.NonNull;
+import org.joml.Vector2d;
 import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL11;
@@ -189,10 +191,10 @@ public class GlfwWindow extends GlWindow {
     }
 
     @Override
-    public Vector2f getCursorPosition() {
+    public Vector2d getCursorPosition() {
         DoubleBuffer x = BufferUtils.createDoubleBuffer(1), y = BufferUtils.createDoubleBuffer(1);
         glfwGetCursorPos(id, x, y);
-        return new Vector2f((float) x.get() / width, (float) y.get() / height);
+        return new Vector2d(x.get(), y.get());
     }
 
     @Override

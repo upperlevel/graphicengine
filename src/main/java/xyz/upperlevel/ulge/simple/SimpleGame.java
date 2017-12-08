@@ -1,5 +1,6 @@
 package xyz.upperlevel.ulge.simple;
 
+import org.joml.Vector2d;
 import org.joml.Vector2f;
 import xyz.upperlevel.event.EventHandler;
 import xyz.upperlevel.event.Listener;
@@ -201,7 +202,7 @@ public class SimpleGame implements Listener {
         return window.getKey(key);
     }
 
-    public Vector2f cursorPos() {
+    public Vector2d cursorPos() {
         return window.getCursorPosition();
     }
 

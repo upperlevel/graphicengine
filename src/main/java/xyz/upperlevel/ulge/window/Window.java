@@ -1,6 +1,8 @@
 package xyz.upperlevel.ulge.window;
 
+import org.joml.Vector2d;
 import org.joml.Vector2f;
+import org.joml.Vector2i;
 import xyz.upperlevel.event.EventManager;
 import xyz.upperlevel.ulge.window.event.button.MouseButton;
 import xyz.upperlevel.ulge.window.event.key.Key;
@@ -33,7 +35,7 @@ public interface Window {
 
     boolean getKey(Key key);
 
-    Vector2f getCursorPosition();
+    Vector2d getCursorPosition();
 
     void setCursorPosition(double x, double y);
 

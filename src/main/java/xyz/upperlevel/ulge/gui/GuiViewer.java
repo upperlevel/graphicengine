@@ -1,6 +1,7 @@
 package xyz.upperlevel.ulge.gui;
 
 import lombok.Getter;
+import org.joml.Vector2d;
 import org.joml.Vector2f;
 import xyz.upperlevel.event.EventHandler;
 import xyz.upperlevel.event.Listener;
@@ -31,7 +32,7 @@ public class GuiViewer implements Listener {
         handle.reloadLayout();
         handle.onOpen();
         window.getEventManager().register(this);
-        Vector2f pos = window.getCursorPosition();
+        Vector2d pos = window.getCursorPosition();
         lastMouseX = pos.x;
         lastMouseY = pos.y;
     }
@@ -79,8 +80,7 @@ public class GuiViewer implements Listener {
     @EventHandler
     public void onClickBegin(MouseButtonChangeEvent event) {
         Window window = event.getWindow();
-        Vector2f pos = window.getCursorPosition();
-        pos.mul(window.getWidth(), window.getHeight());
+        Vector2d pos = window.getCursorPosition();
         if (event.getAction() == Action.PRESS) {
             handle.onClickBegin(pos.x, pos.y, event.getButton());
         } else { // action == RELEASE
@@ -91,16 +91,14 @@ public class GuiViewer implements Listener {
     @EventHandler
     public void onCursorEnter(CursorEnterEvent event) {
         Window window = event.getWindow();
-        Vector2f pos = window.getCursorPosition();
-        pos.mul(window.getWidth(), window.getHeight());
+        Vector2d pos = window.getCursorPosition();
         handle.onCursorEnter(pos.x, pos.y);
     }
 
     @EventHandler
     public void onCursorExit(CursorExitEvent event) {
         Window window = event.getWindow();
-        Vector2f pos = window.getCursorPosition();
-        pos.mul(window.getWidth(), window.getHeight());
+        Vector2d pos = window.getCursorPosition();
         handle.onCursorExit(pos.x, pos.y);
     }
 
