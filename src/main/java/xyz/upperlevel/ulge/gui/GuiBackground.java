@@ -21,7 +21,7 @@ public interface GuiBackground {
     static GuiBackground texture(Texture2d texture) {
         return (window, bounds) -> {
             GuiRenderer r = GuiRenderer.get();
-            r.setColor(Color.TRANSPARENT);
+            r.setColor(Color.WHITE);
             r.setTexture(texture);
             r.render(window, bounds);
         };
