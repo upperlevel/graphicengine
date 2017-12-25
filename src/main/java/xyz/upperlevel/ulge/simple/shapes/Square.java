@@ -4,8 +4,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import xyz.upperlevel.ulge.opengl.DataType;
 import xyz.upperlevel.ulge.opengl.buffer.*;
+import xyz.upperlevel.ulge.opengl.shader.Program;
 import xyz.upperlevel.ulge.opengl.shader.Uniform;
-import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
 import xyz.upperlevel.ulge.util.Color;
@@ -18,10 +18,10 @@ public class Square extends SimpleRenderable {
 
     public static final float vertices[] = {
             //Coords (x, y, z)     //TexCoords
-             0.0f,  0.0f,   0.0f, 1.0f,
-             0.0f,  1.0f,   0.0f, 0.0f,
-             1.0f,  0.0f,   1.0f, 1.0f,
-             1.0f,  1.0f,   1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 0.0f,
+            1.0f, 0.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f, 0.0f,
     };
 
     public static final int indices[] = {
@@ -40,10 +40,12 @@ public class Square extends SimpleRenderable {
             Vbo vbo = new Vbo();
             vbo.bind();
             vbo.loadData(vertices, VboDataUsage.STATIC_DRAW);
-            new VertexLinker(DataType.FLOAT)
-                    .attrib(0, 2)
-                    .attrib(1, 2)
-                    .setup();
+
+            VertexLinker v = new VertexLinker();
+            v.attrib(0, 2, DataType.FLOAT, false, 0);
+            v.attrib(1, 2, DataType.FLOAT, false, 2 * DataType.FLOAT.getByteCount());
+            v.setup();
+
             vbo.unbind();
         }
         vao.unbind();
@@ -79,15 +81,15 @@ public class Square extends SimpleRenderable {
     }
 
     @Override
-    public void init(Uniformer uniformer) {
-        super.init(uniformer);
-        uTransform = uniformer.get("transform");
+    public void init(Program program) {
+        super.init(program);
+        uTransform = program.getUniform("transform");
     }
 
 
     @Override
-    public void draw(Uniformer uniformer) {
-        super.draw(uniformer);
+    public void draw(Program program) {
+        super.draw(program);
 
         uTransform.set(getTransform());
 

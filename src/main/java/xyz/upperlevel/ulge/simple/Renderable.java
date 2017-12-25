@@ -1,10 +1,9 @@
 package xyz.upperlevel.ulge.simple;
 
-import xyz.upperlevel.ulge.opengl.shader.Uniformer;
+import xyz.upperlevel.ulge.opengl.shader.Program;
 
 public interface Renderable {
+    void init(Program program);
 
-    void init(Uniformer uniformer);
-
-    void draw(Uniformer uniformer);
+    void draw(Program program);
 }

@@ -3,6 +3,7 @@ package xyz.upperlevel.ulge.util.math;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+@Deprecated
 public final class CameraUtil {
 
     private CameraUtil() {

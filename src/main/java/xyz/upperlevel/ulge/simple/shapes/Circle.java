@@ -7,8 +7,8 @@ import xyz.upperlevel.ulge.opengl.buffer.Vao;
 import xyz.upperlevel.ulge.opengl.buffer.Vbo;
 import xyz.upperlevel.ulge.opengl.buffer.VboDataUsage;
 import xyz.upperlevel.ulge.opengl.buffer.VertexLinker;
+import xyz.upperlevel.ulge.opengl.shader.Program;
 import xyz.upperlevel.ulge.opengl.shader.Uniform;
-import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.simple.SimpleRenderable;
 import xyz.upperlevel.ulge.util.Color;
@@ -16,7 +16,7 @@ import xyz.upperlevel.ulge.util.Color;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLE_FAN;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 
-public class Circle extends SimpleRenderable{
+public class Circle extends SimpleRenderable {
     public Vao vao;
 
 
@@ -50,10 +50,12 @@ public class Circle extends SimpleRenderable{
             Vbo vbo = new Vbo();
             vbo.bind();
             vbo.loadData(genVertices(segments), VboDataUsage.STATIC_DRAW);
-            new VertexLinker(DataType.FLOAT)
-                    .attrib(0, 2)
-                    .attrib(1, 2)
-                    .setup();
+
+            VertexLinker v = new VertexLinker();
+            v.attrib(0, 2, DataType.FLOAT, false, 0);
+            v.attrib(1, 2, DataType.FLOAT, false, 2 * DataType.FLOAT.getByteCount());
+            v.setup();
+
             vbo.unbind();
         }
         vao.unbind();
@@ -68,14 +70,14 @@ public class Circle extends SimpleRenderable{
 
 
     @Override
-    public void init(Uniformer uniformer) {
-        super.init(uniformer);
-        uTransorm = uniformer.get("transform");
+    public void init(Program program) {
+        super.init(program);
+        uTransorm = program.getUniform("transform");
     }
 
     @Override
-    public void draw(Uniformer uniformer) {
-        super.draw(uniformer);
+    public void draw(Program program) {
+        super.draw(program);
 
         uTransorm.set(getTransform());
 
@@ -103,9 +105,9 @@ public class Circle extends SimpleRenderable{
         vertices[2] = r;
         vertices[3] = r;
 
-        for(int i = 1; i <= segments; i++) {
-            final int vi = i*4;
-            vertices[vi    ] = (float) x + r;
+        for (int i = 1; i <= segments; i++) {
+            final int vi = i * 4;
+            vertices[vi] = (float) x + r;
             vertices[vi + 1] = (float) y + r;
 
             vertices[vi + 2] = ((float) x + r);
@@ -117,11 +119,11 @@ public class Circle extends SimpleRenderable{
             x = c * x - s * y;
             y = s * t + c * y;
         }
-        final int vi = (segments + 1)*4;
-        vertices[vi  ] = 2*r;
-        vertices[vi+1] = r;
-        vertices[vi+2] = 2*r;
-        vertices[vi+3] = 1.0f - r;
+        final int vi = (segments + 1) * 4;
+        vertices[vi] = 2 * r;
+        vertices[vi + 1] = r;
+        vertices[vi + 2] = 2 * r;
+        vertices[vi + 3] = 1.0f - r;
 
         //glEnd();
         return vertices;

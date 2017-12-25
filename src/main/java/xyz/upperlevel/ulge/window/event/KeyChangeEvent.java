@@ -6,7 +6,7 @@ import xyz.upperlevel.ulge.window.event.action.Action;
 import xyz.upperlevel.ulge.window.event.key.Key;
 
 /**
- * Event called when user press/release a keyboard key.
+ * Event called when user press/release a keyboard testKey.
  **/
 @Getter
 public class KeyChangeEvent extends WindowEvent {

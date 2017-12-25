@@ -32,7 +32,8 @@ public class SimpleGraphicEngine {
         this.height = height;
         this.background = background;
 
-        iProj = program.bind().get("projection");
+        program.use();
+        iProj = program.getUniform("projection");
     }
 
     public SimpleGraphicEngine(float width, float height) {
@@ -40,10 +41,11 @@ public class SimpleGraphicEngine {
     }
 
     protected Program createProgram() {
-        return new Program()
-                .attach(createFragmentShader())
-                .attach(createVertexShader())
-                .link();
+        Program prg = new Program();
+        prg.attach(createFragmentShader());
+        prg.attach(createVertexShader());
+        prg.link();
+        return prg;
     }
 
     protected Shader createFragmentShader() {
@@ -104,11 +106,11 @@ public class SimpleGraphicEngine {
         GL11.glClearColor(background.r, background.g, background.b, background.a);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-        final Uniformer uniformer = program.bind();
+        program.use();
 
         if(!toInit.isEmpty()) {
             System.out.println("INIT!");
-            toInit.forEach(i -> i.init(uniformer));
+            toInit.forEach(i -> i.init(program));
             toInit.clear();
         }
 
@@ -119,7 +121,7 @@ public class SimpleGraphicEngine {
 
         iProj.set(projection);
 
-        objects.forEach(r -> r.draw(uniformer));
-        program.unbind();
+        objects.forEach(r -> r.draw(program));
+        program.unuse();
     }
 }

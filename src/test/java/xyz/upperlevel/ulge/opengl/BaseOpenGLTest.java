@@ -6,7 +6,6 @@ import xyz.upperlevel.ulge.opengl.buffer.BufferUtil;
 import xyz.upperlevel.ulge.opengl.shader.Program;
 import xyz.upperlevel.ulge.opengl.shader.ShaderType;
 import xyz.upperlevel.ulge.opengl.shader.ShaderUtil;
-import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.window.Glfw;
 import xyz.upperlevel.ulge.window.Window;
 
@@ -31,7 +30,8 @@ public class BaseOpenGLTest {
         program.attach(ShaderUtil.load(ShaderType.FRAGMENT, res.getResourceAsStream("base/fragment_shader.glsl")));
         // links standardProgram
         program.link();
-        Uniformer uniformer = program.bind();
+
+        program.use();
         GL30.glBindFragDataLocation(program.getId(), 0,"display");
 
         // sets up shape
@@ -48,7 +48,7 @@ public class BaseOpenGLTest {
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, BufferUtil.createBuffer(vert), GL_STATIC_DRAW);
 
-        int posLoc = uniformer.getAttribLocation("position");
+        int posLoc = program.getAttribLocation("position");
         glEnableVertexAttribArray(posLoc);
         glVertexAttribPointer(posLoc, 2, GL11.GL_FLOAT, false, 2 * Float.BYTES, 0);
 

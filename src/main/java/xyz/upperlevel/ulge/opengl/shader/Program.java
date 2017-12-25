@@ -6,18 +6,11 @@ import java.util.*;
 
 import static org.lwjgl.opengl.GL20.*;
 
+@Getter
 public class Program {
-
-    public static Program bound;
-
-    @Getter
-    public final int id;
-    @Getter
-    public final List<Shader> shaders = new ArrayList<>();
-
-    public final Uniformer uniformer = new Uniformer(this);
-
-    public static Queue<Program> programs = new LinkedList<>();
+    private final int id;
+    private Set<Shader> shaders = new HashSet<>();
+    private boolean destroyed;
 
     public Program() {
         id = glCreateProgram();
@@ -27,91 +20,114 @@ public class Program {
         this.id = id;
     }
 
-    public Program attach(Shader shader) {
-        Objects.requireNonNull(shader, "Shader cannot be null.");
-        glAttachShader(id, shader.getId());
-        shaders.add(shader);
-        return this;
+    private void checkNotDestroyed() {
+        if (destroyed) {
+            throw new IllegalStateException("The program is destroyed");
+        }
     }
 
-    private Program strictDetach(Shader shader) {
-        Objects.requireNonNull(shader, "Shader cannot be null.");
-        glDetachShader(id, shader.getId());
-        return this;
+    /**
+     * Attaches the shader.
+     *
+     * @param shader the shader
+     */
+    public void attach(Shader shader) {
+        checkNotDestroyed();
+        if (shader == null) {
+            throw new NullPointerException("Shader cannot be null");
+        }
+        if (shaders.add(shader)) {
+            glAttachShader(id, shader.getId());
+        }
     }
 
-    public Program detach(Shader shader) {
-        Objects.requireNonNull(shader, "Shader cannot be null.");
-        if (shaders.remove(shader))
-            strictDetach(shader);
-        return this;
+    /**
+     * Detaches the shader.
+     *
+     * @param shader the shader
+     */
+    public void detach(Shader shader) {
+        checkNotDestroyed();
+        if (shader == null) {
+            throw new NullPointerException("Shader cannot be null");
+        }
+        if (shaders.remove(shader)) {
+            glDetachShader(id, shader.getId());
+        }
     }
 
-    public Program link() {
+    /**
+     * Links the program.
+     */
+    public void link() {
+        checkNotDestroyed();
         glLinkProgram(id);
-        return this;
     }
 
-    public Uniformer bind() {
-        if(bound == null || bound.id != id) {
-            glUseProgram(id);
-            bound = this;
-        }
-        return uniformer;
-    }
-
-    public Uniformer forceBind() {
+    /**
+     * Binds the program.
+     */
+    public void use() {
+        checkNotDestroyed();
         glUseProgram(id);
-        bound = this;
-        return uniformer;
     }
 
-    public Uniformer push() {
-        programs.add(bound);
-        bind();
-        return uniformer;
-    }
-
-    public Program unbind() {
-        if(bound != null) {
-            glUseProgram(0);
-            bound = null;
-        }
-        return this;
-    }
-
-    public Program forceUnbind() {
+    /**
+     * Unbinds the program.
+     */
+    public void unuse() {
+        checkNotDestroyed();
         glUseProgram(0);
-        bound = null;
-        return this;
     }
 
-    public Program pop() {
-        if(programs.isEmpty())
-            throw new IllegalStateException("Cannot pop: program queue is empty");
-        Program last = programs.remove();
-        if(last == null)
-            unbind();
-        else
-            last.bind();
-        return this;
-    }
-
-    public boolean isBound() {
-        return bound.id == id;
-    }
-
-    public Program destroy() {
-        for(Shader shader : shaders) {
-            strictDetach(shader);
-            shader.destroy();
-        }
-        shaders.isEmpty();
+    /**
+     * Destroys the program.
+     */
+    public void destroy() {
         glDeleteProgram(id);
-        return this;
+        shaders = null;
+        destroyed = true;
     }
 
-    public static Program wrap(int id) {
-        return new Program(id);
+    /**
+     * Gets attribute location from its name.
+     *
+     * @param name the name
+     * @return the attribute location
+     */
+    public int getAttribLocation(String name) {
+        return glGetAttribLocation(id, name);
+    }
+
+    public boolean hasAttrib(String name) {
+        return getAttribLocation(name) >= 0;
+    }
+
+    /**
+     * Gets uniform location from its name.
+     *
+     * @param name the name
+     * @return the uniform location
+     */
+    public int getUniformLocation(String name) {
+        return glGetUniformLocation(id, name);
+    }
+
+    public boolean hasUniform(String name) {
+        return getUniformLocation(name) >= 0;
+    }
+
+    /**
+     * Gets the uniform from its name.
+     *
+     * @param name the name
+     * @return the uniform
+     */
+    public Uniform getUniform(String name) {
+        int uLoc = getUniformLocation(name);
+        if (uLoc < 0) {
+            return null;
+        }
+        return new Uniform(this, uLoc);
     }
 }

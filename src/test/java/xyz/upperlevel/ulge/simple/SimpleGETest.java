@@ -93,9 +93,9 @@ public class SimpleGETest {
     public static void update(long delta) {
         /*if(w.getKey(GLFWKey.ESCAPE))
             w.close();*/
-        if (w.getKey(Key.RIGHT))
+        if (w.testKey(Key.RIGHT))
             obj.pos.add(VEL * delta, 0f);
-        if (w.getKey(Key.LEFT))
+        if (w.testKey(Key.LEFT))
             obj.pos.sub(VEL * delta, 0f);
     }
 }

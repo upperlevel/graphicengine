@@ -31,7 +31,7 @@ public class GLFWMouseButton {
 
     private static void register(MouseButton button, int glfwId) {
         if(toStandardMapping.put(glfwId, button) != null)
-            throw new IllegalStateException("Cannot set the same key two times!");
+            throw new IllegalStateException("Cannot set the same testKey two times!");
         toGlfwMapping[button.id] = glfwId;
     }
 

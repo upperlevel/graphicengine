@@ -1,17 +1,18 @@
-import org.gradle.internal.os.OperatingSystem
-
 apply plugin: 'java'
+apply plugin: 'scala'
 apply plugin: 'maven'
 
 group = 'xyz.upperlevel.ulge'
-version = '1.0-SNAPSHOT'
+version = '1.0'
 
 description = """ulge"""
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-switch ( OperatingSystem.current() ) {
+import org.gradle.internal.os.OperatingSystem
+
+switch (OperatingSystem.current()) {
     case OperatingSystem.WINDOWS:
         project.ext.lwjglNatives = "natives-windows"
         break
@@ -23,16 +24,21 @@ switch ( OperatingSystem.current() ) {
         break
 }
 
-project.ext.lwjglVersion = "3.1.2"
+project.ext.lwjglVersion = "3.1.5"
 project.ext.jomlVersion = "1.9.4"
 
 repositories {
     mavenLocal()
-    jcenter()
+    mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {
+    // Scala
+    compile 'org.scala-lang:scala-library:2.11.8'
+    testCompile 'org.scalatest:scalatest_2.11:3.0.0'
+
+    // LWJGL
     compile "org.lwjgl:lwjgl:${lwjglVersion}"
     compile "org.lwjgl:lwjgl-glfw:${lwjglVersion}"
     compile "org.lwjgl:lwjgl-opengl:${lwjglVersion}"
@@ -42,6 +48,11 @@ dependencies {
     runtime "org.lwjgl:lwjgl-opengl:${lwjglVersion}:${lwjglNatives}"
     runtime "org.lwjgl:lwjgl-stb:${lwjglVersion}:${lwjglNatives}"
     compile "org.joml:joml:${jomlVersion}"
-    compile group: 'xyz.upperlevel.event', name: 'event-api', version:'1.0.1'
-    compileOnly group: 'org.projectlombok', name: 'lombok', version:'1.16.18'
+
+    // Useful APIs
+    compile group: 'xyz.upperlevel.event', name: 'event-api', version: '1.0.1'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
+
+    // Testing
+    testCompile group: 'junit', name: 'junit', version: '4.12'
 }

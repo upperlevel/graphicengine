@@ -89,13 +89,13 @@ public class Gui {
     // END LAYOUT DEPENDANT VARS
 
     /**
-     * True if the mouse is currently inside of the gui (even if it's clicked).
+     * True if the testMouseButton is currently inside of the gui (even if it's clicked).
      * @return true if currently hovered
      */
     @Getter
     private boolean hovered;
     /**
-     * Ttrue if the Gui is being clicked by the mouse.
+     * Ttrue if the Gui is being clicked by the testMouseButton.
      * @return true if clicked
      */
     @Getter
@@ -294,7 +294,7 @@ public class Gui {
     public void onCursorMove(double startX, double startY, double endX, double endY) {
         for (Gui child : children) {
 
-            // Check if mouse was or is inside of the handle
+            // Check if testMouseButton was or is inside of the handle
             boolean wasInside = child.isHovered();
             boolean isInside = child.isInside(realX + endX, realY + endY);
 

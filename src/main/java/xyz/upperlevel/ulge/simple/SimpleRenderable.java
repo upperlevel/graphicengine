@@ -1,7 +1,7 @@
 package xyz.upperlevel.ulge.simple;
 
+import xyz.upperlevel.ulge.opengl.shader.Program;
 import xyz.upperlevel.ulge.opengl.shader.Uniform;
-import xyz.upperlevel.ulge.opengl.shader.Uniformer;
 import xyz.upperlevel.ulge.opengl.texture.Texture2d;
 import xyz.upperlevel.ulge.util.Color;
 
@@ -22,12 +22,12 @@ public abstract class SimpleRenderable implements Renderable {
     }
 
     @Override
-    public void init(Uniformer uniformer) {
-        uColor = uniformer.get("col");
+    public void init(Program program) {
+        uColor = program.getUniform("col");
     }
 
     @Override
-    public void draw(Uniformer uniformer) {
+    public void draw(Program program) {
         tex.bind();
         uColor.set(color);
     }

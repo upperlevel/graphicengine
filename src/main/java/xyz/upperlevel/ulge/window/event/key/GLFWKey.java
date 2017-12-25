@@ -141,7 +141,7 @@ public class GLFWKey {
 
     private static void register(Key key, int glfwId) {
         if(toStandardMapping.put(glfwId, key) != null)
-            throw new IllegalStateException("Cannot set the same key two times!");
+            throw new IllegalStateException("Cannot set the same testKey two times!");
         toGlfwMapping[key.id] = glfwId;
     }
 

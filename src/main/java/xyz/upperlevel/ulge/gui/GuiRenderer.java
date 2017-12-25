@@ -42,9 +42,9 @@ public class GuiRenderer {
         }, VboDataUsage.STATIC_DRAW);
 
         // Link Vertexes
-        new VertexLinker(DataType.FLOAT)
-                .attrib(0, 2)
-                .setup();
+        VertexLinker v = new VertexLinker();
+        v.attrib(0, 2, DataType.FLOAT, false, 0);
+        v.setup();
     }
 
     @Getter
@@ -59,19 +59,17 @@ public class GuiRenderer {
     public GuiRenderer(@NonNull Program program) {
         this.program = program;
 
-        Uniformer uniformer = program.uniformer;
-
-        boundsUniform = uniformer.get("bounds");
+        boundsUniform = program.getUniform("bounds");
         if (boundsUniform == null) {
             throw new NullPointerException("Cannot find 'bounds' uniform location");
         }
 
-        colorUniform = uniformer.get("color");
+        colorUniform = program.getUniform("color");
         if (colorUniform == null) {
             throw new NullPointerException("Cannot find 'color' uniform location");
         }
 
-        depthUniform = uniformer.get("depth");
+        depthUniform = program.getUniform("depth");
         if (depthUniform == null) {
             throw new NullPointerException("Cannot find 'depth' uniform location");
         }
@@ -79,38 +77,42 @@ public class GuiRenderer {
 
     /**
      * Changes the {@link Color} that will be used in the next {@link #render(Window, GuiBounds)} call
+     *
      * @param color the color that will be used
      */
     public void setColor(@NonNull Color color) {
-        program.bind();
+        program.use();
         colorUniform.set(color);
     }
 
     /**
      * Changes the depth that the next {@link #render(Window, GuiBounds)} will use (default: 0)
+     *
      * @param depth the depth that will be used
      */
     public void setDepth(float depth) {
-        program.bind();
+        program.use();
         depthUniform.set(depth);
     }
 
     /**
      * Changes the {@link Texture2d} that will be used in the next {@link #render(Window, GuiBounds)} call
+     *
      * @param texture the texture that will be used
      */
     public void setTexture(@NonNull Texture2d texture) {
-        program.bind();
+        program.use();
         texture.bind();
     }
 
     /**
      * Renders the Gui in the bounds using the parameters set using {@link #setColor(Color)}, {@link #setDepth(float)} and {@link #setTexture(Texture2d)}
      * <br>Warning: the uniforms should be always set or another call might overwrite them
+     *
      * @param bounds the bounds that will be used to render
      */
     public void render(Window window, GuiBounds bounds) {
-        program.bind();
+        program.use();
         MESH.bind();
         // Two operations are being made:
         // - Converting the min-max system to the xywh system
@@ -128,6 +130,7 @@ public class GuiRenderer {
 
     /**
      * Returns the GuiRenderer instance used by all the guis
+     *
      * @return the common instance
      */
     public static GuiRenderer get() {
@@ -136,6 +139,7 @@ public class GuiRenderer {
 
     /**
      * Overwrites the GuiRenderer instance used by all the guis
+     *
      * @param renderer the new common GuiRenderer instance
      */
     public static void set(GuiRenderer renderer) {

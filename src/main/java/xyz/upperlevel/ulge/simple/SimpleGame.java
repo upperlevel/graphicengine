@@ -1,7 +1,8 @@
 package xyz.upperlevel.ulge.simple;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.joml.Vector2d;
-import org.joml.Vector2f;
 import xyz.upperlevel.event.EventHandler;
 import xyz.upperlevel.event.Listener;
 import xyz.upperlevel.ulge.util.Color;
@@ -19,123 +20,85 @@ import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.opengl.GL11.*;
 
 public class SimpleGame implements Listener {
-
-    private int width = 800, height = 500;
-    private String title;
-    private boolean vsync = true;
+    // Window
+    @Getter
     private Window window;
 
-    private boolean fps = true;
-    private int fps_frames = 0;
-    private double fps_lastTime;
-    private double lastFrame = -1;
-
+    @Getter
+    @Setter
     private Color background = Color.BLACK;
 
+    @Getter
     private SimpleGraphicEngine engine;
 
-    public SimpleGame(String title) {
-        this.title = title;
+    // Timings
+    @Getter
+    private int currentFps;
+    private int fpsCounter = 0;
+    private double lastFpsTime = -1, lastFrame = -1;
+    private double delta;
+
+    private void updateTimings() {
+        // Delta
+        double currentTime = System.currentTimeMillis();
+        if (lastFrame == -1) {
+            lastFrame = currentTime;
+            delta = 0;
+        }
+        delta = currentTime - lastFrame;
+        lastFrame = currentTime;
+        // Fps
+        fpsCounter++;
+        if (lastFpsTime == -1) {
+            lastFpsTime = currentTime;
+        } else {
+            if (currentTime - lastFpsTime >= 1000) {
+                currentFps = fpsCounter;
+                lastFpsTime = currentTime;
+            }
+        }
     }
 
-    public SimpleGame() {
-        this("ULGE");
-    }
-
-
+    /**
+     * Launches the game.
+     */
     public void launch() {
-        config();
-        window = Glfw.createWindow(width, height, title, false);
-        window.contextualize();
-        window.show();
-        window.setVSync(vsync);
-        window.setTitle(title);
-
-        System.out.println("REGISTERING");
+        window = onConfig();
         window.getEventManager().register(this);
 
-        engine = new SimpleGraphicEngine(width, height, background);
+        window.contextualize();
+        window.show();
 
-        init();
+        engine = new SimpleGraphicEngine(window.getWidth(), window.getHeight(), background);
 
+        onInit();
         while (!window.isClosed()) {
-            update(updateTime());
-            preDraw();
+            updateTimings();
+            onUpdate(delta);
+
+            onPreDraw();
             engine.draw();
-            postDraw();
+            onPostDraw();
+
             window.update();
         }
-        destroy();
+        onDestroy();
     }
 
-    protected void preDraw() {
+    public int getWidth() {
+        return window.getWidth();
     }
 
-    protected void postDraw() {
+    public int getHeight() {
+        return window.getHeight();
     }
 
-
-    public void simpleAlpha() {
+    /**
+     * Enables alpha.
+     */
+    public void enableSimpleAlpha() {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    }
-
-    public int width() {
-        return width;
-    }
-
-    public void width(int width) {
-        checkPreWindowState();
-        this.width = width;
-    }
-
-
-    public int height() {
-        return height;
-    }
-
-    public void height(int height) {
-        checkPreWindowState();
-        this.height = height;
-    }
-
-
-    public void size(int width, int height) {
-        checkPreWindowState();
-        this.width = width;
-        this.height = height;
-    }
-
-    public boolean vsync() {
-        return vsync;
-    }
-
-    public void vsync(boolean vsync) {
-        checkPreWindowState();
-        this.vsync = vsync;
-    }
-
-    public String title() {
-        return title;
-    }
-
-    public void title(String title) {
-        checkPreWindowState();
-        this.title = title;
-    }
-
-    public Color background() {
-        return background;
-    }
-
-    public void background(Color color) {
-        checkPreWindowState();
-        this.background = color;
-    }
-
-
-    public boolean isStopped() {
-        return window.isClosed();
     }
 
     public boolean isRunning() {
@@ -145,7 +108,6 @@ public class SimpleGame implements Listener {
     public void stop() {
         window.close();
     }
-
 
     public void register(Renderable renderable) {
         engine.register(renderable);
@@ -167,51 +129,33 @@ public class SimpleGame implements Listener {
         engine.remove(renderables);
     }
 
-    private double updateTime() {
-        double currentTime = glfwGetTime();
-        if (lastFrame == -1) {
-            lastFrame = currentTime;
-            return 0;
-        }
-
-        if (fps) {
-            if (fps_lastTime == -1) {
-                fps_lastTime = currentTime;
-            } else {
-                fps_frames++;
-                if (currentTime - fps_lastTime >= 1.0) { // If last print was more than 1 sec ago
-                    // print and reset timer
-                    showFPS(fps_frames);
-                    fps_frames = 0;
-                    fps_lastTime += 1.0;
-                }
-            }
-        }
-
-        double delta = currentTime - lastFrame;
-        lastFrame = currentTime;
-        return delta;
-    }
-
-    public void showFPS(float fps) {
-        System.out.println("FPS: " + fps);
-    }
-
-
-    public boolean key(Key key) {
-        return window.getKey(key);
-    }
-
-    public Vector2d cursorPos() {
+    /**
+     * Gets cursor position.
+     *
+     * @return the position
+     */
+    public Vector2d getCursorPosition() {
         return window.getCursorPosition();
     }
 
-    public Window window() {
-        return window;
+    /**
+     * Tests if the key is pressed.
+     *
+     * @param key the key
+     * @return {@code true} if pressed.
+     */
+    public boolean testKey(Key key) {
+        return window.testKey(key);
     }
 
-    public boolean mouse(MouseButton button) {
-        return window.getMouseButton(button);
+    /**
+     * Tests if the button is pressed.
+     *
+     * @param button the key
+     * @return {@code true} if pressed.
+     */
+    public boolean testMouseButton(MouseButton button) {
+        return window.testMouseButton(button);
     }
 
     private void checkPreWindowState() {
@@ -219,25 +163,52 @@ public class SimpleGame implements Listener {
             throw new IllegalStateException("Cannot call this after window creation!");
     }
 
-    public void config() {
+    /**
+     * Called before window initializing.
+     * Here you may init the window.
+     */
+    public Window onConfig() {
+        return Glfw.createWindow(500, 250, "Ulge", false);
     }
 
-    public void init() {
+    /**
+     * Called soon after window initializing.
+     * Here you may init OpenGL functions.
+     */
+    public void onInit() {
     }
 
-    public void update(double delta) {
+    /**
+     * Called before rendering the frame.
+     *
+     * @param delta the time between the current frame and the latest
+     */
+    public void onUpdate(double delta) {
+    }
+
+    /**
+     * Called before engine draw-call.
+     */
+    public void onPreDraw() {
+    }
+
+    /**
+     * Called after engine draw-call.
+     */
+    public void onPostDraw() {
+    }
+
+    /**
+     * Called when the game is closed.
+     */
+    public void onDestroy() {
     }
 
     @EventHandler
-    public void onMouseChange(MouseButtonChangeEvent event) {
+    public void onMouseButtonChange(MouseButtonChangeEvent event) {
     }
 
     @EventHandler
     public void onKeyChange(KeyChangeEvent event) {
-        if (event.getKey() == Key.ESCAPE)
-            window.close();
-    }
-
-    public void destroy() {
     }
 }

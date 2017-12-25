@@ -12,7 +12,7 @@ public class SimpleGameTest extends SimpleGame {
 
 
     @Override
-    public void init() {
+    public void onInit() {
         circle = new Circle(
                 new Vector2f(10f, 10f),
                 new Vector2f(20f, 20f),
@@ -23,26 +23,26 @@ public class SimpleGameTest extends SimpleGame {
     }
 
     @Override
-    public void update(double delta) {
-        if(key(Key.W))
+    public void onUpdate(double delta) {
+        if (testKey(Key.W))
             circle.pos.add(0.0f, (float) (VEL * delta));
-        if(key(Key.S))
+        if (testKey(Key.S))
             circle.pos.sub(0.0f, (float) (VEL * delta));
 
-        if(key(Key.A))
+        if (testKey(Key.A))
             circle.pos.sub((float) (VEL * delta), 0.0f);
-        if(key(Key.D))
+        if (testKey(Key.D))
             circle.pos.add((float) (VEL * delta), 0.0f);
 
-        if(circle.pos.x > width())
+        if (circle.pos.x > getWidth())
             circle.pos.x = 0;
-        if(circle.pos.x < 0)
-            circle.pos.x = width();
+        if (circle.pos.x < 0)
+            circle.pos.x = getWidth();
 
-        if(circle.pos.y > height())
+        if (circle.pos.y > getHeight())
             circle.pos.y = 0;
-        if(circle.pos.y < 0)
-            circle.pos.y = height();
+        if (circle.pos.y < 0)
+            circle.pos.y = getHeight();
     }
 
     public static void main(String... args) {

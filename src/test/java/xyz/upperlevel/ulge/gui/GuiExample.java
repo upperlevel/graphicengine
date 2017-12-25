@@ -2,6 +2,8 @@ package xyz.upperlevel.ulge.gui;
 
 import xyz.upperlevel.ulge.simple.SimpleGame;
 import xyz.upperlevel.ulge.util.Color;
+import xyz.upperlevel.ulge.window.Glfw;
+import xyz.upperlevel.ulge.window.Window;
 
 public class GuiExample extends SimpleGame {
 
@@ -12,17 +14,18 @@ public class GuiExample extends SimpleGame {
     private Gui gui;
 
     @Override
-    public void config() {
-        vsync(false);
+    public Window onConfig() {
+        Window w = Glfw.createWindow(800, 500, "Gui Example", false);
+        w.setVSync(false);
+        return w;
     }
 
     @Override
-    public void init() {
-        simpleAlpha();
+    public void onInit() {
+        enableSimpleAlpha();
 
         gui = new GuiContainer();
-
-        gui.setSize(width(), height());
+        gui.setSize(getWidth(), getHeight());
 
         MyGui p = new MyGui();
         p.setOffset(10);
@@ -60,14 +63,14 @@ public class GuiExample extends SimpleGame {
             gui.addChild(group);
         }
 
-        viewer = new GuiViewer(window());
+        viewer = new GuiViewer(getWindow());
         viewer.open(gui);
 
         gui.reloadLayout();
     }
 
     @Override
-    public void postDraw() {
+    public void onPostDraw() {
         viewer.render();
     }
 

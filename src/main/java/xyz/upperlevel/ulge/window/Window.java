@@ -33,7 +33,7 @@ public interface Window {
 
     void setPosition(int x, int y);
 
-    boolean getKey(Key key);
+    boolean testKey(Key key);
 
     Vector2d getCursorPosition();
 
@@ -51,7 +51,7 @@ public interface Window {
 
     void setCursorEnabled(boolean enabled);
 
-    boolean getMouseButton(MouseButton button);
+    boolean testMouseButton(MouseButton button);
 
     void iconify();
 

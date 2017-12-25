@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 import static org.lwjgl.opengl.GL11.*;
 
 public abstract class Screenshot {
+    private Screenshot() {}
 
     public static BufferedImage take(int x, int y, int width, int height) {
         glReadBuffer(GL_FRONT);
@@ -50,6 +51,4 @@ public abstract class Screenshot {
         int i = name.lastIndexOf('.');
         return i > 0 ? name.substring(i + 1) : name;
     }
-
-    private Screenshot() {}
 }

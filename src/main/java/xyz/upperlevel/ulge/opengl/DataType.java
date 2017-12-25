@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.lwjgl.opengl.GL11;
 
-@RequiredArgsConstructor
+@Getter
 public enum DataType {
 
     BYTE(GL11.GL_BYTE, Byte.BYTES),
@@ -17,11 +17,13 @@ public enum DataType {
     UNSIGNED_INT(GL11.GL_UNSIGNED_INT, Integer.BYTES),
 
     FLOAT(GL11.GL_FLOAT, Float.BYTES),
+
     DOUBLE(GL11.GL_DOUBLE, Double.BYTES);
 
-    @Getter
-    public final int id;
+    private final int id, byteCount;
 
-    @Getter
-    public final int bytes;
+    DataType(int id, int byteCount) {
+        this.id = id;
+        this.byteCount = byteCount;
+    }
 }

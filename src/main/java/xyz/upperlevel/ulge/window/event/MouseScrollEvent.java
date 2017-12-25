@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import xyz.upperlevel.ulge.window.Window;
 
 /**
- * Event called when user scrolls mouse wheel.
+ * Event called when user scrolls testMouseButton wheel.
  */
 @Getter
 public class MouseScrollEvent extends WindowEvent {

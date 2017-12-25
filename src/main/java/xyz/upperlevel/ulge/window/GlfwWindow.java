@@ -186,7 +186,7 @@ public class GlfwWindow extends GlWindow {
     }
 
     @Override
-    public boolean getKey(Key key) {
+    public boolean testKey(Key key) {
         return glfwGetKey(id, GLFWKey.toGlfw(key)) != GLFW_RELEASE;
     }
 
@@ -198,7 +198,7 @@ public class GlfwWindow extends GlWindow {
     }
 
     @Override
-    public boolean getMouseButton(MouseButton button) {
+    public boolean testMouseButton(MouseButton button) {
         return glfwGetMouseButton(id, GLFWMouseButton.toGlfw(button)) == GLFW_PRESS;
     }
 
