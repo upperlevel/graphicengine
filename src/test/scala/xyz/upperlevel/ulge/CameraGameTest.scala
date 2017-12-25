@@ -6,7 +6,7 @@ import xyz.upperlevel.event.{EventHandler, Listener}
 import xyz.upperlevel.ulge.opengl.DataType
 import xyz.upperlevel.ulge.opengl.buffer.{DrawMode, Vbo, VboDataUsage, VertexLinker}
 import xyz.upperlevel.ulge.opengl.shader._
-import xyz.upperlevel.ulge.util.math.Camera
+import xyz.upperlevel.ulge.util.math.{OrthographicCamera, PerspectiveCamera}
 import xyz.upperlevel.ulge.window.event.key.Key
 import xyz.upperlevel.ulge.window.event.{CursorMoveEvent, MouseScrollEvent}
 import xyz.upperlevel.ulge.window.{Glfw, Window}
@@ -42,8 +42,8 @@ object CameraGameTest extends Listener {
     1f, 0f, 1f, 1f, 0f
   )
 
-  val camera = new Camera
-  camera.setPosition(0f, 0f, 1f)
+  val camera = new PerspectiveCamera()
+  camera.setPosition(0, 0, 1f)
   camera.setRotation(0f, 0f)
 
   var lastCursorX = 0.0
