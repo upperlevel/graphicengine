@@ -51,7 +51,7 @@ dependencies {
 
     // Useful APIs
     compile group: 'xyz.upperlevel.event', name: 'event-api', version: '1.0.1'
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version:'1.16.20'
 
     // Testing
     testCompile group: 'junit', name: 'junit', version: '4.12'
